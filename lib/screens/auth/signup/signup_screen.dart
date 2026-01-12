@@ -1,4 +1,7 @@
 
+import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
+import 'package:drivado_b2b_app/screens/auth/signup/thank_you_screen.dart';
+import 'package:drivado_b2b_app/screens/auth/signup/widget/more_less_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
@@ -126,10 +129,9 @@ class _SignupPageState extends State<SignupPage> {
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 0),
+                          horizontal: 16.0, vertical: 20),
                       child: Column(
                         children: [
-                          const SizedBox(height: 20,),
                           CustomTextField(
                             title: 'First',
                             hintText: 'Enter your first name',
@@ -262,18 +264,19 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           const SizedBox(height: 12,),
                           CustomTextField(
-                            title: 'Company Name',
-                            hintText: 'Enter your company name',
-                            controller: companyName,
+                            title: 'Address',
+                            hintText: 'Enter your address',
+                            controller: address,
+                            maxLine: 4,
                             isPassword: false,
                             icon: 'null',
-                            height: 52,
+                            height: 100,
                             width: MediaQuery.of(context).size.width,
                             onChanged: (val) {
-                              if(companyName.text != '') {
-                                isCompanyNameValidator = false;
+                              if(address.text != '') {
+                                isAddressValidator = false;
                               }else {
-                                isCompanyNameValidator = true;
+                                isAddressValidator = true;
                               }
                               setState(() {
                               });
@@ -283,13 +286,13 @@ class _SignupPageState extends State<SignupPage> {
                               // setState(() {
                               // });
                             },
-                            suffix: true,
+                            suffix: false,
                             readOnly: false,
                             astric: true,
-                            error: isCompanyNameValidator,
+                            error: isAddressValidator,
                           ),
                           const SizedBox(
-                            height: 12,
+                            height: 20,
                           ),
                           Row(
                             children: [
@@ -300,6 +303,8 @@ class _SignupPageState extends State<SignupPage> {
                                   });
                                 },
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Icon(
                                       isAgree ? Icons.check_box :  Icons.check_box_outline_blank_rounded,
@@ -311,22 +316,8 @@ class _SignupPageState extends State<SignupPage> {
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width /1.2,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          text: 'I consent to receiving digital and telephone communication from Drivado regarding its services.',
-                                          style: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                              color: Color(0xff0d0d0d)),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text: 'more',
-                                                style: GoogleFonts.plusJakartaSans(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 12,
-                                                    color: AppColors.secondary)),
-                                          ],
-                                        ),
+                                      child: MoreLessText(
+                                        text: "I consent to receiving digital and telephone communication from Drivado regarding its services. I understand I may change my preference or opt-out of communication with Drivado at anytime using the unsubscribe link provided in Drivado email communication.",
                                       ),
                                     )
                                   ],
@@ -337,27 +328,37 @@ class _SignupPageState extends State<SignupPage> {
                           const SizedBox(
                             height: 32,
                           ),
-                          CustomButtons(onTap: () {}, title: 'Sign up', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                          CustomButtons(onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ThankYouScreen()));
+                          }, title: 'Sign up', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
                           const SizedBox(
-                            height: 32,
+                            height: 20,
                           ),
-                          RichText(
-                            text: TextSpan(
-                              text: 'Don’t have an account ?  ',
-                              style: GoogleFonts.plusJakartaSans(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Color(0xff606060)),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: 'Sign up',
-                                    style: GoogleFonts.plusJakartaSans(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14,
-                                        color: AppColors.secondary)),
-                              ],
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                            },
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Already have an account ?  ',
+                                style: GoogleFonts.plusJakartaSans(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Color(0xff606060)),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: 'Login',
+                                      style: GoogleFonts.plusJakartaSans(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 14,
+                                          color: AppColors.secondary)),
+                                ],
+                              ),
                             ),
-                          )
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
                         ],
                       ),
                     ),
