@@ -1,5 +1,5 @@
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_card_widget.dart';
-import 'package:drivado_b2b_app/screens/bookings/search_bar_widget.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/search_bar_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';

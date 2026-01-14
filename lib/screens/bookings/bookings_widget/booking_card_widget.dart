@@ -1,3 +1,5 @@
+import 'package:drivado_b2b_app/screens/bookings/booking_detail_page.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/status_widget.dart';
@@ -54,8 +56,13 @@ class BookingCardWidget extends StatelessWidget {
                           ],
                         ),
                       ),
-                      StatusWidget(
-                        text: "Confirmed", textColor: Color(0XFF28A745), borderColor: Color(0XFF28A745).withOpacity(0.5),borderWidth: 0.5, backgroundColor: Color(0XFF28A745).withOpacity(0.1), fontSize: 10, fontWeight: FontWeight.w600
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookingDetailPage()));
+                        },
+                        child: StatusWidget(
+                          text: "Confirmed", textColor: Color(0XFF28A745), borderColor: Color(0XFF28A745).withOpacity(0.5),borderWidth: 0.5, backgroundColor: Color(0XFF28A745).withOpacity(0.1), fontSize: 10, fontWeight: FontWeight.w600
+                        ),
                       ),
                     ],
                   ),
@@ -147,18 +154,7 @@ class BookingCardWidget extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  height: 24,
-                                  width: 72,
-                                  decoration: BoxDecoration(
-                                    color: Color(0XFFF5F6FA),
-                                    borderRadius: BorderRadius.circular(20)
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                    child: CustomText(title: "Oneway", color: Color(0XFFFB4156), fontWeight: FontWeight.w600, fontSize: 12, height: 1),
-                                  ),
-                                ),
+                                BookingTypeWidget(bookingType: "Oneway", textColor: Color(0XFFFB4156), fontWeight: FontWeight.w600, fontSize: 12, height: 1),
                                 SizedBox(width: 12),
                                 Container(
                                   height: 24,
