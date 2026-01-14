@@ -5,6 +5,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/view_user.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:figma_squircle/figma_squircle.dart';
@@ -209,7 +210,7 @@ class _AddUserPageState extends State<AddUserPage> {
               GestureDetector(
                 onTap: () {
                  if(isButtonActive && !widget.isEdit){
-                   showSucessDialog(context);
+                   showSucessDialog(context, emailId.text);
                  }
                  if(widget.isEdit && isButtonActive){
                    Navigator.pop(context);
@@ -1190,96 +1191,4 @@ class _AddUserPageState extends State<AddUserPage> {
   }
 
 
-  //sucess popup ----------------------
-  showSucessDialog(context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(builder: (context, newState) {
-          // Start a timer to update progress
-          return Dialog(
-            insetPadding: const EdgeInsets.symmetric(horizontal: 15),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            backgroundColor: Colors.transparent,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 280,
-              decoration: CustomDecorations().baseBackgroundDecoration(16.0, 1.0, Colors.white, Colors.transparent),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(flex: 1, child: Container()),
-                        Expanded(
-                          flex: 8,
-                            child: Center(child: SvgPicture.asset('assets/user_management/addUserPopupCheck.svg'))),
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: SvgPicture.asset('assets/user_management/closeAddUser.svg')),
-                              const SizedBox(height: 35,)
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24,),
-                    const CustomText(title: 'Congratulations!',
-                        textAlign: TextAlign.center,
-                        color: Color(0xFF101828), fontWeight: FontWeight.w600, fontSize: 24),
-                    const SizedBox(height: 8,),
-                    RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: 'User ',
-                    style:  GoogleFonts.plusJakartaSans(
-                        color: Color(0xFF344054), fontSize: 16,fontWeight: FontWeight.w400
-                    ),
-                    children:  [
-                      TextSpan(
-                          text: emailId.text,
-                          style: GoogleFonts.plusJakartaSans(
-                            color: AppColors.secondary,
-                              fontSize: 16,fontWeight: FontWeight.w500
-                          )
-                      ),
-                      TextSpan(
-                          text: ' added successfully!',
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Color(0xFF344054),
-                              fontSize: 16,fontWeight: FontWeight.w400
-                          )
-                      )
-                    ]
-                ),),
-                    const SizedBox(height: 25,),
-                    InkWell(
-                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ViewUserPage()));
-                     },
-                     child: Container(
-                       height: 44,
-                       decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, AppColors.secondary, Colors.transparent),
-                       alignment: Alignment.center,
-                       child: const CustomText(title: 'Know more', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-                     ),
-                   )
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-      },
-    );
-  }
 }

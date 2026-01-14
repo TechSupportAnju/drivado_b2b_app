@@ -1,13 +1,11 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
-import 'package:drivado_b2b_app/screens/user_management/pages/view_company.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/table_data_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'add_user.dart';
 
 class ViewUserPage extends StatefulWidget {
   const ViewUserPage({super.key});
@@ -94,18 +92,18 @@ class _ViewUserPageState extends State<ViewUserPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 20,),
+                      SizedBox(height: 8,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 15),
-                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Color(0xffffffff), Color(0xFFEDF1F3)),
+                          decoration: CustomDecorations().baseBackgroundDecoration(12.0, 1.0, Color(0xffffffff), Color(0xFFE6E8E7)),
                           child: Column(
                             children: [
                               Row(
                                 children: [
-                                  const CustomText(title: 'User Details', color: Color(0xFF6B7280), fontWeight: FontWeight.w500, fontSize: 16),
+                                  const CustomText(title: 'User Details', color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16),
                                   Spacer(),
                                   CustomSwitch(
                                     value: status,
@@ -121,15 +119,15 @@ class _ViewUserPageState extends State<ViewUserPage> {
                               Row(
                                 children: [
                                   Container(
-                                    width: 40,
-                                    height: 40,
+                                    width: 52,
+                                    height: 52,
                                     decoration: BoxDecoration(
                                       image: const DecorationImage(
                                         image: AssetImage('assets/user_management/userPic.png'),
                                       ),
                                       borderRadius: BorderRadius.circular(100),
                                       border: Border.all(
-                                          color: Colors.white, width: 1.5),
+                                          color: Color(0xFF0D0D0D), width: 1),
                                     ),
                                     padding: const EdgeInsets.all(5),
                                     alignment: Alignment.center,
@@ -138,14 +136,13 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      // AccountInfoWidget(
-                                      //     text: 'Sumit Modi',
-                                      //     style: GoogleFonts.plusJakartaSans(
-                                      //       fontWeight: FontWeight.w600,
-                                      //       color: Color(0xFF1E1E2D),
-                                      //       fontSize: 16,
-                                      //     )),
-                                      const SizedBox(height: 3),
+                                      CustomText(
+                                          title: 'Sumit Modi',
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF0D0D0D),
+                                          fontSize: 16
+                                      ),
+                                      const SizedBox(height: 4),
                                       Row(
                                         children: [
                                           CustomText(
@@ -154,14 +151,6 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                               color: Color(0xFF434557),
                                               fontSize: 12
                                           ),
-                                          SizedBox(width: 4,),
-                                          Icon(Icons.circle, color: Color(0xFF504E4E), size: 5,),
-                                          SizedBox(width: 4,),
-                                          CustomText(
-                                              title: 'techsupport3@drivado.com',
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFF3A434C),
-                                              fontSize: 12),
                                         ],
                                       ),
                                     ],
@@ -175,7 +164,14 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                   children: [
                                     Theme(
                                       data: Theme.of(context).copyWith(
-                                          dividerColor: Colors.transparent),
+                                        dividerTheme: const DividerThemeData(
+                                          thickness: 0,
+                                          space: 0,
+                                        ),
+                                        dataTableTheme: const DataTableThemeData(
+                                          dividerThickness: 0,
+                                        ),
+                                      ),
                                       child: DataTable(
                                         horizontalMargin: 0.0,
                                         dividerThickness: 0.0,
@@ -183,14 +179,15 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                         dataRowMinHeight: 25,
                                         dataRowMaxHeight: 25,
                                         columnSpacing: 5,
+                                        border: TableBorder.all(color: Colors.transparent),
                                         columns: [
                                           DataColumn(label:
                                           CustomDataTableRow(
-                                            title: 'Name',
-                                            color: Color(0xFF6B7280),
+                                            title: 'Email ID',
+                                            color: Color(0xFF606060),
                                             fontWeight: FontWeight.w500,
                                             fontSize: 12,
-                                            image: 'assets/user_management/pax.svg',)
+                                            image: 'assets/user_management/email.svg',)
                                           ),
                                           DataColumn(label:
                                           SizedBox(
@@ -200,8 +197,8 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                                 children: [
                                                   SizedBox(width: 20,),
                                                   CustomText(
-                                                      title: 'Sumit Modi',
-                                                      color: Color(0xFF3A434C),
+                                                      title: 'tech@drivado.com',
+                                                      color: Color(0xFF0D0D0D),
                                                       fontWeight: FontWeight.w500,
                                                       fontSize: 12),
                                                 ],
@@ -212,41 +209,14 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                           DataRow(cells: [
                                             DataCell(
                                                 CustomDataTableRow(
-                                                  title: 'Email ID',
-                                                  color: Color(0xFF6B7280),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12,
-                                                  image: 'assets/user_management/email.svg',)),
-                                            DataCell(
-                                                Container(
-                                                    width: screenWidth * 0.42,
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: [
-                                                        SizedBox(width: 20,),
-                                                        CustomText(
-                                                            title: 'tech@drivado.com',
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                            color: Color(0xFF3A434C),
-                                                            fontWeight: FontWeight
-                                                                .w500,
-                                                            fontSize: 12),
-                                                      ],
-                                                    ))
-                                            ),
-                                          ]),
-                                          DataRow(cells: [
-                                            DataCell(
-                                                CustomDataTableRow(
                                                   title: 'Mob. number',
-                                                  color: Color(0xFF6B7280),
+                                                  color: Color(0xFF606060),
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 12,
                                                   image: 'assets/user_management/phone.svg',)
                                             ),
                                             DataCell(
-                                                Container(
+                                                SizedBox(
                                                     width: screenWidth * 0.42,
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
@@ -254,9 +224,8 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                                         SizedBox(width: 20,),
                                                         CustomText(
                                                             title: '+91 9876543210',
-                                                            color: Color(0xFF3A434C),
-                                                            fontWeight: FontWeight
-                                                                .w500,
+                                                            color: Color(0xFF0D0D0D),
+                                                            fontWeight: FontWeight.w500,
                                                             fontSize: 12),
                                                       ],
                                                     ))
@@ -266,7 +235,7 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                             DataCell(
                                                 CustomDataTableRow(
                                                   title: 'Language',
-                                                  color: Color(0xFF6B7280),
+                                                  color: Color(0xFF606060),
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 12,
                                                   image: 'assets/user_management/langAccount.svg',)),
@@ -279,7 +248,7 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                                         SizedBox(width: 20,),
                                                         CustomText(
                                                             title: 'English',
-                                                            color: Color(0xFF3A434C),
+                                                            color: Color(0xFF0D0D0D),
                                                             fontWeight: FontWeight
                                                                 .w500,
                                                             fontSize: 12),
@@ -291,7 +260,7 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                             DataCell(
                                                 CustomDataTableRow(
                                                   title: 'Currency',
-                                                  color: Color(0xFF6B7280),
+                                                  color: Color(0xFF606060),
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 12,
                                                   image: 'assets/user_management/currAccount.svg',)),
@@ -304,7 +273,7 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                                         SizedBox(width: 20,),
                                                         CustomText(
                                                             title: 'USD',
-                                                            color: Color(0xFF3A434C),
+                                                            color: Color(0xFF0D0D0D),
                                                             fontWeight: FontWeight
                                                                 .w500,
                                                             fontSize: 12),
@@ -319,80 +288,26 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                 ),
                               ),
                               const SizedBox(height: 15,),
-                              // isAdmin
-                              // ? Row(
-                              //   children: [
-                              //     Expanded(
-                              //       flex: 1,
-                              //       child: Container(
-                              //           height: 40,
-                              //           padding: EdgeInsets.symmetric(horizontal: 10),
-                              //           decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, Color(0xFFF5F6FA), Color(0xFFF5F6FA)),
-                              //           child: Column(
-                              //               mainAxisAlignment: MainAxisAlignment.center,
-                              //               children: [
-                              //                 Row(
-                              //                   children: [
-                              //                     const CustomText(title: 'User Markup', color: Color(0xFF606060), fontWeight: FontWeight.w600, fontSize: 8),
-                              //                   ],
-                              //                 ),
-                              //                 SizedBox(height: 4),
-                              //                 Row(
-                              //                   children: [
-                              //                     const CustomText(title: '0%', color: AppColors.secondary, fontWeight: FontWeight.w500, fontSize: 12),
-                              //                   ],
-                              //                 ),
-                              //               ]
-                              //           )
-                              //       ),
-                              //     ),
-                              //     const SizedBox(width: 8,),
-                              //     Expanded(
-                              //       flex: 1,
-                              //       child: Container(
-                              //           height: 40,
-                              //           padding: EdgeInsets.symmetric(horizontal: 10),
-                              //           decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, Color(0xFFF5F6FA), Color(0xFFF5F6FA)),
-                              //           child: Column(
-                              //               mainAxisAlignment: MainAxisAlignment.center,
-                              //               children: [
-                              //                 Row(
-                              //                   children: [
-                              //                     const CustomText(title: 'User Discount', color: Color(0xFF606060), fontWeight: FontWeight.w600, fontSize: 8),
-                              //                   ],
-                              //                 ),
-                              //                 SizedBox(height: 4),
-                              //                 Row(
-                              //                   children: [
-                              //                     const CustomText(title: '0%', color: AppColors.bookingCardGreenColor, fontWeight: FontWeight.w500, fontSize: 12),
-                              //                   ],
-                              //                 ),
-                              //               ]
-                              //           )
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ) : Container(),
                             ],
                           ),
                         ),
                       ),
                       SizedBox(height: 12,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15.0, vertical: 10),
                           decoration: CustomDecorations()
                               .baseBackgroundDecoration(
-                              10.0, 1.0, Color(0xffffffff),Color(0xFFEDF1F3)),
+                              12.0, 1.0, Color(0xffffffff),Color(0xFFE6E8E7)),
                           child: Column(
                             children: [
                               Row(
                                 children: [
                                   CustomText(
                                       title: 'Credit Limit',
-                                      color: Color(0xFF6B7280),
+                                      color: Color(0xFF0D0D0D),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16),
                                 ],
@@ -401,12 +316,12 @@ class _ViewUserPageState extends State<ViewUserPage> {
                               Row(
                                 children: [
                                   CustomText(title: 'Total unpaid booking',
-                                      color: Color(0xFF6B7280),
+                                      color: Color(0xFF606060),
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12),
                                   Spacer(),
                                   CustomText(title: 'USD 462',
-                                      color: AppColors.textFieldLabelTextColor,
+                                      color: AppColors.secondary,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ],
@@ -415,12 +330,12 @@ class _ViewUserPageState extends State<ViewUserPage> {
                               Row(
                                 children: [
                                   CustomText(title: 'Available credit limit',
-                                      color: Color(0xFF6B7280),
+                                      color: Color(0xFF606060),
                                       fontWeight: FontWeight.w500,
                                       fontSize: 12),
                                   Spacer(),
                                   CustomText(title: 'USD 462434',
-                                      color: AppColors.textFieldLabelTextColor,
+                                      color: Color(0xFF0D0D0D),
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14),
                                 ],

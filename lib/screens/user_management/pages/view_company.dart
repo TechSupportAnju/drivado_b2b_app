@@ -1,13 +1,15 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/user_management/pages/add_company.dart';
+import 'package:drivado_b2b_app/screens/user_management/pages/add_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_booking_summary_row.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/view_company_side_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'add_company.dart';
 
 class ViewCompanyPage extends StatefulWidget {
   const ViewCompanyPage({super.key});
@@ -50,6 +52,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
               ),
               alignment: Alignment.topLeft,
               child: SafeArea(
+                bottom: false,
                 child: Padding(
                     padding: const EdgeInsets.only(
                         left: 20.0, right: 20, top: 20, bottom: 15),
@@ -60,7 +63,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: SvgPicture.asset('assets/back.svg')),
+                              child: SvgPicture.asset('assets/user_management/back.svg')),
                           Spacer(),
                           Column(
                             children: [
@@ -80,7 +83,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                             ],
                           ),
                           SizedBox(width: 16,),
-                          Image.asset('assets/userPic.png', height: 40,),
+                          Image.asset('assets/user_management/userPic.png', height: 40,),
                         ]
                     )
                 ),
@@ -102,21 +105,21 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Column(
                           children: [
-                            CustomViewCompanyWidget(title: 'Profile', icon: 'assets/profileUnsel.svg',
+                            CustomViewCompanyWidget(title: 'Profile', icon: 'assets/user_management/profileUnsel.svg',
                                 onPress: () {
                                 setState(() {
                                   isSelect = 0;
                                 });
                             }, isSelect: isSelect, index: 0,),
                             SizedBox(height: 25,),
-                            CustomViewCompanyWidget(title: 'Users', icon: 'assets/userSel.svg',
+                            CustomViewCompanyWidget(title: 'Users', icon: 'assets/user_management/userSel.svg',
                                 onPress: () {
                                 setState(() {
                                   isSelect = 1;
                                 });
                             }, isSelect: isSelect, index: 1,),
                             SizedBox(height: 25,),
-                            CustomViewCompanyWidget(title: 'Companies', icon: 'assets/companyUnsel.svg',
+                            CustomViewCompanyWidget(title: 'Companies', icon: 'assets/user_management/companyUnsel.svg',
                                 onPress: () {
                                 setState(() {
                                   isSelect = 2;
@@ -128,7 +131,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                       ),
                     ),
                     SizedBox(width: 10,),
-                    Container(
+                    SizedBox(
                       width: screenSize.width - 70,
                       height: screenSize.height,
                       child: isSelect == 0
@@ -139,20 +142,19 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15.0, vertical: 15),
                               decoration: CustomDecorations()
-                                  .baseBackgroundDecoration(
-                                  10.0, 1.0,  Color(0xffffffff),
-                                  Color(0xFFEDF1F3)),
+                                  .draggableSheetDecoration(
+                                  12.0,0.0, 12.0, 0.0, 1.0,  Color(0xffffffff),
+                                  Color(0xFFE6E8E7)),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
-                                      CustomText(title: 'Company Details', color: Color(0xFF6B7280), fontWeight: FontWeight.w500, fontSize: 16),
+                                      CustomText(title: 'Company Details', color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16),
                                       Spacer(),
                                       CustomSwitch(
                                         isText: true,
                                         value: status,
                                         onChanged: (value) {
-                                          print("VALUE : $value");
                                           setState(() {
                                             status = value;
                                           });
@@ -161,216 +163,72 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                     ],
                                   ),
                                   const SizedBox(height: 15,),
-                                  // isAdmin
-                                  //     ? Container(
-                                  //   height: 40,
-                                  //   padding: EdgeInsets.symmetric(horizontal: 15),
-                                  //   decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, AppColors.adminUserMangBgColor, AppColors.adminUserMangBgColor),
-                                  //   child: Row(
-                                  //     children: [
-                                  //       const CustomText(title: 'Meet & Greet', color: AppColors.manageBookingbokkedByTextColor, fontWeight: FontWeight.w500, fontSize: 12),
-                                  //       Spacer(),
-                                  //       CustomText(title: 'With', color: status ? AppColors.secondary : AppColors.userManagementswitchTextColor, fontWeight: status ? FontWeight.w600 : FontWeight.w500, fontSize: 10),
-                                  //       SizedBox(width: 5),
-                                  //       CustomSwitch(
-                                  //         // activeColor: Colors.pinkAccent,
-                                  //         value: status,
-                                  //         onChanged: (value) {
-                                  //           print("VALUE : $value");
-                                  //           setState(() {
-                                  //             status = value;
-                                  //           });
-                                  //         }, isText: false,
-                                  //       ),
-                                  //       SizedBox(width: 5),
-                                  //       CustomText(title: 'Without', color: !status ? AppColors.secondary : AppColors.userManagementswitchTextColor, fontWeight: !status ? FontWeight.w600 : FontWeight.w500, fontSize: 10),
-                                  //     ],
-                                  //   ),
-                                  // ) : Container(),
-                                  // isAdmin
-                                  //     ? SizedBox(height: 8,): Container(),
-                                  // isAdmin
-                                  //     ? GestureDetector(
-                                  //   onTap: () {
-                                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => AddCompanyPage(isEdit: true,)));
-                                  //     },
-                                  //       child: Container(
-                                  //                                           height: 51,
-                                  //                                           width: screenWidth,
-                                  //                                           padding: EdgeInsets.symmetric(horizontal: 15),
-                                  //                                           decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, AppColors.adminUserMangBgColor, AppColors.adminUserMangBgColor),
-                                  //                                           child: Column(
-                                  //       mainAxisAlignment: MainAxisAlignment.center,
-                                  //       children: [
-                                  //         SvgPicture.asset('assets/editComp.svg'),
-                                  //         SizedBox(height: 5),
-                                  //         const CustomText(title: 'Edit Company', color: AppColors.manageBookingbokkedByTextColor, fontWeight: FontWeight.w500, fontSize: 10),
-                                  //       ],
-                                  //                                           ),
-                                  //                                         ),
-                                  //     ) : Container(),
-                                  // const SizedBox(height: 15,),
                                   Row(
                                     children: [
                                       Container(
-                                        width: 40,
-                                        height: 40,
+                                        width: 52,
+                                        height: 52,
                                         decoration: BoxDecoration(
                                           image: const DecorationImage(
-                                            image: AssetImage('assets/userPic.png'),
+                                            image: AssetImage('assets/logo.png'),
+                                            fit: BoxFit.contain
                                           ),
                                           borderRadius: BorderRadius.circular(100),
                                           border: Border.all(
-                                              color: Colors.white, width: 1.5),
+                                              color: Color(0xFFE6E8E7), width: 1),
                                         ),
-                                        padding: const EdgeInsets.all(5),
-                                        alignment: Alignment.center,
                                       ),
                                       const SizedBox(width: 15),
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          // AccountInfoWidget(
-                                          //     text: 'Drivado transfers pvt ltd.',
-                                          //     style: GoogleFonts.plusJakartaSans(
-                                          //       fontWeight: FontWeight.w600,
-                                          //       color: AppColors.accountUserNameColor,
-                                          //       fontSize: 16,
-                                          //     )),
-                                          const SizedBox(height: 3),
-                                          Container(
-                                            // width: screenWidth /1.5,
-                                            child: Row(
-                                              children: [
-                                                CustomText(
-                                                    title: 'help@drivado.com',
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Color(0xFF3A434C),
-                                                    fontSize: 12),
-                                              ],
-                                            ),
+                                          CustomText(
+                                              title: 'Drivado transfers pvt ltd.',
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xFF0D0D0D),
+                                              fontSize: 16),
+                                          const SizedBox(height: 6),
+                                          Row(
+                                            children: [
+                                              CustomText(
+                                                  title: 'help@drivado.com',
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0xFF606060),
+                                                  fontSize: 12),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 15,),
+                                  const SizedBox(height: 16,),
                                   Column(
                                     children: [
-                                      SizedBox(height:10),
                                       CustomBookingSummaryDataRowWithIcon(
-                                        title: 'Website :',
+                                        title: 'Website',
                                         desc: 'www.drivado.com',
-                                        image: 'assets/website.svg',
+                                        image: 'assets/user_management/website.svg',
                                       ),
-                                      SizedBox(height:10),
+                                      SizedBox(height:12),
                                       CustomBookingSummaryDataRowWithIcon(
-                                        title: 'Mob. number :',
+                                        title: 'Mob. number',
                                         desc: '+91 9876543210',
-                                        image: 'assets/phone.svg',
+                                        image: 'assets/user_management/phone.svg',
                                       ),
-                                      SizedBox(height:10),
+                                      SizedBox(height:12),
                                       CustomBookingSummaryDataRowWithIcon(
-                                        title: 'GST/VAT :',
+                                        title: 'GST/VAT',
                                         desc: 'UNDEFINED',
-                                        image: 'assets/gst.svg',
+                                        image: 'assets/user_management/gst.svg',
                                       ),
-                                      SizedBox(height:10),
+                                      SizedBox(height:12),
                                       CustomBookingSummaryDataRowWithIcon(
-                                        title: 'Address :',
+                                        title: 'Address',
                                         desc: 'Mezzanine Floor, The Travel Centre, Sheikh Zayed Road, PO Box 75142, Dubai, UAE',
-                                        image: 'assets/address.svg',
+                                        image: 'assets/user_management/address.svg',
                                       ),
                                     ],
                                   ),
-                                  // isAdmin
-                                  //     ? Column(
-                                  //       children: [
-                                  //         const SizedBox(height: 15,),
-                                  //         Row(
-                                  //          children: [
-                                  //         Expanded(
-                                  //           flex: 1,
-                                  //           child: Container(
-                                  //               height: 40,
-                                  //               padding: EdgeInsets.symmetric(horizontal: 10),
-                                  //               decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, AppColors.adminUserMangBgColor, AppColors.adminUserMangBgColor),
-                                  //               child: Column(
-                                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                                  //                   children: [
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: 'User Markup', color: AppColors.manageBookingbokkedByTextColor, fontWeight: FontWeight.w600, fontSize: 8),
-                                  //                       ],
-                                  //                     ),
-                                  //                     SizedBox(height: 4),
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: '0%', color: AppColors.secondary, fontWeight: FontWeight.w500, fontSize: 12),
-                                  //                       ],
-                                  //                     ),
-                                  //                   ]
-                                  //               )
-                                  //           ),
-                                  //         ),
-                                  //         const SizedBox(width: 8,),
-                                  //         Expanded(
-                                  //           flex: 1,
-                                  //           child: Container(
-                                  //               height: 40,
-                                  //               padding: EdgeInsets.symmetric(horizontal: 10),
-                                  //               decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, AppColors.adminUserMangBgColor, AppColors.adminUserMangBgColor),
-                                  //               child: Column(
-                                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                                  //                   children: [
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: 'User Discount', color: AppColors.manageBookingbokkedByTextColor, fontWeight: FontWeight.w600, fontSize: 8),
-                                  //                       ],
-                                  //                     ),
-                                  //                     SizedBox(height: 4),
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: '0%', color: AppColors.bookingCardGreenColor, fontWeight: FontWeight.w500, fontSize: 12),
-                                  //                       ],
-                                  //                     ),
-                                  //                   ]
-                                  //               )
-                                  //           ),
-                                  //         ),
-                                  //                                             ],
-                                  //                                           ),
-                                  //         const SizedBox(height: 8,),
-                                  //         Row(
-                                  //          children: [
-                                  //         Expanded(
-                                  //           flex: 1,
-                                  //           child: Container(
-                                  //               height: 40,
-                                  //               padding: EdgeInsets.symmetric(horizontal: 10),
-                                  //               decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, AppColors.adminUserMangBgColor, AppColors.adminUserMangBgColor),
-                                  //               child: Column(
-                                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                                  //                   children: [
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: 'Company total credit limit', color: AppColors.manageBookingbokkedByTextColor, fontWeight: FontWeight.w600, fontSize: 8),
-                                  //                       ],
-                                  //                     ),
-                                  //                     SizedBox(height: 4),
-                                  //                     Row(
-                                  //                       children: [
-                                  //                         const CustomText(title: 'USD 1,30,000', color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w600, fontSize: 12),
-                                  //                       ],
-                                  //                     ),
-                                  //                   ]
-                                  //               )
-                                  //           ),
-                                  //         ),
-                                  //        ],
-                                  //         ),
-                                  //       ],
-                                  //     ) : Container(),
                                 ],
                               ),
                             ),
@@ -379,16 +237,16 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15.0, vertical: 10),
                               decoration: CustomDecorations()
-                                  .baseBackgroundDecoration(
-                                  10.0, 1.0,  Color(0xffffffff),
-                                  Color(0xFFEDF1F3)),
+                                  .draggableSheetDecoration(
+                                  12.0,0.0, 12.0, 0.0, 1.0,  Color(0xffffffff),
+                                  Color(0xFFE6E8E7)),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
                                       CustomText(
                                           title: 'Credit Limit',
-                                          color: Color(0xFF6B7280),
+                                          color: Color(0xFF606060),
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16),
                                     ],
@@ -397,12 +255,12 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                   Row(
                                     children: [
                                       CustomText(title: 'Total unpaid booking',
-                                          color: Color(0xFF6B7280),
+                                          color: Color(0xFF606060),
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12),
                                       Spacer(),
                                       CustomText(title: 'USD 462',
-                                          color: AppColors.textFieldLabelTextColor,
+                                          color: AppColors.secondary,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14),
                                     ],
@@ -411,12 +269,12 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                   Row(
                                     children: [
                                       CustomText(title: 'Available credit limit',
-                                          color: Color(0xFF6B7280),
+                                          color: Color(0xFF606060),
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12),
                                       Spacer(),
                                       CustomText(title: 'USD 462434',
-                                          color: AppColors.textFieldLabelTextColor,
+                                          color: Color(0xFF0D0D0D),
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14),
                                     ],
@@ -437,7 +295,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                   image: const DecorationImage(
-                                    image: AssetImage('assets/userPic.png'),
+                                    image: AssetImage('assets/user_management/userPic.png'),
                                   ),
                                   borderRadius: BorderRadius.circular(100),
                                   border: Border.all(
@@ -450,25 +308,20 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // AccountInfoWidget(
-                                  //     text: 'Drivado transfers pvt ltd.',
-                                  //     style: GoogleFonts.plusJakartaSans(
-                                  //       fontWeight: FontWeight.w600,
-                                  //       color: AppColors.accountUserNameColor,
-                                  //       fontSize: 16,
-                                  //     )),
+                                  CustomText(
+                                      title: 'Drivado transfers pvt ltd.',
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF0D0D0D),
+                                      fontSize: 16),
                                   const SizedBox(height: 3),
-                                  Container(
-                                    // width: screenWidth /1.5,
-                                    child: Row(
-                                      children: [
-                                        CustomText(
-                                            title: 'help@drivado.com',
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFF3A434C),
-                                            fontSize: 12),
-                                      ],
-                                    ),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                          title: 'help@drivado.com',
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF3A434C),
+                                          fontSize: 12),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -485,7 +338,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                 prefixIconConstraints: const BoxConstraints().loosen(),
                                 prefixIcon: Padding(
                                   padding: const EdgeInsets.only(right: 8.0, bottom: 2),
-                                  child: SvgPicture.asset('assets/search.svg', height: 18,
+                                  child: SvgPicture.asset('assets/user_management/search.svg', height: 18,
                                       colorFilter: const ColorFilter.mode(
                                           Color(0xFFC0C0C0), BlendMode.srcIn)
                                   ),
@@ -505,8 +358,6 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                             child: Stack(
                               children: [
                                 Container(
-                                  // padding: const EdgeInsets.symmetric(
-                                  //     horizontal: 15.0, vertical: 15),
                                   decoration: CustomDecorations()
                                       .baseBackgroundDecoration(
                                       10.0, 1.0,  Color(0xffffffff),
@@ -522,9 +373,9 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                           behavior: HitTestBehavior.translucent,
                                           onTap: () {
                                             if(isSelect == 1) {
-                                              // context.push('/viewUser');
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddUserPage(isEdit: false)));
                                             } else {
-                                              // context.push('/viewCompany');
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddCompanyPage(isEdit: false)));
                                             }
                                           },
                                           child: Padding(
@@ -532,7 +383,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                             child: Row(
                                               children: [
                                                 const SizedBox(width: 5,),
-                                                SvgPicture.asset(isSelect == 1 ? 'assets/ManageUser.svg' : 'assets/Company.svg'),
+                                                SvgPicture.asset(isSelect == 1 ? 'assets/user_management/manageUser.svg' : 'assets/user_management/company.svg'),
                                                 const SizedBox(width: 10,),
                                                 CustomText(title: isSelect == 1 ? 'Users ${++index}' : 'Company ${++index}' , color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w500, fontSize: 12),
                                               ],
@@ -544,7 +395,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                 ),
                                 Positioned(
                                   right: 10,
-                                  bottom: 35,
+                                  bottom: 65,
                                   child: GestureDetector(
                                     onTap: () {
                                       if(isSelect == 1) {
@@ -586,86 +437,3 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
   }
 }
 
-class CustomSwitch extends StatefulWidget {
-  final bool value;
-  final bool isText;
-  final ValueChanged<bool> onChanged;
-
-  CustomSwitch({Key? key, required this.value, required this.isText, required this.onChanged})
-      : super(key: key);
-
-  @override
-  _CustomSwitchState createState() => _CustomSwitchState();
-}
-
-class _CustomSwitchState extends State<CustomSwitch>
-    with SingleTickerProviderStateMixin {
-  Animation? _circleAnimation;
-  AnimationController? _animationController;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 60));
-    _circleAnimation = AlignmentTween(
-        begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
-        end: widget.value ? Alignment.centerLeft : Alignment.centerRight)
-        .animate(CurvedAnimation(
-        parent: _animationController!, curve: Curves.linear));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController!,
-      builder: (context, child) {
-        return GestureDetector(
-          onTap: () {
-            if (_animationController!.isCompleted) {
-              _animationController!.reverse();
-            } else {
-              _animationController!.forward();
-            }
-            widget.value == false
-                ? widget.onChanged(true)
-                : widget.onChanged(false);
-          },
-          child: Row(
-            children: [
-              widget.isText
-              ? CustomText(title: !widget.value ? 'Deactivate' : 'Activate', color: Color(0xFF8B8B94), fontWeight: FontWeight.w500, fontSize: 10)
-              : Container(),
-              widget.isText
-                  ? SizedBox(width: 5,)
-                  : SizedBox(width: 0,),
-              Container(
-                width: 36.0,
-                height: 20.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24.0),
-                  color: _circleAnimation!.value == Alignment.centerLeft
-                      ? Color(0xFF00E041)
-                      : Color(0xFFAEAEB2),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Container(
-                    alignment:
-                    widget.value ? ((Directionality.of(context) == TextDirection.rtl) ? Alignment.centerRight : Alignment.centerLeft ) : ((Directionality.of(context) == TextDirection.rtl) ? Alignment.centerLeft : Alignment.centerRight),
-                    child: Container(
-                      width: 16.0,
-                      height: 16.0,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}

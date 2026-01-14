@@ -37,8 +37,8 @@ class CustomBookingSummaryDataRowWithIcon extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          flex: 1,
+        Container(
+          width: 110,
           child: Row(
             children: [
               SvgPicture.asset(image),
@@ -47,9 +47,9 @@ class CustomBookingSummaryDataRowWithIcon extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 0,),
-        Flexible(
-          flex: 1,
+        CustomText(title: ":", color: Color(0xFF606060), fontWeight: FontWeight.w500, fontSize: 12),
+        SizedBox(width: 18,),
+        Expanded(
           child: CustomText(title: desc,
               height: 1.2,
               color: Color(0xFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12),
