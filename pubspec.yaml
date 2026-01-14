@@ -42,6 +42,9 @@ dependencies:
   pinput: ^5.0.2
   animated_bottom_navigation_bar: ^1.4.0
   cached_network_svg_image: ^1.2.0
+  animated_bottom_navigation_bar: ^1.4.0
+  dotted_line: ^3.2.3
+  flutter_dash: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +75,8 @@ flutter:
    - assets/auth/
    - assets/home/
    - assets/user_management/
+   - assets/booking/
+   - assets/booking_detail/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
