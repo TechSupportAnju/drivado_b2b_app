@@ -39,7 +39,9 @@ dependencies:
   swipeable_page_route: ^0.4.0
   figma_squircle: ^0.6.3
   email_validator: ^3.0.0
-
+  animated_bottom_navigation_bar: ^1.4.0
+  dotted_line: ^3.2.3
+  flutter_dash: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +70,9 @@ flutter:
    - assets/
    - assets/splash/
    - assets/auth/
+   - assets/home/
+   - assets/booking/
+   - assets/booking_detail/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

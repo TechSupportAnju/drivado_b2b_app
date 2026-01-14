@@ -9,6 +9,8 @@ class StatusWidget extends StatefulWidget {
   final BorderRadius borderRadius;
   final EdgeInsetsGeometry padding;
   final Color? textColor;
+  final FontWeight? fontWeight;
+  final double? fontSize;
 
   const StatusWidget({
     super.key,
@@ -18,7 +20,9 @@ class StatusWidget extends StatefulWidget {
     this.backgroundColor = Colors.transparent,
     this.borderRadius = const BorderRadius.all(Radius.circular(40)),
     this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-    this.textColor
+    this.textColor, 
+    this.fontWeight,
+    this.fontSize
   });
 
   @override
@@ -40,9 +44,9 @@ class _StatusWidgetState extends State<StatusWidget> {
       ),
       child: CustomText(
         title: widget.text, 
-        fontSize: 12, 
+        fontSize: widget.fontSize ?? 12, 
         color: widget.textColor ?? Colors.transparent,
-        fontWeight: FontWeight.w500,
+        fontWeight: widget.fontWeight ?? FontWeight.w500,
         height: 1,
       ),
     );
