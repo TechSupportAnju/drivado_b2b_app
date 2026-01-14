@@ -14,6 +14,20 @@ class CustomDecorations {
       ),
     );
   }
+  ShapeDecoration draggableSheetDecoration(radiusTopLeft, radiusTopRight, radiusBottomLeft, radiusBottomRight, smooth,  color, borderColor){
+    return ShapeDecoration(
+      color: color,
+      shape: SmoothRectangleBorder(
+        side: BorderSide(color: borderColor),
+        borderRadius: SmoothBorderRadius.only(
+          topLeft: SmoothRadius(cornerRadius: radiusTopLeft, cornerSmoothing: smooth),
+          topRight: SmoothRadius(cornerRadius: radiusTopRight, cornerSmoothing: smooth),
+          bottomLeft: SmoothRadius(cornerRadius: radiusBottomLeft, cornerSmoothing: smooth),
+          bottomRight: SmoothRadius(cornerRadius: radiusBottomRight, cornerSmoothing: smooth),
+        ),
+      ),
+    );
+  }
 }
 
 class CustomDecorationsCards {

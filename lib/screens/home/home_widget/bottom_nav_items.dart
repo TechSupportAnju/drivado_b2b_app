@@ -1,8 +1,8 @@
 import 'package:drivado_b2b_app/screens/bookings/booking_list_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_screens/home_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_navigation_bar.dart';
-import 'package:drivado_b2b_app/screens/manage/manage.dart';
 import 'package:drivado_b2b_app/screens/more/more.dart';
+import 'package:drivado_b2b_app/screens/user_management/pages/user_mangement.dart';
 import 'package:flutter/material.dart';
 
 class RootShell extends StatefulWidget {
@@ -20,7 +20,7 @@ class _RootShellState extends State<RootShell> {
   final List<Widget> pages = const [
     HomePage(),
     BookingListPage(),
-    Manage(),
+    UserMangementPage(),
     More(),
   ];
 

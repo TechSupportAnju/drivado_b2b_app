@@ -1,9 +1,12 @@
 
+import 'package:drivado_b2b_app/screens/auth/forgot_password/forgot_pasword.dart';
 import 'package:drivado_b2b_app/screens/auth/signup/signup_screen.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/home/home_screens/home_page.dart';
+import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -219,7 +222,7 @@ class _LoginPagePageState extends State<LoginPage> {
                               GestureDetector(
                                 behavior: HitTestBehavior.translucent,
                                 onTap: () {
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
                                 },
                                 child: const CustomText(
                                     title: 'Forgot Password?',
@@ -232,7 +235,9 @@ class _LoginPagePageState extends State<LoginPage> {
                           const SizedBox(
                             height: 32,
                           ),
-                          CustomButtons(onTap: () {}, title: 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                          CustomButtons(onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => RootShell()));
+                          }, title: 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
                           const SizedBox(
                             height: 32,
                           ),

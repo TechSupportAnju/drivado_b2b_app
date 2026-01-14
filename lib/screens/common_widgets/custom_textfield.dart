@@ -30,7 +30,7 @@ class CustomTextField extends StatelessWidget {
     required this.icon,
     required this.height,
     this.keyboardType,
-    this.maxLine,
+    this.maxLine = 1,
     required this.width,
     required this.onChanged,
     required this.onTap,
@@ -65,6 +65,7 @@ class CustomTextField extends StatelessWidget {
             child: TextFormField(
               keyboardType: keyboardType ?? TextInputType.text,
               maxLines: maxLine ?? 1,
+              minLines: maxLine ?? 1,
               readOnly: readOnly,
               autofocus: !readOnly,
               focusNode: readOnly ? AlwaysDisabledFocusNode() : null,
@@ -73,11 +74,13 @@ class CustomTextField extends StatelessWidget {
               obscureText: suffix ? isPassword : false,
               cursorHeight: 15,
               cursorWidth: 1.5,
+              textAlignVertical: TextAlignVertical.top,
               style: GoogleFonts.plusJakartaSans(
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
               decoration: InputDecoration(
+                alignLabelWithHint: maxLine == 1 ? false : true,
                 suffixIconConstraints: const BoxConstraints().loosen(),
                 suffixIcon: error
                     ? SvgPicture.asset('assets/auth/info-circle.svg')
