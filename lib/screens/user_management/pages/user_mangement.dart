@@ -3,6 +3,8 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/view_company.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/view_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/animated_toggle.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/user_company_list_tile_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,14 +20,26 @@ class UserMangementPage extends StatefulWidget {
   @override
   State<UserMangementPage> createState() => _UserMangementPageState();
 }
+List<String> allItems = ['Sayan', 'Sumit', 'Anju', 'Shakshi', 'Hrusikesh', 'Tapas Daa', 'Abhishek' 'Rahul', 'Debodatta', 'Nilanjan', 'Devansh', 'Tripty', 'Debjyoti'];
 
 class _UserMangementPageState extends State<UserMangementPage> {
   int toggleValue = 0;
   TextEditingController search = TextEditingController();
+  List<String> filteredItems = [];
+
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    filteredItems = allItems;
+  }
+
+  void _filterList(String query) {
+    setState(() {
+      filteredItems = allItems
+          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -73,7 +87,24 @@ class _UserMangementPageState extends State<UserMangementPage> {
                           ],
                         ),
                         const Spacer(),
-                        SvgPicture.asset('assets/user_management/notificationDark.svg'),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Color(0XFF352828),
+                              borderRadius: BorderRadius.circular(100)
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/home/notification_icon.svg',
+                                height: 20,
+                                width: 20,
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 16,),
@@ -102,14 +133,25 @@ class _UserMangementPageState extends State<UserMangementPage> {
                                     fontWeight: FontWeight.w400,
                                     fontSize: 16),
                                 hintText: 'Search',
+                                suffixIconConstraints: const BoxConstraints(),
+                                suffixIcon: search.text.isNotEmpty ? GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      setState(() {
+                                        search.clear();
+                                      });
+                                    },
+                                    child: Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,)) : null
                               ),
-                              onChanged: (val) {
-                                setState(() {});
-                              },
+                              onChanged: (value) {
+                                if(toggleValue == 0) {
+                                  _filterList(value);
+                                } else {
+
+                                }
+                              }
                             ),
                           ),
-                          SizedBox(width: search.text.isNotEmpty ? 10 : 0,),
-                          search.text.isNotEmpty ? Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,) : Container(),
                         ],
                       ),
                     ),
@@ -127,6 +169,8 @@ class _UserMangementPageState extends State<UserMangementPage> {
               onToggleCallback: (value) {
                 setState(() {
                   toggleValue = value;
+                  search.clear();
+                  filteredItems = allItems;
                 });
               },
             ),
@@ -141,59 +185,16 @@ class _UserMangementPageState extends State<UserMangementPage> {
                       separatorBuilder: (context, pos) => const Divider(
                         color: Color(0xFFEFF0F6),
                       ),
-                      itemCount: 15,
+                      itemCount: filteredItems.length,
                       padding: const EdgeInsets.only(top: 10, bottom: 45),
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            if(toggleValue == 0) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewUserPage()));
-                            } else {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => ViewCompanyPage()));
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-                            child: Row(
-                              children: [
-                                const SizedBox(width: 5,),
-                                SvgPicture.asset(toggleValue == 0 ? 'assets/user_management/manageUser.svg' : 'assets/user_management/company.svg'),
-                                const SizedBox(width: 10,),
-                                CustomText(title: toggleValue == 0 ? 'Users ${++index}' : 'Company ${++index}' , color: Color(0xff191919), fontWeight: FontWeight.w500, fontSize: 12),
-                              ],
-                            ),
-                          ),
-                        );
+                        return userCompanyListTileWidget(context, toggleValue == 0 ? filteredItems[index] : 'Company ${++index}', toggleValue);
                       }
                   ),
                   Positioned(
                     right: 10,
                     bottom: 120,
-                    child: GestureDetector(
-                      onTap: () {
-                        if(toggleValue == 0) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AddUserPage(isEdit: false)));
-                        } else {
-                           Navigator.push(context, MaterialPageRoute(builder: (context) => AddCompanyPage(isEdit: false,)));
-                        }
-                      },
-                      child: Card(
-                        color: Colors.transparent,
-                        shadowColor: AppColors.secondary.withOpacity(0.4),
-                        surfaceTintColor: AppColors.secondary.withOpacity(0.4),
-                        elevation: 14.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Container(
-                          height: 42,
-                          decoration: CustomDecorations().baseBackgroundDecoration(50.0, 0.0, AppColors.secondary, AppColors.secondary.withOpacity(0.4)),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(horizontal: 17.5),
-                          child: CustomText(title: '${toggleValue == 0 ? 'Add user' : 'Add company'}  +', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-                        ),
-                      ),
-                    ),
+                    child: userCompanyAddButtonWidget(context, toggleValue),
                   )
                 ],
               ),

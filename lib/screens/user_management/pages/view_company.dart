@@ -2,8 +2,11 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/add_company.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/add_user.dart';
+import 'package:drivado_b2b_app/screens/user_management/pages/user_mangement.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_booking_summary_row.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/user_company_list_tile_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/view_company_side_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +23,23 @@ class ViewCompanyPage extends StatefulWidget {
 
 class _ViewCompanyPageState extends State<ViewCompanyPage> {
   bool status = true;
-
   int isSelect = 0;
+  List<String> filteredItems = [];
+  TextEditingController search = TextEditingController();
 
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    filteredItems = allItems;
+  }
+
+  void _filterList(String query) {
+    setState(() {
+      filteredItems = allItems
+          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -286,7 +299,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                           ],
                         )
                       )
-                          : Column(
+                      : Column(
                         children: [
                           Row(
                             children: [
@@ -333,93 +346,68 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                             width: screenWidth ,
                             decoration: CustomDecorations().draggableSheetDecoration(10.0, 0.0, 10.0, 0.0, 1.0,  Colors.white, Color(0xFFEDF1F3)),
                             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                prefixIconConstraints: const BoxConstraints().loosen(),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0, bottom: 2),
-                                  child: SvgPicture.asset('assets/user_management/search.svg', height: 18,
-                                      colorFilter: const ColorFilter.mode(
-                                          Color(0xFFC0C0C0), BlendMode.srcIn)
+                            child: Row(
+                              children: [
+                                search.text.isEmpty ? SvgPicture.asset('assets/user_management/search.svg', height: 18,
+                                    colorFilter: const ColorFilter.mode(
+                                        Color(0xFF606060), BlendMode.srcIn)
+                                ) : Container(),
+                                SizedBox(width: search.text.isEmpty ? 10 : 0,),
+                                Expanded(
+                                  child: TextField(
+                                      controller: search,
+                                      textAlignVertical: TextAlignVertical.center,
+                                      style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 16, color: Color(0xFF0D0D0D)),
+                                      decoration: InputDecoration(
+                                          isDense: true,
+                                          border: InputBorder.none,
+                                          hintStyle: GoogleFonts.plusJakartaSans(
+                                              color: Color(0xFF606060),
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                          hintText: 'Search',
+                                          suffixIconConstraints: const BoxConstraints(),
+                                          suffixIcon: search.text.isNotEmpty ? GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              onTap: () {
+                                                setState(() {
+                                                  search.clear();
+                                                });
+                                              },
+                                              child: Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,)) : null
+                                      ),
+                                      onChanged: (value) {
+                                        if(isSelect == 1) {
+                                          _filterList(value);
+                                        } else {
+
+                                        }
+                                      }
                                   ),
                                 ),
-                                isDense: true,
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.plusJakartaSans(
-                                    color: Color(0xFFC0C0C0),
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16),
-                                hintText: 'Search',
-                              ),
+                              ],
                             ),
                           ),
                           SizedBox(height: 15,),
                           Expanded(
                             child: Stack(
                               children: [
-                                Container(
-                                  decoration: CustomDecorations()
-                                      .baseBackgroundDecoration(
-                                      10.0, 1.0,  Color(0xffffffff),
-                                      Colors.transparent),
-                                  child: ListView.separated(
-                                      separatorBuilder: (context, pos) => const Divider(
-                                        color: Color(0xFFEFF0F6),
-                                      ),
-                                      itemCount: 15,
-                                      padding: const EdgeInsets.only(top: 8),
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: () {
-                                            if(isSelect == 1) {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddUserPage(isEdit: false)));
-                                            } else {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) => AddCompanyPage(isEdit: false)));
-                                            }
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
-                                            child: Row(
-                                              children: [
-                                                const SizedBox(width: 5,),
-                                                SvgPicture.asset(isSelect == 1 ? 'assets/user_management/manageUser.svg' : 'assets/user_management/company.svg'),
-                                                const SizedBox(width: 10,),
-                                                CustomText(title: isSelect == 1 ? 'Users ${++index}' : 'Company ${++index}' , color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w500, fontSize: 12),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                  ),
+                                ListView.separated(
+                                    separatorBuilder: (context, pos) => const Divider(
+                                      color: Color(0xFFEFF0F6),
+                                    ),
+                                    itemCount: filteredItems.length,
+                                    padding: const EdgeInsets.only(top: 0),
+                                    itemBuilder: (context, index) {
+                                      return userCompanyListTileWidget(context,
+                                          isSelect == 1 ? filteredItems[index] : 'Company ${++index}',
+                                          isSelect);
+                                    }
                                 ),
                                 Positioned(
                                   right: 10,
                                   bottom: 65,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      if(isSelect == 1) {
-                                        // context.push('/addUser');
-                                      } else {
-
-                                      }
-                                    },
-                                    child: Card(
-                                      color: Colors.transparent,
-                                      shadowColor: AppColors.secondary.withOpacity(0.4),
-                                      surfaceTintColor: AppColors.secondary.withOpacity(0.4),
-                                      elevation: 14.0,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(50)),
-                                      child: Container(
-                                        height: 42,
-                                        decoration: CustomDecorations().baseBackgroundDecoration(50.0, 0.0, AppColors.secondary, AppColors.secondary.withOpacity(0.4)),
-                                        alignment: Alignment.center,
-                                        padding: const EdgeInsets.symmetric(horizontal: 17.5),
-                                        child: CustomText(title: '${isSelect == 1 ? 'Add user' : 'Add company'}  +', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-                                      ),
-                                    ),
-                                  ),
+                                  child: userCompanyAddButtonWidget(context, isSelect)
                                 )
                               ],
                             ),

@@ -21,7 +21,7 @@ class _RootShellState extends State<RootShell> {
     HomePage(),
     BookingListPage(),
     UserMangementPage(),
-    More(),
+    MorePage(),
   ];
 
   @override
