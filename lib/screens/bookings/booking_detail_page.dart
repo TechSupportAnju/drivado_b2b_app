@@ -1,6 +1,7 @@
-import 'package:dotted_line/dotted_line.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_id.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/custom_booking_box.dart';
+
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/flight_detail_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
@@ -25,7 +26,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
     int totalSourLength = _calculateNumberOfLines(
       source,
       GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 10),
-      screenWidth * 0.7, // Subtract padding
+      screenWidth * 0.7, 
     );
     int totalDestLength = _calculateNumberOfLines(
       source,
@@ -33,37 +34,55 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
      screenWidth * 0.7, 
     );
     double totalLength = double.parse('$totalSourLength') + double.parse('$totalDestLength');
-    print(totalLength);
     return Scaffold(
       body: Column(
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Color(0XFF190C0C),
               ),
-              alignment: Alignment.topLeft,
               child: SafeArea(
                 child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20, bottom: 15),
+                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 15),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: SvgPicture.asset('assets/back.svg')),
-                          const Spacer(),
-                          const CustomText(title: 'Booking Summary', color: Color(0XF), fontWeight: FontWeight.w500, fontSize: 20),
-                          const Spacer(),
-                          InkWell(
-                            onTap: () {
-                              //_scaffoldKey.currentState!.openEndDrawer();
-                            },
-                          child: SvgPicture.asset('assets/menuBookingSummary.svg')),
-                        ]
-                    )
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        // child: Container(
+                        //   height: 40,
+                        //   width: 40,
+                        //   decoration: BoxDecoration(
+                        //     color: const Color(0xFF352828),
+                        //     borderRadius: BorderRadius.circular(40),
+                        //   ),
+                        //   alignment: Alignment.center,
+                          
+                        // )
+                        child: SvgPicture.asset("assets/booking_detail/back_icon.svg")
+                      ),
+                      const Spacer(),
+                      const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          //_scaffoldKey.currentState!.openEndDrawer();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF352828),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          alignment: Alignment.center,
+                          child: SvgPicture.asset("assets/booking_detail/dot_icon.svg")
+                        )
+                      ),
+                    ]
+                  )
                 ),
               ),
             ),
@@ -74,72 +93,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                   child: Column(
                     children: [
                       const SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFE6E8E7)),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: const CustomText(title: 'Booking ID', color: Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 12, height: 1.7)),
-                                        ],
-                                      ),
-                                       const SizedBox(height: 5,),
-                                       Row(
-                                        children: [
-                                          SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.4,
-                                              child: const CustomText(title: 'D024-15784', color: Color(0XFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 18, height: 1,)),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  GestureDetector(
-                                    onTap: () {
-                                      //context.push('/document');
-                                       //Navigator.push(context, MaterialPageRoute(builder: (context) => const DocumentPage()));
-                                    },
-                                    child: Container(
-                                      // width: MediaQuery.of(context).size.width * 0.3,
-                                      padding: const EdgeInsets.symmetric(horizontal: 15.5),
-                                      height: 40,
-                                      alignment: Alignment.center,
-                                      decoration: CustomDecorations().baseBackgroundDecoration(8.0, 1.0, Colors.white, Color(0XFF606060)),
-                                      child: Row(
-                                        children: [
-                                          SvgPicture.asset('assets/booking_detail/document_icon.svg'),
-                                          const SizedBox(width: 3),
-                                          const CustomText(title: 'Documents', color: Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 14),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12,),
-                              const Row(
-                                children: [
-                                  CustomText(title: 'Status: ', color:  Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 14, height: 1.7),
-                                  CustomText(title: 'CONFIRMED', color: Color(0XFF28A745), fontWeight: FontWeight.w600, fontSize: 14, height: 1.7),
-                                  Spacer(),
-                                  CustomText(title: 'Payment: ', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 14, height: 1.7),
-                                  CustomText(title: 'UNPAID', color: Color(0XFF606060), fontWeight: FontWeight.w600, fontSize: 14, height: 1.7),
-                                ],
-                              )
-
-                            ],
-                          ),
-                        ),
-                      ),
+                      BookingIdWidget(),
                       const SizedBox(height: 10,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -153,19 +107,18 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                 child: Row(
                                   children: [
                                     Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           children: [
                                             SizedBox(
-                                                width: MediaQuery.of(context).size.width * 0.31,
-                                                child: CustomText(title: 'Thu,', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1,)),
+                                              child: CustomText(title: 'Thu,', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1,)),
                                           ],
                                         ),
                                         const SizedBox(height: 8,),
                                         Row(
                                           children: [
                                             SizedBox(
-                                                width: MediaQuery.of(context).size.width * 0.31,
                                                 child: CustomText(title: 'Jan 18, 2024', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1)),
                                           ],
                                         ),
@@ -173,11 +126,11 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.31,
                                               child:  CustomText(title: '13:25', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 36, height: 1)),
+                                              
                                           ],
                                         ),
-                                        //isFlightTap ? const SizedBox(height: 25,) : Container()
+                                        
                                       ],
                                     ),
                                     const Spacer(),
@@ -221,40 +174,43 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                     ),
                                   ),
                                   const SizedBox(width: 8,),
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.69,
-                                        child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10)),
-                                      const SizedBox(height: 17,),
-                                      SizedBox(
-                                        child: Row(
-                                          children: [
-                                            BookingTypeWidget(bookingType: "Oneway"),
-                                            const SizedBox(width: 5,),
-                                            BookingDurationWidget(bookingDuration: "37 km | 2 hr 53 min", textColor: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12, height: 1),
-                                            const SizedBox(width: 5,),
-                                            Container(
-                                              height: 22,
-                                              decoration: CustomDecorations().baseBackgroundDecoration(20.0, 0.0,Colors.grey, Colors.transparent, ),
-                                              padding: const EdgeInsets.only(left: 8, right: 8, top: 0.8),
-                                              alignment: Alignment.center,
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset('assets/navigate.svg',),
-                                                  const SizedBox(width: 1,),
-                                                  const CustomText(title: 'Navigate', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 10),
-                                                ],
+                                  Expanded( 
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.69,
+                                          child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10)),
+                                        const SizedBox(height: 17,),
+                                        SizedBox(
+                                          child: Row(
+                                            children: [
+                                              BookingTypeWidget(bookingType: "Oneway"),
+                                              const SizedBox(width: 5,),
+                                              BookingDurationWidget(bookingDuration: "37 km | 2 hr 53 min", textColor: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12, height: 1),
+                                              const SizedBox(width: 5,),
+                                              Container(
+                                                height: 22,
+                                                decoration: CustomDecorations().baseBackgroundDecoration(20.0, 0.0,Colors.grey, Colors.transparent, ),
+                                                padding: const EdgeInsets.only(left: 8, right: 8, top: 0.8),
+                                                alignment: Alignment.center,
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset('assets/booking_detail/navigate_icon.svg',),
+                                                    const SizedBox(width: 1,),
+                                                    const CustomText(title: 'Navigate', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 10),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 17,),
-                                      SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.69,
-                                      child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10, letterSpacing: 1))
-                                    ],
+                                        const SizedBox(height: 17,),
+                                        SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.69,
+                                        child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10, letterSpacing: 1))
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -264,37 +220,37 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Pax Name:',
                                     desc: 'Sumit Modi',
-                                    image: 'assets/pax.svg',
+                                    image: 'assets/booking_detail/pax_icon.svg',
                                   ),
                                   SizedBox(height:12),
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Mob. number:',
                                     desc: '+919876543210',
-                                    image: 'assets/phoneBookingSumm.svg',
+                                    image: 'assets/booking_detail/contact_icon.svg',
                                   ),
                                   SizedBox(height:12),
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Email ID:',
                                     desc: 'tech@drivado.com',
-                                    image: 'assets/email.svg',
+                                    image: 'assets/booking_detail/email_icon.svg',
                                   ),
                                   SizedBox(height:12),
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Passenger count:',
-                                    desc: '3',
-                                    image: 'assets/passengerCount.svg',
+                                    desc: '03 Pax',
+                                    image: 'assets/booking_detail/pax_count_icon.svg',
                                   ),
                                   SizedBox(height:12),
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Chauffeur name: ',
                                     desc: 'Sumit Modi',
-                                    image: 'assets/pax.svg',
+                                    image: 'assets/booking_detail/pax_icon.svg',
                                   ),
                                   SizedBox(height:12),
                                   CustomBookingSummaryDataRowWithIcon(
                                     title: 'Chauffeur number:',
                                     desc: '+919876543210',
-                                    image: 'assets/phoneBookingSumm.svg',
+                                    image: 'assets/booking_detail/contact_icon.svg',
                                   ),
                                 ],
                               ),
@@ -308,38 +264,44 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Container(
                           padding: const EdgeInsets.only(left: 15.0, bottom: 11.3, right: 15, top: 10),
-                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.green, Colors.green),
+                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFE6E8E7)),
                           alignment: Alignment.center,
                           child: Theme(
                             data: ThemeData().copyWith(dividerColor: Colors.transparent),
                             child: ExpansionTile(
                               dense: true,
                               minTileHeight: 5,
-                              iconColor: Colors.green,
-                              collapsedIconColor: Colors.green,
+                              iconColor: Color(0XFF0D0D0D),
+                              collapsedIconColor: Color(0XFF0D0D0D),
                               tilePadding: EdgeInsets.zero,
                               childrenPadding: EdgeInsets.zero,
-                              title: const CustomText(title: 'Additional Details', color: Colors.green, fontWeight: FontWeight.w500, fontSize: 14),
+                              title: const CustomText(title: 'Additional Details', color: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 14, height: 1),
                               children: <Widget>[
                                 SizedBox(height:12),
                                 CustomBookingSummaryDataRowWithIcon(
+                                  title: 'Booked by:',
+                                  desc: 'camila.lopez@servantrip.com',
+                                  image: 'assets/booking_detail/booked_by_icon.svg',
+                                ),
+                                SizedBox(height:12),
+                                CustomBookingSummaryDataRowWithIcon(
                                   title: 'Created date:',
-                                  desc: '01-01-2025',
-                                  image: 'assets/createdDate.svg',
+                                  desc: '01-08-2024',
+                                  image: 'assets/booking_detail/created_date_icon.svg',
                                 ),
                                 SizedBox(height:12),
                                 CustomBookingSummaryDataRowWithIcon(
                                   title: 'Ref. number:',
-                                  desc: '25689876543210',
-                                  image: 'assets/email.svg',
+                                  desc: '123456789456123789',
+                                  image: 'assets/booking_detail/email_icon.svg',
                                 ),
                                 SizedBox(height:12),
                                 CustomBookingSummaryDataRowWithIcon(
                                   title: 'Spl. request:',
                                   desc: 'I need one water bottle',
-                                  image: 'assets/spReq.svg',
+                                  image: 'assets/booking_detail/special_request_icon.svg',
                                 ),
-                                // SizedBox(height:12),
+                                
                               ],
                             ),
                           ),
@@ -350,7 +312,9 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                   ),
                 ),
               ),
+              
             ),
+            
           ],
         )
     );

@@ -24,7 +24,7 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
             });
           },
           child: isFlightTap? 
-          Container(
+          SizedBox(
             child: Row(
               children: [
                 Column(
@@ -37,10 +37,12 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                             title: 'ETA',
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
-                            color: Colors.grey,
+                            color: Color(0XFF606060),
+                            height: 1,
+                            letterSpacing: 1,
                           ),
                           const Spacer(),
-                          SvgPicture.asset('assets/arrival.svg', height: 15),
+                          SvgPicture.asset('assets/booking_detail/arrival_icon.svg', height: 15),
                         ],
                       ),
                     ),
@@ -51,8 +53,10 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                           CustomText(
                             title: '10-05-2024 9:15 AM',
                             fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0XFF606060),
+                            height: 1,
+                            letterSpacing: 1,
                           ),
                         ],
                       ),
@@ -63,18 +67,19 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                         CustomText(
                           title: 'On Time',
                           fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0XFF16A329),
+                          height: 1,
                         ),
                       ],
                     ),
                     const SizedBox(height: 3),
                     Container(
-                      height: 2,
+                      height: 3,
                       width: MediaQuery.of(context).size.width * 0.38,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey,
+                        color: Color(0XFF16A329),
                       ),
                     ),
                     const SizedBox(height: 3),
@@ -82,9 +87,10 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                       children: [
                         CustomText(
                           title:  'Terminal No. 04',
-                          fontSize: MediaQuery.of(context).size.height * 0.013,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0XFF606060),
+                          height: 1,
                         ),
                       ],
                     ),
@@ -97,7 +103,9 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                             title: 'STA',
                             fontSize: 10,
                             fontWeight: FontWeight.w400,
-                            color: Colors.grey,
+                            color: Color(0XFF606060),
+                            height: 1,
+                            letterSpacing: 1,
                           ),
                         ],
                       ),
@@ -108,12 +116,14 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                         children: [
                           CustomText(
                             title: '10-05-2024 9:15 AM',
-                            fontSize: MediaQuery.of(context).size.height * 0.013,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.grey,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0XFF606060),
+                            height: 1,
+                            letterSpacing: 1,
                           ),
                           const Spacer(),
-                          SvgPicture.asset('assets/departure.svg', height: 15),
+                          SvgPicture.asset('assets/booking_detail/departure_icon.svg', height: 15),
                         ],
                       ),
                     ),
@@ -125,8 +135,9 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                     CustomText(
                       title: 'DOH',
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0XFF606060),
+                      height: 1,
                     ),
                     DottedLine(
                       direction: Axis.vertical,
@@ -142,8 +153,9 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
                     CustomText(
                       title: 'IND',
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0XFF606060),
+                      height: 1,
                     ),
                   ],
                 ),
@@ -151,16 +163,15 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
             ),
           )
           : Container(
-            // width: MediaQuery.of(context).size.width * 0.3,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             height: 38,
             alignment: Alignment.center,
-            decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Colors.grey),
+            decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFFB4156)),
             child: Row(
               children: [
-                SvgPicture.asset('assets/flight.svg'),
+                SvgPicture.asset('assets/booking_detail/flight_icon.svg'),
                 const SizedBox(width: 4,),
-                const CustomText(title: 'Flight Status', color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 12),
+                const CustomText(title: 'Flight Status', color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 12, height: 2.2),
               ],
             ),
           ),
