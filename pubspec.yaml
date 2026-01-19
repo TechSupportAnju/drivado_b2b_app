@@ -42,7 +42,6 @@ dependencies:
   pinput: ^5.0.2
   animated_bottom_navigation_bar: ^1.4.0
   cached_network_svg_image: ^1.2.0
-  animated_bottom_navigation_bar: ^1.4.0
   dotted_line: ^3.2.3
   flutter_dash: ^1.0.0
 
