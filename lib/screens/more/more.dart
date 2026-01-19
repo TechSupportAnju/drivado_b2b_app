@@ -1,6 +1,7 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/more/account_settings_page.dart';
+import 'package:drivado_b2b_app/screens/more/profile.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/faq.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/privacy_policy.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/terms_and_condition.dart';
@@ -81,7 +82,7 @@ class _MorePageState extends State<MorePage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
                     },
                     child: Container(
                       padding: EdgeInsets.all(16),

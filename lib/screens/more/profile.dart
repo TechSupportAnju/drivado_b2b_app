@@ -1,188 +1,137 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:google_fonts/google_fonts.dart';
-//
-// import 'widgets/account_widget.dart';
-//
-// class MorePage extends StatefulWidget {
-//   const MorePage({super.key});
-//
-//   @override
-//   State<MorePage> createState() => _MorePageState();
-// }
-//
-// class _MorePageState extends State<MorePage> {
-//
-//   var isLoad = true;
-//   String? name;
-//   String? email;
-//
-//   @override
-//   void initState() {
-//     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-//     super.initState();
-//   }
-//
-//   @override
-//   void dispose() {
-//     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-//     super.dispose();
-//   }
-//
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final Size screenSize = MediaQuery.of(context).size;
-//     final double screenHeight = screenSize.height;
-//     final double screenWidth = screenSize.width;
-//
-//     return  Container(
-//       color: AppColors.adminUserMangBgColor,
-//       width: screenWidth,
-//       height: screenHeight,
-//       child: Column(
-//         children: [
-//           Container(
-//             width: MediaQuery.of(context).size.width,
-//             decoration: const BoxDecoration(
-//               color: Colors.white,
-//             ),
-//             alignment: Alignment.topLeft,
-//             child: SafeArea(
-//               child: Padding(
-//                   padding: const EdgeInsets.only(
-//                       left: 20.0, right: 20, top: 40, bottom: 13),
-//                   child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: [
-//                         CustomText(title: 'Profile',
-//                             color: AppColors.manageBookingAdminbookedbyTitleTextColor,
-//                             fontWeight: FontWeight.w600,
-//                             fontSize: screenWidth >= 650 ? 28 : 24),
-//                       ]
-//                   )
-//               ),
-//             ),
-//           ),
-//           const SizedBox(height: 20),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 GestureDetector(
-//                   onTap: () {
-//                     Navigator.push(context, MaterialPageRoute(builder: (context) => AccountPage()));
-//                     context.read<ProfileBloc>().add(
-//                         ProfileDetails()
-//                     );
-//                   },
-//                   child: Container(
-//                     padding: EdgeInsets.all(16),
-//                     decoration: CustomDecorations().baseBackgroundDecoration(16.0, 1.0, Colors.white, Colors.white),
-//                     child: Row(
-//                       children: [
-//                         Container(
-//                           width: screenWidth >= 650 ? 68 : 48,
-//                           height: screenWidth >= 650 ? 68 : 48,
-//                           decoration: BoxDecoration(
-//                             // image: DecorationImage(
-//                             //   image: SvgPicture.asset("assets/profile/profile_circle_icon.svg"),
-//                             // ),
-//                             borderRadius: BorderRadius.circular(100),
-//                             border: Border.all(
-//                                 color: Colors.white, width: 1.5),
-//                           ),
-//                           //padding: const EdgeInsets.all(0),
-//                           alignment: Alignment.center,
-//                           child: SvgPicture.asset("assets/profile/profile_circle_icon.svg"),
-//                         ),
-//                         const SizedBox(width: 16),
-//                         isLoad
-//                             ? Column(
-//                           children: [
-//                             CustomSingleLineShimmer(),
-//                             const SizedBox(height: 3),
-//                             CustomSingleLineShimmer(),
-//                           ],
-//                         )
-//                             : Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             AccountInfoWidget(
-//                                 text: name ?? 'Not Found',
-//                                 style: GoogleFonts.plusJakartaSans(
-//                                   fontWeight: FontWeight.w600,
-//                                   color: AppColors.manageBookingAdminbookedbyTitleTextColor,
-//                                   fontSize: screenWidth >= 650 ? 22 : 16,
-//                                 )),
-//                             const SizedBox(height: 3),
-//                             AccountInfoWidget(
-//                               text: '$email',
-//                               style: GoogleFonts.plusJakartaSans(
-//                                   fontWeight: FontWeight.w400,
-//                                   color: AppColors.manageBookingbokkedByTextColor,
-//                                   fontSize: screenWidth >= 650 ? 22 : 12),
-//                             ),
-//                           ],
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(height: 12),
-//                 Container(
-//                   padding: EdgeInsets.all(12),
-//                   decoration: CustomDecorations().baseBackgroundDecoration(16.0, 1.0, Colors.white, Colors.white),
-//                   child: Column(
-//                     children: [
-//                       AccountPageHeader(
-//                         text: 'Account Setting',
-//                         image: 'assets/profile/sett.svg',
-//                         route: AccountSettingPage(),
-//                       ),
-//                       SizedBox(height: 20,),
-//                       AccountPageHeader(
-//                         text: 'Terms & Conditions',
-//                         image: 'assets/profile/t&c.svg',
-//                         route: TermsAndConditionPage(),
-//                       ),
-//                       SizedBox(height: 20,),
-//                       const AccountPageHeader(
-//                         text: 'Privacy Policy',
-//                         image: 'assets/profile/privacy.svg',
-//                         route: PrivacyPolicyPage(),
-//                       ),
-//                       SizedBox(height: 20,),
-//                       AccountPageHeader(
-//                         text: 'FAQ\'S',
-//                         image: 'assets/profile/faq.svg',
-//                         route: FaqPage(),
-//                       ),
-//
-//                     ],
-//                   ),
-//                 ),
-//                 const SizedBox(height: 12),
-//                 Container(
-//                   padding: EdgeInsets.all(12),
-//                   decoration: CustomDecorations().baseBackgroundDecoration(16.0, 1.0, Colors.white, Colors.white),
-//                   child: Column(
-//                     children: [
-//                       const AccountPageHeader(
-//                         text: 'Logout',
-//                         image: 'assets/profile/logout.svg',
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-//
+import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/credit_limit_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../user_management/widget/custom_booking_summary_row.dart';
+import 'widgets/account_widget.dart';
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+
+  @override
+  void initState() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    super.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return  Scaffold(
+      body: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              color: Color(0xFF190C0C),
+            ),
+            alignment: Alignment.topLeft,
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20, top: 35, bottom: 16),
+                  child: Row(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: SvgPicture.asset('assets/user_management/back.svg')),
+                        Spacer(),
+                        CustomText(title: 'Profile',
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                        Spacer(),
+                        SizedBox(width: 40,)
+                      ]
+                  )
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(12.0),
+            decoration: CustomDecorationsCards().baseBackgroundShadow(radius: 12.0, smooth: 1.0, color: Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 132,
+                  decoration: CustomDecorationsCards().baseBackgroundShadow(radius: 12.0, smooth: 1.0, color: Color(0xFFF5F6FA)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      SvgPicture.asset('assets/more/profile.svg', height: 80, width: 80,),
+                      SizedBox(height: 8,),
+                      CustomText(title: 'Sumit Modi',
+                          color: Color(0xFF0D0D0D),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Column(
+                  children: [
+                    CustomBookingSummaryDataRowWithIcon(
+                      title: 'Email ID',
+                      desc: 'www.drivado.com',
+                      image: 'assets/more/profile/mail.svg',
+                    ),
+                    SizedBox(height:12),
+                    CustomBookingSummaryDataRowWithIcon(
+                      title: 'Mob. number',
+                      desc: '+91 9876543210',
+                      image: 'assets/more/profile/call.svg',
+                    ),
+                    SizedBox(height:12),
+                    CustomBookingSummaryDataRowWithIcon(
+                      title: 'Language',
+                      desc: 'UNDEFINED',
+                      image: 'assets/more/profile/lang.svg',
+                    ),
+                    SizedBox(height:12),
+                    CustomBookingSummaryDataRowWithIcon(
+                      title: 'Currency',
+                      desc: 'USD',
+                      image: 'assets/more/profile/currency.svg',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: CreditLimitWidget(title1: 'Total unpaid booking', title2: 'Available credit limit', value1: 'USD 462', value2: 'USD 462434'),
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+

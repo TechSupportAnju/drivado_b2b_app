@@ -1,5 +1,6 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/more/verify_identify_page.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -224,100 +225,100 @@ showDeleteDialog(context) {
                                                                     ),
                                                                   );
                                                                 }),
-                                                            SizedBox(height: 24,),
-                                                            Container(
-                                                              width: MediaQuery.of(context).size.width,
-                                                              decoration: CustomDecorationsCards().baseBackgroundShadow(
-                                                                  radius: 8.0,
-                                                                  smooth: 1.0,
-                                                                  color: const Color(0xFFFEFFF0),
-                                                                  width: 0.50,
-                                                                  borderColor: const Color(0xFFFFA800)
-                                                                //boxShadowColor:  Color(0x19000000),
-                                                                // blurRadius: 0.0,
-                                                                // x: 0, y: 0
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(10.0),
-                                                                child: Row(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  spacing: 10,
-                                                                  children: [
-                                                                    Column(
-                                                                      mainAxisSize: MainAxisSize.min,
-                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        Row(
-                                                                          children: [
-                                                                            SvgPicture.asset("assets/more/alertYellow.svg"),
-                                                                            SizedBox(width: 6,),
-                                                                            CustomText(
-                                                                              title: 'Last chance to change your mind',
-                                                                              color: const Color(0xFFFFA800),
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w500,
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        SizedBox(height: 8,),
-                                                                        Row(
-                                                                          children: [
-                                                                            CustomText(title: "Once you click 'Delete Account', all your data will be permanently\nremoved and cannot be recovered.",
-                                                                                height: 1.4,
-                                                                                color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 12,),
-                                                            Container(
-                                                              width: MediaQuery.of(context).size.width,
-                                                              decoration: CustomDecorationsCards().baseBackgroundShadow(
-                                                                  radius: 8.0,
-                                                                  smooth: 1.0,
-                                                                  color: Color(0xffFFF0F1),
-                                                                  width: 0.50,
-                                                                  borderColor: Color(0xFFDC3545).withOpacity(0.5)
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets.all(10.0),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        CustomText(
-                                                                          title: 'What will be deleted:',
-                                                                          color: const Color(0xFF4F0214),
-                                                                          fontSize: 12,
-                                                                          fontWeight: FontWeight.w600,
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(height: 8,),
-                                                                    Row(
-                                                                      children: [
-                                                                        CustomText(title: "•  Will permanently delete all your data",
-                                                                            height: 1.2,
-                                                                            color: const Color(0xFF4F0214), fontWeight: FontWeight.w400, fontSize: 10),
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(height: 4,),
-                                                                    Row(
-                                                                      children: [
-                                                                        CustomText(title: "•  Remove access to your account",
-                                                                            height: 1.2,
-                                                                            color: const Color(0xFF4F0214), fontWeight: FontWeight.w400, fontSize: 10),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
+                                                            // SizedBox(height: 24,),
+                                                            // Container(
+                                                            //   width: MediaQuery.of(context).size.width,
+                                                            //   decoration: CustomDecorationsCards().baseBackgroundShadow(
+                                                            //       radius: 8.0,
+                                                            //       smooth: 1.0,
+                                                            //       color: const Color(0xFFFEFFF0),
+                                                            //       width: 0.50,
+                                                            //       borderColor: const Color(0xFFFFA800)
+                                                            //     //boxShadowColor:  Color(0x19000000),
+                                                            //     // blurRadius: 0.0,
+                                                            //     // x: 0, y: 0
+                                                            //   ),
+                                                            //   child: Padding(
+                                                            //     padding: const EdgeInsets.all(10.0),
+                                                            //     child: Row(
+                                                            //       mainAxisSize: MainAxisSize.min,
+                                                            //       spacing: 10,
+                                                            //       children: [
+                                                            //         Column(
+                                                            //           mainAxisSize: MainAxisSize.min,
+                                                            //           mainAxisAlignment: MainAxisAlignment.center,
+                                                            //           crossAxisAlignment: CrossAxisAlignment.start,
+                                                            //           children: [
+                                                            //             Row(
+                                                            //               children: [
+                                                            //                 SvgPicture.asset("assets/more/alertYellow.svg"),
+                                                            //                 SizedBox(width: 6,),
+                                                            //                 CustomText(
+                                                            //                   title: 'Last chance to change your mind',
+                                                            //                   color: const Color(0xFFFFA800),
+                                                            //                   fontSize: 12,
+                                                            //                   fontWeight: FontWeight.w500,
+                                                            //                 ),
+                                                            //               ],
+                                                            //             ),
+                                                            //             SizedBox(height: 8,),
+                                                            //             Row(
+                                                            //               children: [
+                                                            //                 CustomText(title: "Once you click 'Delete Account', all your data will be permanently\nremoved and cannot be recovered.",
+                                                            //                     height: 1.4,
+                                                            //                     color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
+                                                            //               ],
+                                                            //             ),
+                                                            //           ],
+                                                            //         ),
+                                                            //       ],
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
+                                                            // SizedBox(height: 12,),
+                                                            // Container(
+                                                            //   width: MediaQuery.of(context).size.width,
+                                                            //   decoration: CustomDecorationsCards().baseBackgroundShadow(
+                                                            //       radius: 8.0,
+                                                            //       smooth: 1.0,
+                                                            //       color: Color(0xffFFF0F1),
+                                                            //       width: 0.50,
+                                                            //       borderColor: Color(0xFFDC3545).withOpacity(0.5)
+                                                            //   ),
+                                                            //   child: Padding(
+                                                            //     padding: const EdgeInsets.all(10.0),
+                                                            //     child: Column(
+                                                            //       children: [
+                                                            //         Row(
+                                                            //           children: [
+                                                            //             CustomText(
+                                                            //               title: 'What will be deleted:',
+                                                            //               color: const Color(0xFF4F0214),
+                                                            //               fontSize: 12,
+                                                            //               fontWeight: FontWeight.w600,
+                                                            //             ),
+                                                            //           ],
+                                                            //         ),
+                                                            //         SizedBox(height: 8,),
+                                                            //         Row(
+                                                            //           children: [
+                                                            //             CustomText(title: "•  Will permanently delete all your data",
+                                                            //                 height: 1.2,
+                                                            //                 color: const Color(0xFF4F0214), fontWeight: FontWeight.w400, fontSize: 10),
+                                                            //           ],
+                                                            //         ),
+                                                            //         SizedBox(height: 4,),
+                                                            //         Row(
+                                                            //           children: [
+                                                            //             CustomText(title: "•  Remove access to your account",
+                                                            //                 height: 1.2,
+                                                            //                 color: const Color(0xFF4F0214), fontWeight: FontWeight.w400, fontSize: 10),
+                                                            //           ],
+                                                            //         ),
+                                                            //       ],
+                                                            //     ),
+                                                            //   ),
+                                                            // ),
                                                             SizedBox(height: 24,),
                                                             Row(
                                                               children: [
@@ -339,7 +340,7 @@ showDeleteDialog(context) {
                                                                   flex: 1,
                                                                   child:   GestureDetector(
                                                                     onTap: () {
-
+                                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyIdentifyPage()));
                                                                     },
                                                                     child: Container(
                                                                       height: 44,

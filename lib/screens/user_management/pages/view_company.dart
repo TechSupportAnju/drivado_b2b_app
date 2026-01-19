@@ -3,6 +3,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/add_company.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/add_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/user_mangement.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/credit_limit_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_booking_summary_row.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
@@ -246,55 +247,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                               ),
                             ),
                             SizedBox(height: 15,),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 10),
-                              decoration: CustomDecorations()
-                                  .draggableSheetDecoration(
-                                  12.0,0.0, 12.0, 0.0, 1.0,  Color(0xffffffff),
-                                  Color(0xFFE6E8E7)),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                          title: 'Credit Limit',
-                                          color: Color(0xFF606060),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16),
-                                    ],
-                                  ),
-                                  SizedBox(height: 15,),
-                                  Row(
-                                    children: [
-                                      CustomText(title: 'Total unpaid booking',
-                                          color: Color(0xFF606060),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12),
-                                      Spacer(),
-                                      CustomText(title: 'USD 462',
-                                          color: AppColors.secondary,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10,),
-                                  Row(
-                                    children: [
-                                      CustomText(title: 'Available credit limit',
-                                          color: Color(0xFF606060),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12),
-                                      Spacer(),
-                                      CustomText(title: 'USD 462434',
-                                          color: Color(0xFF0D0D0D),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            CreditLimitWidget(title1: 'Total unpaid booking', title2: 'Available credit limit', value1: 'USD 462', value2: 'USD 462434'),
                             SizedBox(height: 10,),
                           ],
                         )
@@ -392,17 +345,20 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                           Expanded(
                             child: Stack(
                               children: [
-                                ListView.separated(
-                                    separatorBuilder: (context, pos) => const Divider(
-                                      color: Color(0xFFEFF0F6),
-                                    ),
-                                    itemCount: filteredItems.length,
-                                    padding: const EdgeInsets.only(top: 0),
-                                    itemBuilder: (context, index) {
-                                      return userCompanyListTileWidget(context,
-                                          isSelect == 1 ? filteredItems[index] : 'Company ${++index}',
-                                          isSelect);
-                                    }
+                                Container(
+                                  decoration: CustomDecorations().draggableSheetDecoration(10.0, 0.0, 10.0, 0.0, 1.0,  Colors.white, Color(0xFFEDF1F3)),
+                                  child: ListView.separated(
+                                      separatorBuilder: (context, pos) => const Divider(
+                                        color: Color(0xFFEFF0F6),
+                                      ),
+                                      itemCount: filteredItems.length,
+                                      padding: const EdgeInsets.only(top: 0),
+                                      itemBuilder: (context, index) {
+                                        return userCompanyListTileWidget(context,
+                                            isSelect == 1 ? filteredItems[index] : 'Company ${++index}',
+                                            isSelect);
+                                      }
+                                  ),
                                 ),
                                 Positioned(
                                   right: 10,

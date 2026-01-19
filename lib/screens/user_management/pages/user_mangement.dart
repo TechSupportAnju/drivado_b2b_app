@@ -1,5 +1,6 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/view_company.dart';
 import 'package:drivado_b2b_app/screens/user_management/pages/view_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/animated_toggle.dart';
@@ -23,7 +24,7 @@ class UserMangementPage extends StatefulWidget {
 List<String> allItems = ['Sayan', 'Sumit', 'Anju', 'Shakshi', 'Hrusikesh', 'Tapas Daa', 'Abhishek' 'Rahul', 'Debodatta', 'Nilanjan', 'Devansh', 'Tripty', 'Debjyoti'];
 
 class _UserMangementPageState extends State<UserMangementPage> {
-  int toggleValue = 0;
+  int toggleValue = 1;
   TextEditingController search = TextEditingController();
   List<String> filteredItems = [];
 
@@ -87,24 +88,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                           ],
                         ),
                         const Spacer(),
-                        Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: Color(0XFF352828),
-                              borderRadius: BorderRadius.circular(100)
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/home/notification_icon.svg',
-                                height: 20,
-                                width: 20,
-                              ),
-                            ],
-                          ),
-                        ),
+                        notificationWidget()
                       ],
                     ),
                     const SizedBox(height: 16,),
@@ -144,7 +128,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                                     child: Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,)) : null
                               ),
                               onChanged: (value) {
-                                if(toggleValue == 0) {
+                                if(toggleValue == 1) {
                                   _filterList(value);
                                 } else {
 
@@ -188,7 +172,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                       itemCount: filteredItems.length,
                       padding: const EdgeInsets.only(top: 10, bottom: 45),
                       itemBuilder: (context, index) {
-                        return userCompanyListTileWidget(context, toggleValue == 0 ? filteredItems[index] : 'Company ${++index}', toggleValue);
+                        return userCompanyListTileWidget(context, toggleValue == 1 ? filteredItems[index] : 'Company ${++index}', toggleValue);
                       }
                   ),
                   Positioned(

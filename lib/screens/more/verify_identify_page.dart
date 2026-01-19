@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:cached_network_svg_image/cached_network_svg_image.dart';
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pinput/pinput.dart';
 import 'widgets/account_widget.dart';
 
 class VerifyIdentifyPage extends StatefulWidget {
@@ -27,25 +30,83 @@ class _VerifyIdentifyPageState extends State<VerifyIdentifyPage> {
   bool isIncorrectPassword = false;
   bool observeText = true;
 
-  @override
-  void initState() {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    super.initState();
+  late Timer _timer;
+  int _start = 30;
+  bool isLoad = false;
+  String otpPin = '';
+
+  String timeToShow = '';
+
+  void startTimer() {
+    const oneSec = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+            int minutes = (_start/60).toInt();
+            int seconds = (_start%60);
+            timeToShow = "${minutes.toString().padLeft(2,"0")}:${seconds.toString().padLeft(2,"0")}";
+          });
+        }
+      },
+    );
   }
 
+  void resendOtp() {
+    setState(() {
+      _start = 30;
+      startTimer();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
 
   @override
   void dispose() {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     super.dispose();
+    _timer.cancel();
   }
-
 
   @override
   Widget build(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+        width: 53,
+        height: 64,
+        textStyle: GoogleFonts.plusJakartaSans(fontSize: 20, color: Color(0xFF606060), fontWeight: FontWeight.w700),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Color(0xffE6E8E7))
+        )
+    );
 
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: AppColors.secondary),
+      borderRadius: BorderRadius.circular(8),
+    );
+
+    final submittedPinTheme =  PinTheme(
+        width: 53,
+        height: 64,
+        textStyle: GoogleFonts.plusJakartaSans(fontSize: 20, color: Color(0xFF606060), fontWeight: FontWeight.w700),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: Color(0xffE6E8E7))
+        )
+    );
     return Scaffold(
-        backgroundColor: Color(0xFFF5F6FA),
+        backgroundColor: Color(0xFFFFFFFF),
         body: SingleChildScrollView(
          child: Column(
           children: [
@@ -68,101 +129,56 @@ class _VerifyIdentifyPageState extends State<VerifyIdentifyPage> {
                 ),
               ),
             ),
-           SizedBox(height: 36,),
+            SizedBox(height: 36,),
             Column(
               children: [
                 SvgPicture.asset('assets/more/alertForDel.svg'),
                 SizedBox(height: 16,),
-                CustomText(title: 'Final Verification', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
+                CustomText(title: 'Enter Verification Code', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 20),
                 SizedBox(height: 12,),
-                CustomText(title: 'Please enter your password to complete the account\ndeletion process',
+                CustomText(title: 'We\'ve sent a 4-digit code to',
                     textAlign: TextAlign.center,
                     color: Color(0xFF606060), fontWeight: FontWeight.w400, fontSize: 12),
+                SizedBox(height: 12,),
+                CustomText(title: 'techsupport3@drivado.com',
+                    textAlign: TextAlign.center,
+                    color: Color(0xFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12),
                 SizedBox(height: 40,),
+                CustomText(title: 'Enter 6-digit code',
+                    textAlign: TextAlign.center,
+                    color: Color(0xFF000000), fontWeight: FontWeight.w400, fontSize: 12),
+                SizedBox(height: 12,),
+                Pinput(
+                  length: 6,
+                  defaultPinTheme: defaultPinTheme,
+                  focusedPinTheme: focusedPinTheme,
+                  submittedPinTheme: submittedPinTheme,
+                  pinputAutovalidateMode: PinputAutovalidateMode.disabled,
+                  showCursor: true,
+                  onCompleted: (pin) {
+                    otpPin = pin;
+                    setState(() {
+
+                    });
+                  },
+                ),
+                SizedBox(height: 16,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(title: _start == 0 ? 'Didn’t receive a code? ' : 'Resend code in ',
+                        textAlign: TextAlign.center,
+                        color: Color(0xFF606060), fontWeight: FontWeight.w400, fontSize: 12),
+                    CustomText(title: _start == 0 ? 'Resend' : timeToShow,
+                        textAlign: TextAlign.center,
+                        color: AppColors.secondary, fontWeight: FontWeight.w500, fontSize: 12),
+                  ],
+                ),
+                SizedBox(height: 16,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      Container(
-                        height:52,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: SmoothRectangleBorder(
-                            side: BorderSide(color: Color(0xffE6E8E7)),
-                            borderRadius: SmoothBorderRadius(
-                              cornerRadius: 10,
-                              cornerSmoothing: 1,
-                            ),
-                          ),
-                        ),
-                        padding: const EdgeInsets.only(left: 14, top: 3.5),
-                        child: TextField(
-                          onTapOutside: (event) {
-                            if(password.text == '') {
-                              setState(() {
-                              });
-                            }
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                          textCapitalization: TextCapitalization.sentences,
-                          controller: password,
-                          cursorHeight: 15,
-                          obscureText: observeText,
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          style: GoogleFonts.plusJakartaSans(fontSize: 13,height: 1.0, color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w600),
-                          decoration: InputDecoration(
-                            suffixIconConstraints: const BoxConstraints().loosen(),
-                            suffixIcon: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                setState(() {
-                                  observeText = !observeText;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 12.0, top: 0, ),
-                                child: SvgPicture.asset(
-                                    observeText ? 'assets/auth/eyeHide.svg' : 'assets/auth/eye.svg'),
-                              ),
-                            ),
-                            border: InputBorder.none,
-                            // contentPadding: EdgeInsets.zero,
-                            label: Container(
-                              transform: Matrix4.translationValues(0.0, isTapPasswordName ? -5.0 : -2.0, 0.0),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'Password',
-                                    style:  GoogleFonts.plusJakartaSans(
-                                        color: AppColors.textFieldTextColor, fontSize: 14,fontWeight: FontWeight.w400),
-                                    children:  [
-                                      TextSpan(
-                                          text: ' *',
-                                          style: GoogleFonts.plusJakartaSans(
-                                            color: AppColors.secondary,
-                                          )
-                                      )
-                                    ]
-                                ),),
-                            ),
-                            // floatingLabelAlignment: FloatingLabelAlignment.start,
-                            isDense: true,
-                            hintText: 'Enter your password',
-                            // labelText: 'Password*',
-                            hintStyle: GoogleFonts.plusJakartaSans(fontSize: 13),
-                            // labelStyle: GoogleFonts.plusJakartaSans(fontSize: 14, color: AppColors.textFieldTextColor),
-                          ),
-                          onChanged: (val) {
-                            if(password.text != '') {
-                              isButtonActive = true;
-                            }else {
-                              isButtonActive = false;
-                            }
-                            setState(() {
-                            });
-                          },
-                        ),
-                      ),
                       SizedBox(height: 16,),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -172,9 +188,6 @@ class _VerifyIdentifyPageState extends State<VerifyIdentifyPage> {
                             color: const Color(0xFFFEFFF0),
                             width: 0.50,
                             borderColor: const Color(0xFFFFA800)
-                          //boxShadowColor:  Color(0x19000000),
-                          // blurRadius: 0.0,
-                          // x: 0, y: 0
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
