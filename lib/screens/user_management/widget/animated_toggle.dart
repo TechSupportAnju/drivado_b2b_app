@@ -26,9 +26,9 @@ class _AnimatedToggleStateM extends State<AnimatedToggleManagement> {
         GestureDetector(
           onTap: () {
             initialPosition = !initialPosition;
-            var index = 0;
+            var index = 1;
             if (!initialPosition) {
-              index = 1;
+              index = 2;
             }
             widget.onToggleCallback(index);
             setState(() {});

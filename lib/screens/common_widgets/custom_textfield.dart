@@ -21,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final bool astric;
   final bool isPassword;
   final bool error;
+  final bool isExpand;
   final bool? autofocus;
 
   const CustomTextField({
@@ -41,6 +42,7 @@ class CustomTextField extends StatelessWidget {
     required this.astric,
     required this.isPassword,
     this.error = false,
+    this.isExpand = false,
     this.autofocus
   });
 
@@ -87,7 +89,16 @@ class CustomTextField extends StatelessWidget {
                 suffixIcon: error
                     ? SvgPicture.asset('assets/auth/info-circle.svg')
                     : suffix
+                    ? isExpand
                     ? GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    onTapSuffix!();
+                  },
+                  child: SvgPicture.asset(
+                     'assets/create_booking/expand.svg'),
+                )
+                    : GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     onTapSuffix!();

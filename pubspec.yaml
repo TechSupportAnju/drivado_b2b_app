@@ -44,6 +44,12 @@ dependencies:
   cached_network_svg_image: ^1.2.0
   dotted_line: ^3.2.3
   flutter_dash: ^1.0.0
+  url_launcher: ^6.3.2
+  animated_flip_counter: ^0.3.4
+  intl:
+  geocoding: ^4.0.0
+  geolocator: ^14.0.2
+  google_places_flutter: ^2.1.1
   flutter_sliding_toast: ^1.5.2
   fw_tab_bar: ^0.0.3
 
@@ -78,6 +84,11 @@ flutter:
    - assets/user_management/
    - assets/booking/
    - assets/booking_detail/
+   - assets/more/
+   - assets/more/profile/
+   - assets/create_booking/
+   - assets/vehicle/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

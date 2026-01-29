@@ -25,6 +25,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 150,),
           Spacer(),
           SvgPicture.asset('assets/thankyou.svg'),
           SizedBox(height: 20,),

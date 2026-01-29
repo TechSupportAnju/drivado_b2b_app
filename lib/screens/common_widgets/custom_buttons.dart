@@ -1,8 +1,6 @@
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
-
-import 'custom_decoration.dart';
 import 'custom_text.dart';
 
 class CustomButtons extends StatelessWidget {

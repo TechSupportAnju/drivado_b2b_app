@@ -107,12 +107,24 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     icon: 'null',
                     height: 52,
                     width: MediaQuery.of(context).size.width,
-                    onChanged: () {},
-                    onTap: () {},
+                  onChanged: (val) {
+                    if(companyName.text != '') {
+                      isCompanyNameValidator = false;
+                    }else {
+                      isCompanyNameValidator = true;
+                    }
+                    setState(() {
+                    });
+                  },
+                  onTap: () {
+                    isTapCompanyName = true;
+                    setState(() {
+                    });
+                  },
                     suffix: false,
                     readOnly: false,
                     astric: true,
-                    isPassword: false),
+                    isPassword: false, error: isCompanyNameValidator,),
                 const SizedBox(
                   height: 12,
                 ),
@@ -123,12 +135,25 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     icon: 'null',
                     height: 52,
                     width: MediaQuery.of(context).size.width,
-                    onChanged: () {},
-                    onTap: () {},
+                  onChanged: (val) {
+                    isEmailValid = EmailValidator.validate(emailId.text);
+                    if(isEmailValid && emailId.text != '') {
+                      isEmailValidator = false;
+                    }else {
+                      isEmailValidator = true;
+                    }
+                    setState(() {
+                    });
+                  },
+                  onTap: () {
+                    isTapEmailName = true;
+                    setState(() {
+                    });
+                  },
                     suffix: false,
                     readOnly: false,
                     astric: true,
-                    isPassword: false),
+                    isPassword: false, error: isEmailValidator,),
                 const SizedBox(
                   height: 12,
                 ),
@@ -182,7 +207,17 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                 ),
                GestureDetector(
                   onTap: () {
+                    if(companyName.text == '') {
+                      setState(() {
+                        isCompanyNameValidator = true;
+                      });
+                    } else if(emailId.text == '') {
+                      setState(() {
+                        isEmailValidator = true;
+                      });
+                    } else {
                       showSucessDialog(context, companyName.text);
+                    }
                   },
                   child: Container(
                     height: 48,
