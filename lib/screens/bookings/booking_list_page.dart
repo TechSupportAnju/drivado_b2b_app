@@ -1,5 +1,6 @@
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_card_widget.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/search_bar_widget.dart';
+import 'package:drivado_b2b_app/screens/bookings/search_filter_page.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,12 @@ class _BookingListPageState extends State<BookingListPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SearchBarWidget(),
-                            FilterBooking()
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchFilterPage()));
+                              },
+                              child: FilterBooking()
+                            )
                           ],
                         ),
                         SizedBox(height: 16),
