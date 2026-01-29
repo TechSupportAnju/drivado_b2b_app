@@ -76,3 +76,34 @@ class CustomDecorationsCards {
     );
   }
 }
+
+class CustomCardDecorations {
+  ShapeDecoration baseBackgroundCardDecoration({
+    required double radius,
+    required double smooth,
+    required bool isSelected,
+    required Color selectedGradientStart,
+    required Color selectedGradientEnd,
+    required Color unselectedColor,
+    required Color borderColor,
+  }) {
+    return ShapeDecoration(
+      // Apply gradient if selected, otherwise use the unselected color
+      gradient: isSelected
+          ? LinearGradient(
+        colors: [selectedGradientStart, selectedGradientEnd],
+        begin: const Alignment(0.00, -1.1),
+        end: const Alignment(0, 1.5),
+      )
+          : null,
+      color: isSelected ? null : unselectedColor,
+      shape: SmoothRectangleBorder(
+        side: BorderSide(color: borderColor, width: 1.0),
+        borderRadius: SmoothBorderRadius(
+          cornerRadius: radius,
+          cornerSmoothing: smooth,
+        ),
+      ),
+    );
+  }
+}

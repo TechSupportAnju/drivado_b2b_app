@@ -1,4 +1,5 @@
 import 'package:drivado_b2b_app/screens/bookings/booking_list_page.dart';
+import 'package:drivado_b2b_app/screens/create_booking/create_booking_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_screens/home_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_navigation_bar.dart';
 import 'package:drivado_b2b_app/screens/more/more.dart';
@@ -43,7 +44,9 @@ class _RootShellState extends State<RootShell> {
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBookingPage()));
+        },
         child: Container(
           height: 58,
           width: 58,
