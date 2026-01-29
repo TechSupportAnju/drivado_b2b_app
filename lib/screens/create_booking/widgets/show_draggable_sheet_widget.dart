@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:drivado_b2b_app/models/vehicle_model.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
+import 'package:drivado_b2b_app/screens/vehicle_selection/vehicle_selection_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'car_card_widget.dart';
@@ -85,11 +87,9 @@ class SearchVehicleList extends StatefulWidget {
 class _SearchVehicleListState extends State<SearchVehicleList> {
   @override
   Widget build(BuildContext context) {
-   var activeList = [
-     {'success': 'true',
-       'km': '7.709306',
-       'duration': '28 min',
-       'vehicleWithPriceArray': [{
+   var data =
+     [
+         {
        'id': '6426d46c7cfcc6b82fc1c23f',
          'vehicleName': 'Corolla',
          'vehicleType': 'STANDARD SEDAN',
@@ -98,7 +98,17 @@ class _SearchVehicleListState extends State<SearchVehicleList> {
          'image': 'https://res.cloudinary.com/dspmukglv/image/upload/v1768486297/vehicleImages/oaecqxcvp4usgwcekkok.png',
          'vehicleId': '3d8e08cd-6ffc-457b-a59b-e99206e3f7e5', 'unit': 'INR',
          'passengeCount': '3', 'luggageCount': '2', 'priceInUSD': '16.8', 'currencyInUSD': 'USD'},
-   ]}];
+         {
+       'id': '6426d46c7cfcc6b82fc1c23f',
+         'vehicleName': 'Corolla',
+         'vehicleType': 'STANDARD SEDAN',
+         'description': 'Corolla, Toyota Prius,'' Camry, Ford Taurus, Maruti Dzire or similar',
+         'price': '1436.16',
+         'image': 'https://res.cloudinary.com/dspmukglv/image/upload/v1768486297/vehicleImages/oaecqxcvp4usgwcekkok.png',
+         'vehicleId': '3d8e08cd-6ffc-457b-a59b-e99206e3f7e5', 'unit': 'INR',
+         'passengeCount': '3', 'luggageCount': '2', 'priceInUSD': '16.8', 'currencyInUSD': 'USD'},
+   ];
+   final List activeList = data;
 
     return Expanded(
       child: ListView.builder(
@@ -106,33 +116,33 @@ class _SearchVehicleListState extends State<SearchVehicleList> {
         itemBuilder: (context, index) {
           final car = activeList[index];
           return InkWell(
-            // child: CarDetail(carDetailData: car, isSelected: false),
+            child: CarDetail(carDetailData: car, isSelected: false),
             onTap: () async {
               if (index < 0 || index >= activeList.length) return;
               final bool isOneway = widget.isTapOneway;
-              // await Navigator.push(
-              //   context,
-              //   PageRouteBuilder(
-              //     pageBuilder: (context, animation, secondaryAnimation) => VehicleSelectionPage(
-              //       vehiclesList: activeList,
-              //       selectedVehicle: activeList[index],
-              //       index: index,
-              //       isTapOneway: isOneway,
-              //       isLogin: widget.isLogin ?? true,
-              //       bookingSearchId: widget.bookingSearchId,
-              //     ),
-              //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              //       const begin = Offset(0.0, 1.0);
-              //       const end = Offset.zero;
-              //       const curve = Curves.ease;
-              //       final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-              //       return SlideTransition(position: animation.drive(tween), child: child);
-              //     },
-              //     transitionDuration: const Duration(milliseconds: 500),
-              //   ),
-              // ).whenComplete(() {
-              //   if (mounted) setState(() {});
-              // });
+              await Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) => VehicleSelectionPage(
+                    vehiclesList: activeList,
+                    selectedVehicle: activeList[index],
+                    index: index,
+                    isTapOneway: isOneway,
+                    isLogin: widget.isLogin ?? true,
+                    bookingSearchId: widget.bookingSearchId,
+                  ),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    const begin = Offset(0.0, 1.0);
+                    const end = Offset.zero;
+                    const curve = Curves.ease;
+                    final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                    return SlideTransition(position: animation.drive(tween), child: child);
+                  },
+                  transitionDuration: const Duration(milliseconds: 500),
+                ),
+              ).whenComplete(() {
+                if (mounted) setState(() {});
+              });
             },
           );
         },

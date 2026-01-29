@@ -1,4 +1,3 @@
-import 'package:drivado_b2b_app/models/vehicle_model.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CarDetail extends StatefulWidget {
-  final NewOnewayVehicleWithPrice? carDetailData;
+  final carDetailData;
   final bool isSelected;
   const CarDetail({super.key, required this.carDetailData, required this.isSelected});
   @override
@@ -42,7 +41,7 @@ class _CarDetailState extends State<CarDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      title: widget.carDetailData?.vehicleType ?? 'Data not found',
+                      title: widget.carDetailData['vehicleType'] ?? 'Data not found',
                       fontSize: screenHeight * 0.025,
                       fontWeight: FontWeight.bold,
                       color: widget.isSelected? Color(0xffffffff) : const Color(0xFF002A48),
@@ -50,7 +49,7 @@ class _CarDetailState extends State<CarDetail> {
                     ),
                     SizedBox(height: screenHeight * 0.01),
                     CustomText(
-                        title: widget.carDetailData?.description ?? 'Data not found',
+                        title: widget.carDetailData['description'] ?? 'Data not found',
                         color: widget.isSelected? Color(0xffffffff) : const Color(0xFF6A6A6A),
                         fontSize: screenHeight * 0.016,
                         fontWeight: FontWeight.w500,
@@ -60,15 +59,15 @@ class _CarDetailState extends State<CarDetail> {
                     Row(
                       children: [
                         _maxData(
-                            ("assets/cars/passenger_icon.svg"),
-                            'Max. ${widget.carDetailData?.passengerCount ?? ''}', widget.isSelected ? Color(0xffffffff) : const Color(0xFF3A434C),
+                            ("assets/vehicle/passenger_icon.svg"),
+                            'Max. ${widget.carDetailData['passengerCount'] ?? ''}', widget.isSelected ? Color(0xffffffff) : const Color(0xFF3A434C),
                             widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
                             fontWeight : FontWeight.w500
                         ),
                         SizedBox(width: screenWidth * 0.015),
                         _maxData(
-                            ("assets/cars/luggage_icon.svg"),
-                            'Max. ${widget.carDetailData?.luggageCount ?? ''}', widget.isSelected? Color(0xffffffff) : const Color(0xFF3A434C),
+                            ("assets/vehicle/luggage_icon.svg"),
+                            'Max. ${widget.carDetailData['luggageCount'] ?? ''}', widget.isSelected? Color(0xffffffff) : const Color(0xFF3A434C),
                             widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
                             fontWeight : FontWeight.w500
                         ),
@@ -83,7 +82,7 @@ class _CarDetailState extends State<CarDetail> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Image.network(
-                        widget.carDetailData?.image ?? 'assets/images/default_car_image.png',
+                        widget.carDetailData['image'] ?? 'assets/vehicle/default_car_image.png',
                         alignment: Alignment.centerRight,
                         height: screenHeight * 0.07,
                         width: screenWidth * 0.3,
@@ -103,7 +102,7 @@ class _CarDetailState extends State<CarDetail> {
                       ),
                       SizedBox(height: screenHeight * 0.015),
                       CustomText(
-                        title: "${widget.carDetailData?.unit ?? ""} ${widget.carDetailData?.price.ceil() ?? ""}",
+                        title: "${widget.carDetailData['unit'] ?? ""} ${widget.carDetailData['price'] ?? ""}",
                         fontSize: screenHeight * 0.022,
                         fontWeight: FontWeight.bold,
                         color: widget.isSelected? Color(0xffffffff) : const Color(0xFFFB4156),

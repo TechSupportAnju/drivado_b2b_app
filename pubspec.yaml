@@ -85,6 +85,7 @@ flutter:
    - assets/more/
    - assets/more/profile/
    - assets/create_booking/
+   - assets/vehicle/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
