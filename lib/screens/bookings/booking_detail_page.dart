@@ -68,7 +68,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          //_scaffoldKey.currentState!.openEndDrawer();
+                          
                         },
                         child: Container(
                           height: 40,

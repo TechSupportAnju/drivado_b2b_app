@@ -49,7 +49,7 @@ class InvoiceVoucherWidget extends StatelessWidget {
   final String image;
   final String footerText;
   final SelectedOption value;
-  final SelectedOption groupValue;
+  final SelectedOption? groupValue;
   final ValueChanged<SelectedOption> onChanged;
 
   const InvoiceVoucherWidget({
@@ -58,7 +58,7 @@ class InvoiceVoucherWidget extends StatelessWidget {
     required this.image,
     required this.footerText,
     required this.value,
-    required this.groupValue,
+    this.groupValue,
     required this.onChanged,
   });
 
@@ -133,13 +133,13 @@ class InvoiceVoucherWidget extends StatelessWidget {
 
 class DriverDetailsWidget extends StatelessWidget {
   final SelectedOption value;
-  final SelectedOption groupValue;
+  final SelectedOption? groupValue;
   final ValueChanged<SelectedOption> onChanged;
 
   const DriverDetailsWidget({
     super.key,
     required this.value,
-    required this.groupValue,
+    this.groupValue,
     required this.onChanged,
   });
 

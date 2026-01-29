@@ -22,6 +22,7 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
   final bool error;
   final bool isExpand;
+  final bool? autofocus;
 
   const CustomTextField({
     super.key,
@@ -42,6 +43,7 @@ class CustomTextField extends StatelessWidget {
     required this.isPassword,
     this.error = false,
     this.isExpand = false,
+    this.autofocus
   });
 
   @override
@@ -69,7 +71,7 @@ class CustomTextField extends StatelessWidget {
               maxLines: maxLine ?? 1,
               minLines: maxLine ?? 1,
               readOnly: readOnly,
-              autofocus: !readOnly,
+              autofocus: autofocus ?? !readOnly,
               focusNode: readOnly ? AlwaysDisabledFocusNode() : null,
               controller: controller,
               cursorColor: Colors.black,

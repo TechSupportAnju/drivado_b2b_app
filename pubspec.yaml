@@ -50,6 +50,8 @@ dependencies:
   geocoding: ^4.0.0
   geolocator: ^14.0.2
   google_places_flutter: ^2.1.1
+  flutter_sliding_toast: ^1.5.2
+  fw_tab_bar: ^0.0.3
 
 dev_dependencies:
   flutter_test:
