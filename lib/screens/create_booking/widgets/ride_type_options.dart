@@ -38,15 +38,15 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
   };
 
   final _iconInactive = const {
-    RideType.airport: 'assets/home_page_icons/airport_icon.svg',
-    RideType.cityToCity: 'assets/home_page_icons/city_to_city_icon.svg',
-    RideType.hourly: 'assets/home_page_icons/hourly_icon.svg',
+    RideType.airport: 'assets/create_booking/airport_icon.svg',
+    RideType.cityToCity: 'assets/create_booking/city_to_city_icon.svg',
+    RideType.hourly: 'assets/create_booking/hourly_icon.svg',
   };
 
   final _iconActive = const {
-    RideType.airport: 'assets/home_page_icons/active_airport_icon.svg',
-    RideType.cityToCity: 'assets/home_page_icons/active_city_to_city_icon.svg',
-    RideType.hourly: 'assets/home_page_icons/active_hourly_icon.svg',
+    RideType.airport: 'assets/create_booking/active_airport_icon.svg',
+    RideType.cityToCity: 'assets/create_booking/active_city_to_city_icon.svg',
+    RideType.hourly: 'assets/create_booking/active_hourly_icon.svg',
   };
 
   Widget _svg(String path) => SvgPicture.asset(

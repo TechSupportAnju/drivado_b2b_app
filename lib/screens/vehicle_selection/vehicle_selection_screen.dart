@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/passenger_detail/passenger_detail_screen.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/custom_slider_button_widget.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/elipse_widget.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/inclusion_detail_widget.dart';
@@ -502,15 +503,15 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
     );
   }
   void navigateToPassengerDetails() {
-    // Navigator.push(context,
-    //   MaterialPageRoute(
-    //     builder: (context) => PassengerDetailsPage(
-    //       selectedVehicle: vehicleWithPrice,
-    //       isTapOneway: widget.isTapOneway,
-    //       bookingSearchId: widget.bookingSearchId,
-    //     ),
-    //   ),
-    // );
+    Navigator.push(context,
+      MaterialPageRoute(
+        builder: (context) => PassengerDetailsPage(
+          selectedVehicle: vehicleWithPrice,
+          isTapOneway: widget.isTapOneway,
+          bookingSearchId: widget.bookingSearchId,
+        ),
+      ),
+    );
   }
 }
 
