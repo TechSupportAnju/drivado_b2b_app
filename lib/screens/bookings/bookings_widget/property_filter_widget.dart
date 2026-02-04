@@ -1,6 +1,7 @@
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_status_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/constant/constant.dart';
 import 'package:flutter/material.dart';
 
 class PropertyFilterWidget extends StatefulWidget {
@@ -11,18 +12,7 @@ class PropertyFilterWidget extends StatefulWidget {
 }
 
 class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
-  TextEditingController fromDateController = TextEditingController();
-  TextEditingController toDateController = TextEditingController();
-  TextEditingController bookingIdController = TextEditingController();
-  TextEditingController companyNameController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
-  bool isConfirmedSelected = false;
-  bool isCompletedSelected = false;
-  bool isCancelledSelected = false;
-  bool isNoShowSelected = false;
-  bool isOnRequestSelected = false;
-  bool isPobSelected = false;
-
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,8 +26,8 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
               children: [
                 CustomTextField(
                   readOnly: false,
-                  title: 'Date',
-                  hintText: 'Date (from)',
+                  title: 'Date (from)',
+                  hintText: '',
                   icon:'assets/booking/date_icon.svg',
                   isPassword: false,
                   astric: false,
@@ -50,8 +40,8 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 ),
                 CustomTextField(
                   readOnly: false,
-                  title: 'Date',
-                  hintText: 'Date (to)',
+                  title: 'Date (to)',
+                  hintText: '',
                   icon:'assets/booking/date_icon.svg',
                   isPassword: false,
                   astric: false,
