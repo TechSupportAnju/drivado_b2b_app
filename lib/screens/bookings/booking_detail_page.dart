@@ -51,16 +51,6 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        // child: Container(
-                        //   height: 40,
-                        //   width: 40,
-                        //   decoration: BoxDecoration(
-                        //     color: const Color(0xFF352828),
-                        //     borderRadius: BorderRadius.circular(40),
-                        //   ),
-                        //   alignment: Alignment.center,
-                          
-                        // )
                         child: SvgPicture.asset("assets/booking_detail/back_icon.svg")
                       ),
                       const Spacer(),

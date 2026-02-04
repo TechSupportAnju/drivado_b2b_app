@@ -20,7 +20,7 @@ class RecentBookingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
       itemCount: 9,
       padding:const EdgeInsets.all(0),
       shrinkWrap: true,
@@ -99,6 +99,7 @@ class RecentBookingList extends StatelessWidget {
         );
         
       },
+      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 1)
     );
   }
 }
