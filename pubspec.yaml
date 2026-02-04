@@ -52,6 +52,7 @@ dependencies:
   google_places_flutter: ^2.1.1
   flutter_sliding_toast: ^1.5.2
   fw_tab_bar: ^0.0.3
+  loading_animation_widget: ^1.3.0
   http: ^1.6.0
 
 dev_dependencies:
@@ -89,6 +90,8 @@ flutter:
    - assets/more/profile/
    - assets/create_booking/
    - assets/vehicle/
+   - assets/booking_recipet/
+   - assets/booking_recipet/congress.gif
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
