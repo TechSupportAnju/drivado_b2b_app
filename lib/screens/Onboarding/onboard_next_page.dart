@@ -1,8 +1,6 @@
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
-import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
-import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 

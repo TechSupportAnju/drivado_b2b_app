@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:drivado_b2b_app/models/vehicle_model.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/vehicle_selection_screen.dart';
 import 'package:flutter/material.dart';

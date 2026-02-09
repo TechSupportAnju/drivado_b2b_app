@@ -1,12 +1,15 @@
+import 'dart:developer';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/property_filter_widget.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/screens/constant/constant.dart';
+import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SearchFilterPage extends StatefulWidget {
   const SearchFilterPage({super.key});
-
   @override
   State<SearchFilterPage> createState() => _SearchFilterPageState();
 }
@@ -29,6 +32,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Color(0XFF190C0C),
         leading: InkWell(
@@ -44,9 +48,26 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
         toolbarHeight: MediaQuery.of(context).size.height * 0.1,
         centerTitle: true,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
+          InkWell(
+            onTap: () {
+              fromDateController.clear();
+              toDateController.clear();
+              bookingIdController.clear();
+              companyNameController.clear();
+              usernameController.clear();
+              isConfirmedSelected = false;
+              isCompletedSelected = false;
+              isCancelledSelected = false;
+              isNoShowSelected = false;
+              isOnRequestSelected = false;
+              isPobSelected = false;
+              log("pressed");
+              setState(() {});
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
+            ),
           )
         ],
       ),
@@ -82,26 +103,37 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
                   ],
                 ),
               ),
+              SizedBox(height: 16),
               Expanded(
                 child: TabBarView(
                   controller: tabController,
                   children: [
                     PropertyFilterWidget(),
-                    Center(
-                      child: CustomText(
-                        title: 'Travel Date',
-                        color: Color(0XFF606060),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        height: 1.4,
-                      ),
-                    ),
+                    PropertyFilterWidget()
                   ],
                 ),
               ),
             ],
           ),
         )
+      ),
+       bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: CustomButtons(
+            title: 'Search',
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            onTap: () {
+              FocusScope.of(context).unfocus(); 
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RootShell()),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

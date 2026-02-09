@@ -129,7 +129,12 @@ class _DocumentWidgetState extends State<DocumentWidget> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CommonButtonWidget(backgroundColor: Color(0XFFFFFFFF), borderColor: Color(0XFF606060), text: "Cancel", textColor: Color(0XFF606060)),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: CommonButtonWidget(backgroundColor: Color(0XFFFFFFFF), borderColor: Color(0XFF606060), text: "Cancel", textColor: Color(0XFF606060))
+                      ),
                       InkWell(
                         onTap: isSelected? () {
                           AppToast.show(

@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:drivado_b2b_app/screens/booking_recipet/widget/clipper_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
-import 'package:drivado_b2b_app/screens/create_booking/create_booking_page.dart';
-import 'package:drivado_b2b_app/screens/home/home_screens/home_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/screens/passenger_detail/widget/custom_top_progress_bar.dart';
 import 'package:drivado_b2b_app/utils/constant.dart';

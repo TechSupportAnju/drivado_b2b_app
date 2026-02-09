@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color(0XFFFFFFFF),
       body: SingleChildScrollView(
+        
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -164,6 +165,7 @@ class _HomePageState extends State<HomePage> {
                               y: 0
                             ),
                             child: SingleChildScrollView(
+                              
                               child: Column(
                                 children: [
                                   Row(

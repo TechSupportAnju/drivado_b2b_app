@@ -4,7 +4,6 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
-import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';

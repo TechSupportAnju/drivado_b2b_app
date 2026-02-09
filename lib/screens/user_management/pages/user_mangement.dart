@@ -1,19 +1,13 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
-import 'package:drivado_b2b_app/screens/user_management/pages/view_company.dart';
-import 'package:drivado_b2b_app/screens/user_management/pages/view_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/animated_toggle.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_list_tile_widget.dart';
-import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'add_company.dart';
-import 'add_user.dart';
 
 class UserMangementPage extends StatefulWidget {
   const UserMangementPage({super.key});

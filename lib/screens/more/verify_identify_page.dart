@@ -1,7 +1,5 @@
 
 import 'dart:async';
-
-import 'package:cached_network_svg_image/cached_network_svg_image.dart';
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
-import 'widgets/account_widget.dart';
 
 class VerifyIdentifyPage extends StatefulWidget {
   const VerifyIdentifyPage({super.key});

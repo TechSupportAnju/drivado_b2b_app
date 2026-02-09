@@ -8,7 +8,6 @@ import 'package:drivado_b2b_app/screens/policy_screens/terms_and_condition.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'widgets/account_widget.dart';
 
