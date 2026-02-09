@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class NewOnewayVehicleWithPrice {
   final String id;
@@ -87,12 +86,12 @@ String _asString(dynamic v, {String fallback = ''}) {
   return v.toString();
 }
 
-double? _extractKm(dynamic v) {
-  if (v == null) return null;
-  if (v is num) return v.toDouble();
-  if (v is String) {
-    final m = RegExp(r'([0-9]+(?:\.[0-9]+)?)').firstMatch(v);
-    return (m != null) ? double.tryParse(m.group(1)!) : null;
-  }
-  return null;
-}
+// double? _extractKm(dynamic v) {
+//   if (v == null) return null;
+//   if (v is num) return v.toDouble();
+//   if (v is String) {
+//     final m = RegExp(r'([0-9]+(?:\.[0-9]+)?)').firstMatch(v);
+//     return (m != null) ? double.tryParse(m.group(1)!) : null;
+//   }
+//   return null;
+// }

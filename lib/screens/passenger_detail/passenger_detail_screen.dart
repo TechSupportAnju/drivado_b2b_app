@@ -84,7 +84,7 @@ class _PassengerDetailsPageState extends State<PassengerDetailsPage> {
     super.initState();
   }
 
-  Timer? _debounce;
+  // Timer? _debounce;
   String? flightNumber;
 
 
@@ -230,8 +230,7 @@ class _PassengerDetailsPageState extends State<PassengerDetailsPage> {
                           width: MediaQuery.of(context).size.width,
                           onChanged: (val) {
                           },
-                          onTap: () {
-                          },
+                          onTap: () {},
                           suffix: false,
                           readOnly: false,
                           astric: false,

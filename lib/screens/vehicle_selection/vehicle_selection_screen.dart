@@ -475,7 +475,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                                 return const SizedBox.shrink();
                               }
 
-                              final car = list[index];
+                              //final car = list[index];
                               return InkWell(
                                 onTap:index == selectedCarIndex ? (){} : (){
                                   vehicleWithPrice = widget.isTapOneway? list[index] : list[index];

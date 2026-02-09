@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:drivado_b2b_app/screens/bookings/booking_list_page.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/property_filter_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';

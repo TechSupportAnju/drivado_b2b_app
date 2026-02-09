@@ -3,7 +3,6 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/credit_limit_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/table_data_widget.dart';
-import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';

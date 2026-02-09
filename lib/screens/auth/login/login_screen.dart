@@ -5,7 +5,6 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
-import 'package:drivado_b2b_app/screens/home/home_screens/home_page.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';

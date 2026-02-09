@@ -4,10 +4,7 @@ import 'package:drivado_b2b_app/screens/user_management/widget/credit_limit_widg
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../user_management/widget/custom_booking_summary_row.dart';
-import 'widgets/account_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -5,6 +5,7 @@ TextEditingController fromDateController = TextEditingController();
   TextEditingController bookingIdController = TextEditingController();
   TextEditingController companyNameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
+  TextEditingController durationController = TextEditingController();
   bool isConfirmedSelected = false;
   bool isCompletedSelected = false;
   bool isCancelledSelected = false;

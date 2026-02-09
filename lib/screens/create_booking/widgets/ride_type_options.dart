@@ -2,12 +2,12 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-enum RideType { airport, cityToCity, hourly }
+enum RideType { oneway, hourly }
 
 class RideTypeSelector extends StatefulWidget {
   const RideTypeSelector({
     super.key,
-    this.initial = RideType.airport,
+    this.initial = RideType.oneway,
     this.onChanged,
   });
 
@@ -23,30 +23,31 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
 
   // COLORS
   static const _kBg = Color(0xFFF2F3F5);
-  static const _kRed = Color(0xFFE54B4B);
-  static const _kGrey = Color(0xFF9AA0A6);
+  static const _kRed = Color(0xFF0D0D0D);
+  static const _kGrey = Color(0xFF606060);
 
   // SIZING
   static const double _iconSize = 18.0;
-  static const double _height = 44.0;
+  static const double _height = 59.0;
 
-  // LABELS
   final _labels = const {
-    RideType.airport: 'Airport',
-    RideType.cityToCity: 'City to city',
+    RideType.oneway: 'Oneway',
     RideType.hourly: 'Hourly',
   };
 
+  final _subLabels = const {
+    RideType.oneway: 'Airport · City · Intercity',
+    RideType.hourly: 'Chauffeur by the hour',
+  };
+
   final _iconInactive = const {
-    RideType.airport: 'assets/create_booking/airport_icon.svg',
-    RideType.cityToCity: 'assets/create_booking/city_to_city_icon.svg',
+    RideType.oneway: 'assets/create_booking/oneway_icon.svg',
     RideType.hourly: 'assets/create_booking/hourly_icon.svg',
   };
 
   final _iconActive = const {
-    RideType.airport: 'assets/create_booking/active_airport_icon.svg',
-    RideType.cityToCity: 'assets/create_booking/active_city_to_city_icon.svg',
-    RideType.hourly: 'assets/create_booking/active_hourly_icon.svg',
+    RideType.oneway: 'assets/create_booking/oneway_icon.svg',
+    RideType.hourly: 'assets/create_booking/hourly_icon.svg',
   };
 
   Widget _svg(String path) => SvgPicture.asset(
@@ -59,7 +60,7 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
   Widget build(BuildContext context) {
     final tabs = RideType.values;
     final width = MediaQuery.of(context).size.width;
-    final itemW = (width - 32) / tabs.length;
+    final itemW = (width - 25) / tabs.length;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -82,18 +83,16 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
               alignment: Alignment(_alignmentFor(selected), 0),
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOut,
-              child: Container(
+              child: Container( 
                 width: itemW,
-                height: 36,
-                margin: const EdgeInsets.symmetric(horizontal: 4),
+                height: 47,
+                margin: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
             ),
-
-            // Tabs
             Row(
               children: tabs.map((t) {
                 final isActive = t == selected;
@@ -109,18 +108,35 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
                       widget.onChanged?.call(t);
                     },
                     child: Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _svg(iconPath),
-                          const SizedBox(width: 6),
-                          CustomText(
-                            title: label,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: isActive ? _kRed : _kGrey,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _svg(iconPath),
+                            const SizedBox(width: 6),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomText(
+                                  title: label,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: isActive ? _kRed : _kGrey,
+                                ),
+                                SizedBox(height: 4),
+                                CustomText(
+                                  title: _subLabels[t]!,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: isActive ? _kRed : _kGrey,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -136,10 +152,10 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
   // maps selected tab to AnimatedAlign’s -1, 0, 1 positions
   double _alignmentFor(RideType t) {
     switch (t) {
-      case RideType.airport:
+      case RideType.oneway:
         return -1.0;
-      case RideType.cityToCity:
-        return 0.0;
+      // case RideType.oneway:
+      //   return 0.0;
       case RideType.hourly:
         return 1.0;
     }

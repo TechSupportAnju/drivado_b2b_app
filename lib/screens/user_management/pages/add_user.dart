@@ -1,11 +1,6 @@
-import 'package:cached_network_svg_image/cached_network_svg_image.dart';
-import 'package:drivado_b2b_app/models/country_code/country_code_data.dart';
-import 'package:drivado_b2b_app/models/country_code/country_code_model.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/country_code_widget/country_code_dialog_widget.dart';
-import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
-import 'package:drivado_b2b_app/screens/user_management/pages/view_user.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
 import 'package:drivado_b2b_app/utils/constant.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
