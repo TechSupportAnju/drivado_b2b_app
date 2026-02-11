@@ -60,14 +60,14 @@ class _CarDetailState extends State<CarDetail> {
                       children: [
                         _maxData(
                             ("assets/vehicle/passenger_icon.svg"),
-                            'Max. ${widget.carDetailData['passengerCount'] ?? ''}', widget.isSelected ? Color(0xffffffff) : const Color(0xFF3A434C),
+                            'Max. ${widget.carDetailData['passengerCount'] ?? ''}', widget.isSelected ? Color(0xffffffff) : const Color(0xFF606060),
                             widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
                             fontWeight : FontWeight.w500
                         ),
                         SizedBox(width: screenWidth * 0.015),
                         _maxData(
                             ("assets/vehicle/luggage_icon.svg"),
-                            'Max. ${widget.carDetailData['luggageCount'] ?? ''}', widget.isSelected? Color(0xffffffff) : const Color(0xFF3A434C),
+                            'Max. ${widget.carDetailData['luggageCount'] ?? ''}', widget.isSelected? Color(0xffffffff) : const Color(0xFF606060),
                             widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
                             fontWeight : FontWeight.w500
                         ),

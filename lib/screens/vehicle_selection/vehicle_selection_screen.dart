@@ -7,6 +7,7 @@ import 'package:drivado_b2b_app/screens/vehicle_selection/widget/inclusion_detai
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/max_data.dart';
 import 'package:drivado_b2b_app/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../common_widgets/custom_decoration.dart';
@@ -188,20 +189,77 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
             ),
             centerTitle: true,
             title: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: InkWell(
-                  onTap: () {
-                    log(((widget.selectedVehicle['price']).toString()));
-                  },
-                  child: const CustomText(
-                    title:  "Choose a vehicle",
-                    fontWeight: FontWeight.w500,
-                    color:Color(0xFFFFFFFF),
-                    //fontSize: screenWidth * 0.05
-                    fontSize: 20,
-                  ),
-                )
+              fit: BoxFit.scaleDown,
+              child: InkWell(
+                onTap: () {
+                  log(((widget.selectedVehicle['price']).toString()));
+                },
+                child: const CustomText(
+                  title:  "Choose a vehicle",
+                  fontWeight: FontWeight.w500,
+                  color:Color(0xFFFFFFFF),
+                  //fontSize: screenWidth * 0.05
+                  fontSize: 20,
+                ),
+              )
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () {
+                    showGeneralDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      barrierColor: Color(0XFF000000).withOpacity(0.5),
+                      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+                      transitionDuration: const Duration(milliseconds: 300),
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return Center(
+                          child: Material(
+                            elevation: 0.0,
+                            type: MaterialType.transparency,
+                            color: Colors.transparent,
+                            child: AlertDialog(
+                              backgroundColor: Colors.white,
+                              scrollable: true,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              insetPadding: const EdgeInsets.symmetric(horizontal: 17.0),
+                              content: const InclusionDetailWidget(),
+                            ),
+                          ),
+                        );
+                      },
+                      transitionBuilder: (context, animation, secondaryAnimation, child) {
+                        final curve = Curves.easeInOut.transform(animation.value);
+                        return Transform.scale(
+                          scale: curve,
+                          child: child,
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: CustomDecorations().baseBackgroundDecoration(
+                      40.0,
+                      1.0,
+                      Colors.white,
+                      Colors.transparent,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: SvgPicture.asset("assets/vehicle/inclusion_icon.svg")
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         body: Stack(
@@ -234,66 +292,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                 ),
               ],
             ),
-            Positioned(
-              left: screenWidth * 0.38,
-              right: screenWidth * 0.38,
-              top: screenHeight * 0.24,
-              child:
-              InkWell(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {
-                  showGeneralDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-                    transitionDuration: const Duration(milliseconds: 300),
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return Center(
-                        child: Material(
-                          elevation: 0.0,
-                          type: MaterialType.transparency,
-                          child: AlertDialog(
-                            scrollable: true,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            insetPadding: const EdgeInsets.symmetric(horizontal: 17.0),
-                            content: const InclusionDetailWidget(),
-                          ),
-                        ),
-                      );
-                    },
-                    transitionBuilder: (context, animation, secondaryAnimation, child) {
-                      final curve = Curves.easeInOut.transform(animation.value);
-                      return Transform.scale(
-                        scale: curve,
-                        child: child,
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  height: screenHeight * 0.5,
-                  width: screenWidth * 0.09,
-                  decoration: CustomDecorations().baseBackgroundDecoration(
-                    14.0,
-                    1.0,
-                    Colors.white,
-                    Colors.transparent,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: CustomText(title: "Inclusion",
-                      textAlign: TextAlign.center,
-                      fontSize: screenHeight * 0.015,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF190C0C),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            
             Positioned(
               top: screenHeight * 0.27,
               left: 0,
@@ -303,7 +302,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                 decoration: CustomDecorations().baseBackgroundDecoration(
                   35.0,
                   1.0,
-                  Color(0xFF190C0C),
+                  Color(0xFF0D0D0D),
                   Colors.transparent,
                 ),
                 child: Padding(
@@ -328,7 +327,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             height: screenHeight * 0.025,
                             padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.005),
                             decoration: ShapeDecoration(
-                              color: Colors.white.withOpacity(0.1),
+                              color: Color(0XFFFB4156).withOpacity(0.2),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -370,16 +369,16 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                vehicleWithPrice['description'] ?? "No data found",
-                                style: GoogleFonts.plusJakartaSans(
+                              CustomText(
+                                title: vehicleWithPrice['description'] ?? "No data found",
+                                maxLine: 2,
                                   color: Color(0xFFABABAB),
                                   fontWeight: FontWeight.w500,
                                   fontSize:  screenHeight * 0.018,
                                   height: 1.4,
-                                ),
+                                  
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                
                               ),
                             ],
                           ),
@@ -394,7 +393,8 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             children: [
                               maxDataTab(
                                 "assets/vehicle/passenger_icon.svg",
-                                'Max. ${vehicleWithPrice['passengerCount']}',
+                                'Max. 5',
+                                //'Max. ${vehicleWithPrice['passengerCount']}',
                               ),
                               SizedBox(width: screenWidth * 0.03),
                               maxDataTab(
@@ -407,10 +407,10 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             children: [
                               CustomText(
                                 title: "Price: ",
-                                fontWeight: FontWeight.bold,
-                                fontSize: screenHeight * 0.02,
-                                color: Color(0xFF9C7171),
-                                letterSpacing: -0.60,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                                color: Color(0xFFFB4156),
+                                height: 1,
                               ),
                               InkWell(
                                 onTap: () {
@@ -418,9 +418,10 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                                 child: CustomText(
                                   title: "${vehicleWithPrice['price']} ${vehicleWithPrice['unit']}",
                                   color: const Color(0xFFE6E8E7),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: screenHeight * 0.024,
-                                  letterSpacing: -0.60,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  letterSpacing: -0.3,
+                                  height: 1,
                                 ),
                               ),
                             ],

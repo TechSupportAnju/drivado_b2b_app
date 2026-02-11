@@ -86,7 +86,7 @@ class InclusionPopUp extends StatelessWidget {
               height: screenHeight! * 0.024,
             ),
           ),
-          SizedBox(height: screenHeight! * 0.015),
+          SizedBox(width: 5),
           Expanded(
             child: Text(title ?? "",
               maxLines: 4,
