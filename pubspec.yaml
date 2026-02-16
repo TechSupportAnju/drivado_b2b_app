@@ -54,6 +54,7 @@ dependencies:
   fw_tab_bar: ^0.0.3
   loading_animation_widget: ^1.3.0
   http: ^1.6.0
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +93,7 @@ flutter:
    - assets/vehicle/
    - assets/booking_recipet/
    - assets/booking_recipet/congress.gif
+   - assets/booking_summary/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

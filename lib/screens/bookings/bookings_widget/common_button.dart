@@ -13,11 +13,12 @@ class CommonButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 154,
+      height: 50,
       decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, backgroundColor, borderColor),
       child: Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 12),
         child: Center(
-          child: CustomText(title: text, color: textColor, fontWeight: FontWeight.w500, fontSize: 16, height: 2.4)
+          child: CustomText(title: text, color: textColor, fontWeight: FontWeight.w500, fontSize: 16, height: 1.5)
         ),
       ),
     );
