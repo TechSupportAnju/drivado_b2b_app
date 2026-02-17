@@ -1,6 +1,7 @@
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'custom_text.dart';
 
 class CustomButtons extends StatelessWidget {
@@ -9,8 +10,9 @@ class CustomButtons extends StatelessWidget {
   final FontWeight fontWeight;
   final Color color;
   final Function onTap;
-  const CustomButtons(
-      {super.key, required this.onTap, required this.title, required this.color, required this.fontWeight, required this.fontSize,});
+  final bool isIcon;
+  CustomButtons(
+      {super.key, required this.onTap, required this.isIcon , required this.title, required this.color, required this.fontWeight, required this.fontSize,});
   @override
   Widget build(BuildContext context) {
     return  GestureDetector(
@@ -34,11 +36,19 @@ class CustomButtons extends StatelessWidget {
           ),
         ),
         alignment: Alignment.center,
-        child: CustomText(
-            title: title,
-            color: color,
-            fontWeight: fontWeight,
-            fontSize: fontSize),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isIcon ? SvgPicture.asset('assets/refresh.svg') : Container(),
+            SizedBox(width: isIcon ? 8 : 0,),
+            CustomText(
+                textDecoration: TextDecoration.none,
+                title: title,
+                color: color,
+                fontWeight: fontWeight,
+                fontSize: fontSize),
+          ],
+        ),
       ),
     );
   }

@@ -209,7 +209,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         ),
                         CustomButtons(onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                        }, title: 'Change Password', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
+                        },
+                            isIcon: false,
+                            title: 'Change Password', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
                         const SizedBox(
                           height: 20,
                         ),
