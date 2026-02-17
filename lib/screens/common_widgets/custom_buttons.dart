@@ -1,3 +1,4 @@
+import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,41 @@ class CustomButtons extends StatelessWidget {
                 fontWeight: fontWeight,
                 fontSize: fontSize),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CommonTapButton extends StatelessWidget {
+  final String title;
+  final double fontSize;
+  final FontWeight fontWeight;
+  final Color color;
+  final Color backgroundcolor;
+  final double? height;
+  final Function onTap;
+  const CommonTapButton({super.key, required this.onTap, required this.title, required this.color, required this.backgroundcolor, this.height ,required this.fontWeight, required this.fontSize});
+  @override
+  Widget build(BuildContext context) {
+    return  GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, backgroundcolor, Colors.transparent),
+        padding: const EdgeInsets.all(12),
+        alignment: Alignment.center,
+        child: Center(
+          child: CustomText(
+            title: title,
+            color: color,
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            height: height ?? 1,
+          ),
         ),
       ),
     );
