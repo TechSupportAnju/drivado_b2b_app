@@ -46,7 +46,9 @@ class _OnboardNextPageState extends State<OnboardNextPage> {
               const SizedBox(height: 45,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                child: CustomButtons(onTap: () {
+                child: CustomButtons(
+                    isIcon: false,
+                    onTap: () {
                   Navigator.of(context).push(SwipeablePageRoute(
                     transitionDuration: const Duration(milliseconds: 700),
                     builder: (BuildContext context) => const LoginPage(),

@@ -121,6 +121,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: CustomButtons(
+            isIcon: false,
             title: 'Search',
             color: Colors.white,
             fontWeight: FontWeight.w600,

@@ -163,7 +163,9 @@ class _OtpBottomSheetState extends State<OtpBottomSheet> {
               ),
             ),
             SizedBox(height: 32,),
-            CustomButtons(onTap: () {
+            CustomButtons(
+                isIcon: false,
+                onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordPage()));
             }, title: 'Continue', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
             SizedBox(height: 40,),

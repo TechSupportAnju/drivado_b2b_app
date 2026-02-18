@@ -168,7 +168,9 @@ class _ForgotPasswordPagePageState extends State<ForgotPasswordPage> {
                        const SizedBox(
                           height: 24,
                         ),
-                        CustomButtons(onTap: () {
+                        CustomButtons(
+                            isIcon: false,
+                            onTap: () {
                           otpBottomSheets(context);
                         }, title: 'Continue', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
                         const SizedBox(

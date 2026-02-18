@@ -234,7 +234,9 @@ class _LoginPagePageState extends State<LoginPage> {
                           const SizedBox(
                             height: 32,
                           ),
-                          CustomButtons(onTap: () {
+                          CustomButtons(
+                              isIcon: false,
+                              onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => RootShell()));
                           }, title: 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
                           const SizedBox(

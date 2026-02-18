@@ -2,6 +2,7 @@
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
 import 'package:drivado_b2b_app/screens/auth/signup/thank_you_screen.dart';
 import 'package:drivado_b2b_app/screens/auth/signup/widget/more_less_text.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/country_code_widget/contact_text_field.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
@@ -26,7 +27,7 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController email = TextEditingController();
   TextEditingController confirmEmail = TextEditingController();
   TextEditingController companyName = TextEditingController();
-  TextEditingController conatactNumber = TextEditingController();
+  TextEditingController contactNumber = TextEditingController();
   TextEditingController address = TextEditingController();
 
   bool isFirstValidator = false;
@@ -34,6 +35,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isEmailValidator = false;
   bool isConfirmEmailValidator = false;
   bool isContactValidator = false;
+  bool isTapContactName = false;
   bool isCompanyNameValidator = false;
   bool isAddressValidator = false;
   bool isEmailValid = true;
@@ -133,7 +135,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Column(
                         children: [
                           CustomTextField(
-                            title: 'First',
+                            title: 'First Name',
                             hintText: 'Enter your first name',
                             controller: firstName,
                             isPassword: false,
@@ -208,8 +210,8 @@ class _SignupPageState extends State<SignupPage> {
                             error: isEmailValidator,),
                           const SizedBox(height: 12,),
                           CustomTextField(
-                            title: 'Confirm Email',
-                            hintText: 'Enter your confirm email',
+                            title: 'Confirm Email ID',
+                            hintText: 'Enter your confirm email ID',
                             controller: confirmEmail,
                             isPassword: false,
                             icon: 'null',
@@ -261,6 +263,14 @@ class _SignupPageState extends State<SignupPage> {
                             readOnly: false,
                             astric: true,
                             error: isCompanyNameValidator,
+                          ),
+                          const SizedBox(height: 12,),
+                          ContactTextField(
+                            isContactValidator: isContactValidator,
+                            isTapContactName: isTapContactName,
+                            controller: contactNumber,
+                            onTap: () {},
+                            onChanged: () {},
                           ),
                           const SizedBox(height: 12,),
                           CustomTextField(
@@ -328,7 +338,9 @@ class _SignupPageState extends State<SignupPage> {
                           const SizedBox(
                             height: 32,
                           ),
-                          CustomButtons(onTap: () {
+                          CustomButtons(
+                              isIcon: false,
+                              onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => ThankYouScreen()));
                           }, title: 'Sign up', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
                           const SizedBox(

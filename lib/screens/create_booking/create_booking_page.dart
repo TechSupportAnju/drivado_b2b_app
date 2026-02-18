@@ -548,6 +548,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                           horizontal: 21.0,
                         ),
                         child: CustomButtons(
+                          isIcon: false,
                           onTap: () async {
                           if (isTapOneway == 0) {
                               final invalid =
