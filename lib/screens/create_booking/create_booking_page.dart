@@ -7,6 +7,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/constant/constant.dart';
+import 'package:drivado_b2b_app/screens/create_booking/widgets/greeting_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/hourly_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/oneway_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/ride_type_options.dart';
@@ -61,7 +62,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
         child: Stack(
           children: [
             Container(
-              height: 280,
+              height: MediaQuery.of(context).size.height * 0.32,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: Color(0xff190C0C),
@@ -73,67 +74,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
               padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 40),
               child: Row(
                 children: [
-                  Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: CustomText(
-                                  title: 'Good Morning',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: 'Let’s Explore ',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'World',
-                                        style:
-                                        GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 24,
-                                          color: AppColors.secondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: CustomText(
-                                  title: 'With Us',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                  GreetingWidget(),
                   const Spacer(),
                   notificationWidget()
                 ],
