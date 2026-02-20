@@ -7,6 +7,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/constant/constant.dart';
+import 'package:drivado_b2b_app/screens/create_booking/widgets/greeting_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/hourly_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/oneway_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/ride_type_options.dart';
@@ -61,7 +62,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
         child: Stack(
           children: [
             Container(
-              height: 280,
+              height: MediaQuery.of(context).size.height * 0.32,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: Color(0xff190C0C),
@@ -73,67 +74,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
               padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 40),
               child: Row(
                 children: [
-                  Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: CustomText(
-                                  title: 'Good Morning',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 6),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: 'Let’s Explore ',
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'World',
-                                        style:
-                                        GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 24,
-                                          color: AppColors.secondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width/1.4,
-                                child: CustomText(
-                                  title: 'With Us',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                  GreetingWidget(),
                   const Spacer(),
                   notificationWidget()
                 ],
@@ -165,9 +106,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                       ),
                       SizedBox(height: 24),
                       isTapOneway == 0? 
-                      OnewayWidget()
-                      : 
-                      HourlyWidget(),
+                      OnewayWidget() : HourlyWidget(),
                       const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -246,9 +185,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                       ),
                       const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 21.0,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Row(
@@ -257,34 +194,19 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                 flex: 1,
                                 child: Container(
                                   height: 60,
-                                  width:
-                                  MediaQuery.of(
-                                    context,
-                                  ).size.width /
-                                      2.45,
-                                  decoration: CustomDecorations()
-                                      .baseBackgroundDecoration(
-                                    10.0,
-                                    1.0,
-                                    Colors.transparent,
-                                    Color(0xffE6E8E7),
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                    right: 16,
-                                  ),
+                                  width: MediaQuery.of(context).size.width / 2.45,
+                                  decoration: CustomDecorations().baseBackgroundDecoration(
+                                    10.0, 1.0, Colors.transparent, Color(0xffE6E8E7)),
+                                  padding: const EdgeInsets.only(right: 16),
                                   alignment: Alignment.center,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     spacing: 10,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 5,
-                                        ),
+                                        padding: const EdgeInsets.only(bottom: 5),
                                         child: SizedBox(
                                           height: 16,
                                           width: 16,
@@ -296,8 +218,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       Column(
                                         mainAxisAlignment:
                                         MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           const Row(
                                             mainAxisAlignment:
@@ -305,9 +226,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                             children: [
                                               CustomText(
                                                 title: 'Passenger',
-                                                color:
-                                                AppColors
-                                                    .textFieldTextColor,
+                                                color: AppColors.textFieldTextColor,
                                                 fontWeight:
                                                 FontWeight.w400,
                                                 fontSize: 12,
@@ -430,18 +349,10 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                               setState(() {});
                                             },
                                             child: StatefulBuilder(
-                                              builder: (
-                                                  context,
-                                                  newState,
-                                                  ) {
+                                              builder: (context, newState) {
                                                 return Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                    left: 20.0,
-                                                    right: 20.0,
-                                                    top: 0,
-                                                    bottom: 20,
-                                                  ),
+                                                  const EdgeInsets.only(left: 20.0, right: 20.0, top: 0, bottom: 20),
                                                   child: Container(
                                                     height: 310.0,
                                                     decoration: CustomDecorations().baseBackgroundDecoration(15.0,1.0,Colors.white,Colors.transparent),
@@ -450,30 +361,18 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                          const EdgeInsets.only(
-                                                            left:
-                                                            20.0,
-                                                            right:
-                                                            20,
-                                                            top: 3,
-                                                          ),
+                                                          const EdgeInsets.only(left: 20.0, right: 20, top: 3),
                                                           child: Row(
                                                             children: [
                                                               Column(
                                                                 children: [
-                                                                  const SizedBox(
-                                                                    height:
-                                                                    5,
-                                                                  ),
+                                                                  const SizedBox(height: 5),
                                                                   SvgPicture.asset(
                                                                     'assets/create_booking/search.svg',
                                                                   ),
                                                                 ],
                                                               ),
-                                                              const SizedBox(
-                                                                width:
-                                                                15,
-                                                              ),
+                                                              const SizedBox(width: 15),
                                                               SizedBox(
                                                                 height: 45,
                                                                 width: MediaQuery.of(context).size.width / 1.53,
@@ -493,8 +392,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                                                       color: Color(0xFF535353),
                                                                       fontWeight:
                                                                       FontWeight.w500,
-                                                                      fontSize:
-                                                                      16,
+                                                                      fontSize: 16,
                                                                     ),
                                                                     hintText: 'Search',
                                                                   ),
@@ -603,41 +501,30 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                       ),
                       const SizedBox(height: 40),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 21.0,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
                         child: CustomButtons(
                           isIcon: false,
                           onTap: () async {
                           if (isTapOneway == 0) {
-                              final invalid =
-                                  fromController.text.isEmpty ||
-                                      toController.text.isEmpty ||
-                                      dateController
-                                          .text
-                                          .isEmpty ||
-                                      timeController
-                                          .text
-                                          .isEmpty ||
-                                      currencyController
-                                          .text
-                                          .isEmpty;
-                              if (invalid) {
-                                showRequiredFieldDialog(
-                                  context,
-                                );
+                            final invalid =
+                            fromController.text.isEmpty ||
+                            toController.text.isEmpty ||
+                            dateController.text.isEmpty ||
+                            timeController.text.isEmpty ||
+                            currencyController.text.isEmpty;
+                            if (invalid) {
+                              showRequiredFieldDialog(context);
                               } else {
-                                print('showw thiss ===');
+                                print('show thiss ===');
                                 await showModalBottomSheet(
                                   backgroundColor:
                                   Colors.transparent,
                                   context: context,
                                   isScrollControlled: true,
-                                  builder:
-                                      (_) => DraggableSheetWidget(
+                                  builder: (_) => DraggableSheetWidget(
                                     isTapOneway: true,
                                     bookingSearchId: '',
-                                  ),
+                                  ), 
                                 );
                               }
                             } else {
@@ -654,8 +541,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                   Colors.transparent,
                                   context: context,
                                   isScrollControlled: true,
-                                  builder:
-                                      (_) => DraggableSheetWidget(
+                                  builder:  (_) => DraggableSheetWidget(
                                     isTapOneway: true,
                                     bookingSearchId: '',
                                   ),
