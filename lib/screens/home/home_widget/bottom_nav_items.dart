@@ -36,6 +36,7 @@ class _RootShellState extends State<RootShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       extendBody: true, 
       body: IndexedStack(
         index: bottomBarIndex,

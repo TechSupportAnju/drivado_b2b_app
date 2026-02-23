@@ -24,36 +24,41 @@ class CustomBottomNav extends StatelessWidget {
       gapLocation: GapLocation.center,
       blurEffect: true,
       notchSmoothness: NotchSmoothness.softEdge,
-    
+      height: 70,
       shadow: BoxShadow(
-        color: Color(0XFF000000).withOpacity(0.25),
+        color: Color(0x3F000000),
         blurRadius: 18,
-        
+        offset: Offset(0, 4),
+        spreadRadius: 0,
       ),
       onTap: (index) => onTap(index),
       tabBuilder: (index, isActive) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              _icon(index, isActive),
-              width: 20,
-              height: 20,
-              colorFilter: ColorFilter.mode(
-                isActive ? activeColor : inactiveColor,
-                BlendMode.srcIn,
+        return SizedBox(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+          
+            children: [
+              SvgPicture.asset(
+                _icon(index, isActive),
+                width: 20,
+                height: 20,
+                colorFilter: ColorFilter.mode(
+                  isActive ? activeColor : inactiveColor,
+                  BlendMode.srcIn,
+                ),
               ),
-            ),
-            CustomText(
-              title: _label(index),
-                fontSize: isActive? 10 : 10,
-                color: isActive ? activeColor : inactiveColor,
-                fontWeight: isActive? FontWeight.w700 : FontWeight.w500,
-                height: 2.0,
-                letterSpacing: 0.1,
-            ),
-          ],
+              
+              CustomText(
+                title: _label(index),
+                  fontSize: isActive? 10 : 10,
+                  color: isActive ? activeColor : inactiveColor,
+                  fontWeight: isActive? FontWeight.w700 : FontWeight.w500,
+                  height: 2.0,
+                  letterSpacing: 0.1,
+              ),
+            ],
+          ),
         );
       },
     );
