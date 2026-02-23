@@ -1,17 +1,12 @@
 import 'package:drivado_b2b_app/screens/common_widgets/country_code_widget/contact_text_field.dart';
-import 'package:drivado_b2b_app/screens/common_widgets/country_code_widget/country_code_dialog_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
-import 'package:drivado_b2b_app/utils/constant.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 class AddUserPage extends StatefulWidget {
   final bool isEdit;
   const AddUserPage({super.key, required this.isEdit});

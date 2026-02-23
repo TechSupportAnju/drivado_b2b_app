@@ -1,4 +1,3 @@
-import 'package:drivado_b2b_app/screens/bookings/bookings_widget/common_button.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';

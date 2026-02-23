@@ -1,5 +1,6 @@
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_id.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancel_bottom_sheet.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/custom_booking_box.dart';
 
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/flight_detail_widget.dart';
@@ -58,7 +59,14 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (context) {
+                              return CancelBottomSheet();
+                            },
+                          );
                         },
                         child: Container(
                           height: 40,
@@ -181,7 +189,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                               const SizedBox(width: 5,),
                                               Container(
                                                 height: 22,
-                                                decoration: CustomDecorations().baseBackgroundDecoration(20.0, 0.0,Colors.grey, Colors.transparent, ),
+                                                decoration: CustomDecorations().baseBackgroundDecoration(20.0, 0.0,Color(0XFFF5F6FA), Colors.transparent, ),
                                                 padding: const EdgeInsets.only(left: 8, right: 8, top: 0.8),
                                                 alignment: Alignment.center,
                                                 child: Row(
