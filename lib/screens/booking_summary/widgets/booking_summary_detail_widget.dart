@@ -193,7 +193,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                               dashGapColor:    widget.isTapOneway?  Colors.transparent : Colors.transparent,
                               dashGapRadius: 0.0,
                             ),
-                          ) , // No indicator for the middle tile
+                          ) , 
                         ),
                         beforeLineStyle:  LineStyle(
                           color:   widget.isTapOneway? Color(0xFF606060) : Colors.transparent  ,

@@ -11,7 +11,7 @@ import 'package:drivado_b2b_app/screens/create_booking/widgets/greeting_widget.d
 import 'package:drivado_b2b_app/screens/create_booking/widgets/hourly_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/oneway_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/ride_type_options.dart';
-import 'package:drivado_b2b_app/screens/create_booking/widgets/show_draggable_sheet_widget.dart';
+import 'package:drivado_b2b_app/screens/vehicle_selection/widget/show_draggable_sheet_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/show_error_required_field_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';

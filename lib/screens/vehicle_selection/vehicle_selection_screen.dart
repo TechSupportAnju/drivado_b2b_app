@@ -8,10 +8,9 @@ import 'package:drivado_b2b_app/screens/vehicle_selection/widget/max_data.dart';
 import 'package:drivado_b2b_app/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../common_widgets/custom_decoration.dart';
-import '../create_booking/widgets/car_card_widget.dart';
+import 'widget/car_card_widget.dart';
 
 class VehicleSelectionPage extends StatefulWidget {
   final vehiclesList;
