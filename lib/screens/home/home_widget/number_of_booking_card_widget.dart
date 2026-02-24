@@ -59,7 +59,7 @@ class _NumberOfBookingCardWidgetState extends State<NumberOfBookingCardWidget> {
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
 
           CustomText(
             title: widget.count.toString(),
@@ -69,7 +69,7 @@ class _NumberOfBookingCardWidgetState extends State<NumberOfBookingCardWidget> {
             height: 1,
           ),
 
-          const SizedBox(height: 2),
+          const SizedBox(height: 4),
 
           CustomText(
             title: widget.status.toString(),

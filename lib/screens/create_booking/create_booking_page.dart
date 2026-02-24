@@ -98,9 +98,9 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                           setState(() {
                            if(value == RideType.hourly) {
                              isTapOneway = 1;
-                           } else {
-                             isTapOneway = 0;
-                           }
+                            } else {
+                              isTapOneway = 0;
+                            }
                           });
                         },
                       ),

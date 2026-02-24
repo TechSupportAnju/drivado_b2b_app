@@ -5,7 +5,7 @@ class StatusWidget extends StatefulWidget {
   final String text;
   final Color borderColor;
   final double borderWidth;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final BorderRadius borderRadius;
   final EdgeInsetsGeometry padding;
   final Color? textColor;
@@ -17,7 +17,7 @@ class StatusWidget extends StatefulWidget {
     required this.text,
     this.borderColor = Colors.black,
     this.borderWidth = 1,
-    this.backgroundColor = Colors.transparent,
+    this.backgroundColor,
     this.borderRadius = const BorderRadius.all(Radius.circular(40)),
     this.padding = const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
     this.textColor, 
@@ -48,6 +48,7 @@ class _StatusWidgetState extends State<StatusWidget> {
         color: widget.textColor ?? Colors.transparent,
         fontWeight: widget.fontWeight ?? FontWeight.w500,
         height: 1,
+        letterSpacing: 0.7,
       ),
     );
   }
