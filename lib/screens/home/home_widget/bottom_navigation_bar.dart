@@ -24,7 +24,7 @@ class CustomBottomNav extends StatelessWidget {
       gapLocation: GapLocation.center,
       blurEffect: true,
       notchSmoothness: NotchSmoothness.softEdge,
-      height: 70,
+      height: 92,
       shadow: BoxShadow(
         color: Color(0x3F000000),
         blurRadius: 18,
@@ -51,7 +51,7 @@ class CustomBottomNav extends StatelessWidget {
               
               CustomText(
                 title: _label(index),
-                  fontSize: isActive? 10 : 10,
+                  fontSize: isActive? 12 : 12,
                   color: isActive ? activeColor : inactiveColor,
                   fontWeight: isActive? FontWeight.w700 : FontWeight.w500,
                   height: 2.0,

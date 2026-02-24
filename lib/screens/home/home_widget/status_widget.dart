@@ -48,6 +48,7 @@ class _StatusWidgetState extends State<StatusWidget> {
         color: widget.textColor ?? Colors.transparent,
         fontWeight: widget.fontWeight ?? FontWeight.w500,
         height: 1,
+        letterSpacing: 0.7,
       ),
     );
   }
