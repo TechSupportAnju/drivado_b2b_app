@@ -37,7 +37,7 @@ class _RootShellState extends State<RootShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      extendBody: true, 
+      extendBody: false, 
       body: IndexedStack(
         index: bottomBarIndex,
         children: pages,

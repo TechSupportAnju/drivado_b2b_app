@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBody: false,
       backgroundColor:Color(0XFFFFFFFF),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -74,10 +75,14 @@ class _HomePageState extends State<HomePage> {
                   Colors.transparent,
                 ),
                 child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.all(0),
+                  physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom +
+                          kBottomNavigationBarHeight + 
+                          92, 
+                    ),
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.7, // fixed height
+                    //height: MediaQuery.of(context).size.height * 0.7, 
                     decoration: CustomDecorations().baseBackgroundDecoration(
                       36.0,
                       1.0,
