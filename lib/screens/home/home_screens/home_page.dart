@@ -22,8 +22,7 @@ class _HomePageState extends State<HomePage> {
       extendBody: false,
       backgroundColor:Color(0XFFFFFFFF),
       body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        // width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.9,
         child: Stack(
           children: [
             Container(
@@ -63,11 +62,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            Positioned(
-              top:  150,
+            Positioned.fill(
+              top: 150,
               child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
                 decoration: CustomDecorations().baseBackgroundDecoration(
                   36.0,
                   1.0,
@@ -77,12 +74,9 @@ class _HomePageState extends State<HomePage> {
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                     padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom +
-                          kBottomNavigationBarHeight + 
-                          92, 
+                      bottom: kBottomNavigationBarHeight 
                     ),
                   child: Container(
-                    //height: MediaQuery.of(context).size.height * 0.7, 
                     decoration: CustomDecorations().baseBackgroundDecoration(
                       36.0,
                       1.0,
@@ -111,6 +105,55 @@ class _HomePageState extends State<HomePage> {
                                 CustomText(title: "Total Booking", color: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12),
                                 SizedBox(height: 8),
                                 CustomText(title: "1232", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 32),
+                                SizedBox(height: 12),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    NumberOfBookingCardWidget(
+                                      svgPath: 'assets/home/calendar_icon.svg',
+                                      iconBgColor: const Color(0xFFFEEECC).withOpacity(0.3),
+                                      count: 600,
+                                      status: "CONFIRMED",
+                                    ),
+                                    NumberOfBookingCardWidget(
+                                      svgPath: 'assets/home/calendar_tick_icon.svg',
+                                      iconBgColor: const Color(0xFFCEFFE0).withOpacity(0.3),
+                                      count: 600,
+                                      status: "COMPLETED",
+                                    ),
+                                    NumberOfBookingCardWidget(
+                                      svgPath: 'assets/home/calendar_remove_icon.svg',
+                                      iconBgColor: const Color(0xFFFFDBDF).withOpacity(0.3),
+                                      count: 600,
+                                      status: "CANCELLED",
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(12),
+                            decoration: CustomDecorationsCards().baseBackgroundShadow(
+                              radius: 12,
+                              smooth: 1,
+                              color: Colors.white,
+                              blurRadius: 4,
+                              boxShadowColor: Color(0XFF606060).withOpacity(0.16),
+                              x: 0,
+                              y: 0
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(title: "Total Booking hello", color: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12),
+                                SizedBox(height: 8),
+                                CustomText(title: "12324444", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 32),
                                 SizedBox(height: 12),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
