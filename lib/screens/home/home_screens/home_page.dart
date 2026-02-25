@@ -1,4 +1,3 @@
-import 'package:drivado_b2b_app/screens/bookings/booking_list_page.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
@@ -26,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         child: Stack(
           children: [
             Container(
-              height: 230,
+              height: 212,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 color: Color(0xFF190C0C),
