@@ -8,15 +8,15 @@ import 'package:flutter_svg/svg.dart';
 
 class BookingListPage extends StatefulWidget {
   const BookingListPage({super.key});
-
   @override
   State<BookingListPage> createState() => _BookingListPageState();
 }
-
 class _BookingListPageState extends State<BookingListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBody: true,
       backgroundColor: Color(0XFFFFFFFF),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -149,11 +149,12 @@ class _BookingListPageState extends State<BookingListPage> {
               ),
               Positioned(
                 top: 250,
+                left: 0,
+                right: 0,
+                bottom: 0,
                 child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
                   decoration: CustomDecorations().baseBackgroundDecoration(
-                    36.0,
+                    0.0,
                     1.0,
                     Color(0XFFF5F6FA),
                     Colors.transparent,
