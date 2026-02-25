@@ -23,6 +23,7 @@ class _RootShellState extends State<RootShell> {
     BookingListPage(),
     UserMangementPage(),
     MorePage(),
+    CreateBookingPage(),
   ];
 
   @override
@@ -38,7 +39,9 @@ class _RootShellState extends State<RootShell> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: false, 
-      body: IndexedStack(
+      body:  bottomBarIndex == 4
+          ? CreateBookingPage()
+          : IndexedStack(
         index: bottomBarIndex,
         children: pages,
       ),
@@ -46,7 +49,10 @@ class _RootShellState extends State<RootShell> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBookingPage()));
+            setState(() {
+              bottomBarIndex = 4; // index of AddScreen
+            });
+          // Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBookingPage()));
         },
         child: Container(
           height: 58,
@@ -59,8 +65,9 @@ class _RootShellState extends State<RootShell> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNav(
-        activeIndex: bottomBarIndex,
+      bottomNavigationBar:
+      CustomBottomNav(
+        activeIndex: bottomBarIndex > 3 ? -1 : bottomBarIndex,
         onTap: (index) {
           setState(() {
             bottomBarIndex = index;

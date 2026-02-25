@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Drivado b2b',
         theme: ThemeData(
+            fontFamily: 'PlusJakartaSans',
             primarySwatch: buildMaterialColor(AppColors.secondary),
             useMaterial3: false
         ),
