@@ -15,9 +15,7 @@ class _BookingListPageState extends State<BookingListPage> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       backgroundColor: Color(0XFFFFFFFF),
-      appBar: CommonHeader(
-        
-      ),
+      appBar: CommonHeader(),
       body: SizedBox(
         height: MediaQuery.of(context).size.height * 0.9,
         width: MediaQuery.of(context).size.width,
