@@ -1,4 +1,5 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_header_widget_test.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
@@ -35,31 +36,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 31),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 40,
-                    width: 40,
-                    child: SvgPicture.asset("assets/home/profile_icon.svg")
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 2,
-                      children: [
-                        CustomText(title: "Hello, Sumit", color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14, maxLine: 1, 
-                        overflow: TextOverflow.ellipsis, height: 1.4,),
-                        CustomText(title: "test@drivado.com", color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14, maxLine: 1,
-                        overflow: TextOverflow.ellipsis, height: 1.4),
-                      ],
-                    ),
-                  ),
-                  notificationWidget()
-                ],
-              ),
+              child: CommonHeaderTest()
             ),
             Positioned.fill(
               top: 150,

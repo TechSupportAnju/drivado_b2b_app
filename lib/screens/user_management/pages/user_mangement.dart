@@ -1,4 +1,5 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_header_widget_test.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/animated_toggle.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../common_widgets/appbar_widget.dart';
 
 class UserMangementPage extends StatefulWidget {
   const UserMangementPage({super.key});
@@ -66,25 +69,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 14,),
-                    Row(
-                      children: [
-                        SvgPicture.asset('assets/user_management/userPic.svg',),
-                        const SizedBox(width: 16,),
-                        Column(
-                          children: [
-                           SizedBox(
-                                    width: MediaQuery.of(context).size.width/2,
-                                    child: const CustomText(title: 'Hello Sumit', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14)),
-                            const SizedBox(height: 3,),
-                            SizedBox(
-                                width: MediaQuery.of(context).size.width/2,
-                                child: const CustomText(title: 'test@drivado.com', color: Color(0xFFAEB1C1), fontWeight: FontWeight.w500, fontSize: 14)),
-                          ],
-                        ),
-                        const Spacer(),
-                        notificationWidget()
-                      ],
-                    ),
+                    CommonHeaderTest(),
                     const SizedBox(height: 16,),
                     Container(
                       height: 52,
