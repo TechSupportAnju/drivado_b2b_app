@@ -171,7 +171,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                   ),
                   Positioned(
                     right: 10,
-                    bottom: 120,
+                    bottom: 40,
                     child: userCompanyAddButtonWidget(context, toggleValue),
                   )
                 ],
