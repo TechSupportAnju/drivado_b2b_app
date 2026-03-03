@@ -21,7 +21,6 @@ class _BookingListPageState extends State<BookingListPage> {
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
-            
             Positioned(
               top: 0,
               left: 0,

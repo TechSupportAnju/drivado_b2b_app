@@ -11,11 +11,11 @@ class BookingCardWidget extends StatelessWidget {
   const BookingCardWidget({
     super.key,
   });
-
+  
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: 4,
+      itemCount: 9,
       padding: EdgeInsets.only(top: 16, bottom: 16),
       itemBuilder: (context, index) {
         return Padding(
@@ -72,13 +72,13 @@ class BookingCardWidget extends StatelessWidget {
                   lineThickness: 1.0,
                   dashColor: Colors.grey,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: SizedBox(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -86,24 +86,27 @@ class BookingCardWidget extends StatelessWidget {
                             CustomText(title: "D0223-6854", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 10, height: 1),
                             SizedBox(height: 8),
                             CustomText(title: "Thu, Jan 18", color: Color(0XFFFB4156), fontWeight: FontWeight.w700, fontSize: 12, height: 1,),
-                            SizedBox(height: 4),
+                            SizedBox(height: 8),
                             CustomText(title: "13:25", color: Color(0XFF606060), fontWeight: FontWeight.w800, fontSize: 24, height: 1,),
-                            SizedBox(height: 4),
+                            //SizedBox(height: ),
                           ],
                         ),
                       ),
-                      SizedBox(width: 13),
-                      SizedBox(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset("assets/booking/source_icon.svg"),
-                                  SizedBox(width: 9),
-                                  Expanded(
+                    ),
+                    // SizedBox(width: 1),
+                    SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset("assets/booking/source_icon.svg"),
+                                SizedBox(width: 9),
+                                Expanded(
+                                  child: Transform.translate(
+                                    offset: Offset(0, 4),
                                     child: CustomText(
                                       title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo", 
                                       color: Color(0XFF606060), 
@@ -114,44 +117,51 @@ class BookingCardWidget extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: const DottedLine(
-                                direction: Axis.vertical,
-                                lineLength: 25,
-                                lineThickness: 1,
-                                dashLength: 3.0,
-                                dashColor: Color(0xFF585858),
-                                dashRadius: 0.0,
-                                dashGapLength: 2.0,
-                                dashGapColor: Colors.transparent,
-                                dashGapRadius: 0.0,
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 6),
+                                child: const DottedLine(
+                                  direction: Axis.vertical,
+                                  lineLength: 25,
+                                  lineThickness: 1,
+                                  dashLength: 3.0,
+                                  dashColor: Color(0xFF585858),
+                                  dashRadius: 0.0,
+                                  dashGapLength: 2.0,
+                                  dashGapColor: Colors.transparent,
+                                  dashGapRadius: 0.0,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset("assets/booking/destination_icon.svg"),
-                                  SizedBox(width: 9),
-                                  Expanded(
-                                    child: CustomText(
-                                      title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo", 
-                                      color: Color(0XFF606060), 
-                                      fontWeight: FontWeight.w500, 
-                                      fontSize: 10, 
-                                      height: 1.4, 
-                                      maxLine: 2
-                                    ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset("assets/booking/destination_icon.svg"),
+                                SizedBox(width: 9),
+                                Expanded(
+                                  child: CustomText(
+                                    title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo", 
+                                    color: Color(0XFF606060), 
+                                    fontWeight: FontWeight.w500, 
+                                    fontSize: 10, 
+                                    height: 1.4, 
+                                    maxLine: 2
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: 12,),
-                            Row(
+                          ),
+                          
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 BookingTypeWidget(bookingType: "Oneway", textColor: Color(0XFFFB4156), fontWeight: FontWeight.w600, fontSize: 12, height: 1),
@@ -172,11 +182,11 @@ class BookingCardWidget extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
                 Stack(
                   alignment: Alignment.center,

@@ -6,8 +6,7 @@ class CustomBookingSummaryDataRowWithIcon extends StatelessWidget {
   final String title;
   final String image;
   final String desc;
-  const CustomBookingSummaryDataRowWithIcon(
-      {super.key, required this.title, required this.desc, required this.image});
+  const CustomBookingSummaryDataRowWithIcon({super.key, required this.title, required this.desc, required this.image});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,7 +18,7 @@ class CustomBookingSummaryDataRowWithIcon extends StatelessWidget {
             child: Row(
               children: [
                 SvgPicture.asset(image),
-                SizedBox(width: 5,),
+                SizedBox(width: 5),
                 CustomText(
                   title: title, 
                   color: Color(0XFF606060), 
@@ -33,9 +32,13 @@ class CustomBookingSummaryDataRowWithIcon extends StatelessWidget {
         ),
         Flexible(
           flex: 1,
-          child: CustomText(title: desc,
-              height: 1.0,
-              color: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12)
+          child: CustomText(
+            title: desc,
+            height: 1.0,
+            color: Color(0XFF0D0D0D), 
+            fontWeight: FontWeight.w500, 
+            fontSize: 12
+          )
         ),
       ],
     );

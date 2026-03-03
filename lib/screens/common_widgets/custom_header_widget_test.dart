@@ -4,7 +4,6 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
 class CommonHeaderTest extends StatelessWidget implements PreferredSizeWidget {
   const CommonHeaderTest({super.key});
 
