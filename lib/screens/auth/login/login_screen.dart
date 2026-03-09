@@ -10,7 +10,10 @@ import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:drivado_b2b_app/screens/auth/login/bloc/login_bloc.dart';
+import 'package:drivado_b2b_app/screens/auth/login/bloc/login_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -53,227 +56,276 @@ class _LoginPagePageState extends State<LoginPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: Stack(
-          children: [
-            Column(
+        body: BlocConsumer<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => RootShell()),
+              );
+            } else if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+          builder: (context, state) {
+            final bool isLoading = state is LoginLoading;
+
+            return Stack(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 280,
-                  decoration: BoxDecoration(
-                      color: Color(0xff190C0C),
-                      image: DecorationImage(
-                          image: AssetImage(
-                              'assets/auth/loginbg.png'),
-                          fit: BoxFit.fill)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          height: 70,
-                        ),
-                        Row(
+                Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 280,
+                      decoration: BoxDecoration(
+                          color: Color(0xff190C0C),
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/auth/loginbg.png'),
+                              fit: BoxFit.fill)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CustomText(
-                                title:'Login to',
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 32),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                text: 'your ',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 32,
-                                    color: Colors.white),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: 'Account',
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 32,
-                                          color: AppColors.secondary)),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 18,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned.fill(
-              top: 250,
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: CustomDecorations().baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 0),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20,),
-                          CustomTextField(
-                              title: 'Email ID',
-                              hintText: 'Enter your email ID',
-                              controller: emailLogin,
-                              isPassword: false,
-                              icon: 'null',
-                              height: 52,
-                              width: MediaQuery.of(context).size.width,
-                              onChanged: (val) {
-                              isEmailValid = EmailValidator.validate(emailLogin.text);
-                              if(isEmailValid && emailLogin.text != '') {
-                                  isEmailValidator = false;
-                              }else {
-                                  isEmailValidator = true;
-                              }
-                              setState(() {
-                              });
-                            },
-                            onTap: () {
-                              isTapEmailName = true;
-                              setState(() {
-                              });
-                            },
-                              suffix: false,
-                              readOnly: false,
-                              astric: true,
-                              error: isEmailValidator,),
-                          const SizedBox(height: 12,),
-                          CustomTextField(
-                              title: 'Password',
-                              hintText: 'Enter your password',
-                              controller: password,
-                              isPassword: observeText,
-                              icon: 'null',
-                              height: 52,
-                              width: MediaQuery.of(context).size.width,
-                            onChanged: (val) {
-                              if(password.text != '') {
-                                isPasswordValidator = false;
-                              }else {
-                                isPasswordValidator = true;
-                              }
-                              setState(() {
-                              });
-                            },
-                            onTap: () {
-                              // isTapPassword = true;
-                              // setState(() {
-                              // });
-                            },
-                              onTapSuffix: () {
-                                setState(() {
-                                  observeText = !observeText;
-                                });
-                              },
-                              suffix: true,
-                              readOnly: false,
-                              astric: true,
-                              error: isPasswordValidator,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: ( ){
-                                  setState(() {
-                                    isRemember = !isRemember;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      isRemember ? Icons.check_box :  Icons.check_box_outline_blank_rounded,
-                                      color: isRemember ? AppColors.secondary : Color(0xFF606060),
-                                      size: 17,
-                                    ),
-                                    const SizedBox(
-                                      width: 7,
-                                    ),
-                                    const CustomText(
-                                        title: 'Remember me',
-                                        color: Color(0xff606060),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12),
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
-                                },
-                                child: const CustomText(
-                                    title: 'Forgot Password?',
-                                    color: AppColors.secondary,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 32,
-                          ),
-                          CustomButtons(
-                              isIcon: false,
-                              onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => RootShell()));
-                          }, title: 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-                          const SizedBox(
-                            height: 32,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                text: 'Don’t have an account ?  ',
-                                style: GoogleFonts.plusJakartaSans(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    color: Color(0xff606060)),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: 'Sign up',
-                                      style: GoogleFonts.plusJakartaSans(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                          color: AppColors.secondary)),
-                                ],
-                              ),
+                            const SizedBox(
+                              height: 70,
                             ),
-                          )
-                        ],
+                            Row(
+                              children: [
+                                CustomText(
+                                    title:'Login to',
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 32),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    text: 'your ',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 32,
+                                        color: Colors.white),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Account',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 32,
+                                              color: AppColors.secondary)),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 18,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  )
-              ),
-            ),
-          ],
+                  ],
+                ),
+                Positioned.fill(
+                  top: 250,
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: CustomDecorations().baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20,),
+                              CustomTextField(
+                                  title: 'Email ID',
+                                  hintText: 'Enter your email ID',
+                                  controller: emailLogin,
+                                  isPassword: false,
+                                  icon: 'null',
+                                  height: 52,
+                                  width: MediaQuery.of(context).size.width,
+                                  onChanged: (val) {
+                                    isEmailValid = EmailValidator.validate(emailLogin.text);
+                                    if(isEmailValid && emailLogin.text != '') {
+                                      isEmailValidator = false;
+                                    }else {
+                                      isEmailValidator = true;
+                                    }
+                                    setState(() {
+                                    });
+                                  },
+                                  onTap: () {
+                                    isTapEmailName = true;
+                                    setState(() {
+                                    });
+                                  },
+                                  suffix: false,
+                                  readOnly: false,
+                                  astric: true,
+                                  error: isEmailValidator,),
+                              const SizedBox(height: 12,),
+                              CustomTextField(
+                                title: 'Password',
+                                hintText: 'Enter your password',
+                                controller: password,
+                                isPassword: observeText,
+                                icon: 'null',
+                                height: 52,
+                                width: MediaQuery.of(context).size.width,
+                                onChanged: (val) {
+                                  if(password.text != '') {
+                                    isPasswordValidator = false;
+                                  }else {
+                                    isPasswordValidator = true;
+                                  }
+                                  setState(() {
+                                  });
+                                },
+                                onTap: () {
+                                  // isTapPassword = true;
+                                  // setState(() {
+                                  // });
+                                },
+                                onTapSuffix: () {
+                                  setState(() {
+                                    observeText = !observeText;
+                                  });
+                                },
+                                suffix: true,
+                                readOnly: false,
+                                astric: true,
+                                error: isPasswordValidator,
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: ( ){
+                                      setState(() {
+                                        isRemember = !isRemember;
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          isRemember ? Icons.check_box :  Icons.check_box_outline_blank_rounded,
+                                          color: isRemember ? AppColors.secondary : Color(0xFF606060),
+                                          size: 17,
+                                        ),
+                                        const SizedBox(
+                                          width: 7,
+                                        ),
+                                        const CustomText(
+                                            title: 'Remember me',
+                                            color: Color(0xff606060),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                                    },
+                                    child: const CustomText(
+                                        title: 'Forgot Password?',
+                                        color: AppColors.secondary,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 32,
+                              ),
+                              CustomButtons(
+                                  isIcon: false,
+                                  onTap: () {
+                                    final email = emailLogin.text.trim();
+                                    final pass = password.text.trim();
+
+                                    final validEmail = EmailValidator.validate(email);
+                                    final validPassword = pass.isNotEmpty;
+
+                                    if (!validEmail || !validPassword) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please enter valid email and password.'),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    context.read<LoginCubit>().login(
+                                      email: email,
+                                      password: pass,
+                                    );
+                                  }, title: isLoading ? 'Logging in...' : 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              if (isLoading)
+                                const CircularProgressIndicator(
+                                  color: AppColors.secondary,
+                                ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+                                },
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Don’t have an account ?  ',
+                                    style: GoogleFonts.plusJakartaSans(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        color: Color(0xff606060)),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Sign up',
+                                          style: GoogleFonts.plusJakartaSans(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
+                                              color: AppColors.secondary)),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                  ),
+                ),
+                if (isLoading)
+                  Container(
+                    color: Colors.black.withOpacity(0.2),
+                    child: const Center(
+                      child: CircularProgressIndicator(color: AppColors.secondary),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ),
-
     );
   }
 }
