@@ -137,7 +137,7 @@ class _PassengerDetailsPageState extends State<PassengerDetailsPage> {
                       children: [
                         SizedBox(height: 15,),
                         CustomTextField(
-                          title: 'First',
+                          title: 'First name',
                           hintText: 'Enter your first name',
                           controller: firstName,
                           isPassword: false,
@@ -217,7 +217,7 @@ class _PassengerDetailsPageState extends State<PassengerDetailsPage> {
                           error: isEmailIdValidator,),
                         const SizedBox(height: 12),
                         CustomTextField(
-                          title: 'Flight Number (Optional)',
+                          title: 'Flight number (Optional)',
                           hintText: 'Enter your flight number',
                           controller: flightNo,
                           isPassword: false,

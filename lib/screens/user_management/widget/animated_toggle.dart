@@ -67,14 +67,14 @@ class _AnimatedToggleStateM extends State<AnimatedToggleManagement> {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: AnimatedAlign(
-            duration: const Duration(milliseconds: 250),
+            duration: const Duration(milliseconds: 400),
             curve: Curves.decelerate,
             alignment:
             initialPosition ? Alignment.centerLeft : Alignment.centerRight,
             child: Container(
               width: MediaQuery.of(context).size.width/2.3,
               height: 36,
-              decoration:CustomDecorations().baseBackgroundDecoration(6.0, 1.0, Color(0xFFF5F6FA), Color(0xFFE6E8E7)),
+              decoration:CustomDecorations().baseBackgroundDecoration(6.0, 1.0, Color(0xFFF7F7F8), Color(0xFFF7F7F8)),
               alignment: Alignment.center,
               child: CustomText(
                 title: initialPosition ? widget.values[0] : widget.values[1],

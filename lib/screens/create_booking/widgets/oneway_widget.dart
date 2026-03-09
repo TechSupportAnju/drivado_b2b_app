@@ -15,13 +15,13 @@ class _OnewayWidgetState extends State<OnewayWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 128,
+      height: 120,
       child: Stack(
         children: <Widget>[
           Positioned(
-            left: 21,
-            right: 21,
-            top: 2,
+            left: 16,
+            right: 16,
+            top: 0,
             child: CustomTextField(
               readOnly: true,
               title: 'From',
@@ -52,10 +52,10 @@ class _OnewayWidgetState extends State<OnewayWidget> {
             ),
           ),
           Positioned(
-            top: 74,
-            left: 21,
-            right: 21,
-            bottom: 2,
+            top: 68,
+            left: 16,
+            right: 16,
+            bottom: 0,
             child: CustomTextField(
               readOnly: true,
               title: 'To',

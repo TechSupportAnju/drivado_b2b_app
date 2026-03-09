@@ -7,6 +7,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:drivado_b2b_app/screens/constant/constant.dart';
+import 'package:drivado_b2b_app/screens/create_booking/widgets/create_booking_header_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/greeting_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/hourly_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/oneway_widget.dart';
@@ -61,25 +62,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
         height: MediaQuery.of(context).size.height,
         child: Stack(
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.32,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Color(0xff190C0C),
-                image: DecorationImage(
-                  image: AssetImage('assets/create_booking/mask.png'),
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 40),
-              child: Row(
-                children: [
-                  GreetingWidget(),
-                  const Spacer(),
-                  notificationWidget()
-                ],
-              ),
-            ),
+           CreateBookingHeaderWidget(),
             Positioned(
               top: 200,
                 child: Container(
@@ -88,7 +71,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                   decoration: CustomDecorations().baseBackgroundDecoration(25.0, 1.0, Colors.white, Colors.transparent,),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 0,
-                    vertical: 24,
+                    vertical: 16,
                   ),
                   child: Column(
                     children: [
@@ -107,10 +90,10 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                       SizedBox(height: 24),
                       isTapOneway == 0? 
                       OnewayWidget() : HourlyWidget(),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 21.0,
+                          horizontal: 16.0,
                         ),
                         child: Row(
                           mainAxisAlignment:
@@ -183,9 +166,9 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Row(
@@ -501,7 +484,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                       ),
                       const SizedBox(height: 40),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 21.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: CustomButtons(
                           isIcon: false,
                           onTap: () async {
