@@ -60,7 +60,7 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
   Widget build(BuildContext context) {
     final tabs = RideType.values;
     final width = MediaQuery.of(context).size.width;
-    final itemW = (width - 25) / tabs.length;
+    final itemW = (width - 50) / tabs.length;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -68,7 +68,7 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
         height: _height,
         decoration: BoxDecoration(
           color: _kBg,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(100),
           boxShadow: [
             BoxShadow(
               blurRadius: 12,
@@ -89,7 +89,7 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
                 margin: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(60),
                 ),
               ),
             ),
@@ -115,23 +115,29 @@ class _RideTypeSelectorState extends State<RideTypeSelector> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             _svg(iconPath),
-                            const SizedBox(width: 6),
+                            const SizedBox(width: 8),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CustomText(
-                                  title: label,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: isActive ? _kRed : _kGrey,
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width/3.5,
+                                  child: CustomText(
+                                    title: label,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: isActive ? _kRed : _kGrey,
+                                  ),
                                 ),
                                 SizedBox(height: 4),
-                                CustomText(
-                                  title: _subLabels[t]!,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: isActive ? _kRed : _kGrey,
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width/3.5,
+                                  child: CustomText(
+                                    title: _subLabels[t]!,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w500,
+                                    color: isActive ? _kRed : _kGrey,
+                                  ),
                                 ),
                               ],
                             ),

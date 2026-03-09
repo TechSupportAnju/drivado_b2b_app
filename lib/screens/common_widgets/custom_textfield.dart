@@ -113,7 +113,7 @@ class CustomTextField extends StatelessWidget {
                   transform: Matrix4.translationValues(0.0, 0.0, 0.0),
                   child: RichText(
                     text: TextSpan(
-                      text: readOnly
+                      text: controller.text.isEmpty
                           ? hintText
                           : title,
                       style: GoogleFonts.plusJakartaSans(

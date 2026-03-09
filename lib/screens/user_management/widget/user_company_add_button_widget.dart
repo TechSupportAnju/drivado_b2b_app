@@ -16,9 +16,9 @@ userCompanyAddButtonWidget(context, value){
     },
     child: Card(
       color: Colors.transparent,
-      shadowColor: AppColors.secondary.withOpacity(0.4),
-      surfaceTintColor: AppColors.secondary.withOpacity(0.4),
-      elevation: 14.0,
+      shadowColor: AppColors.secondary.withOpacity(0.2),
+      surfaceTintColor: AppColors.secondary.withOpacity(0.2),
+      elevation: 4.0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50)),
       child: Container(

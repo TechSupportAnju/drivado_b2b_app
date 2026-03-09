@@ -18,12 +18,12 @@ class _HourlyWidgetState extends State<HourlyWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 21.0,
-        vertical: 2,
+        horizontal: 16.0,
+        vertical: 0,
       ),
       child: Column(
         children: [
-            CustomTextField(
+          CustomTextField(
               readOnly: true,
               title: 'From',
               hintText: 'Enter your pickup location',
@@ -48,7 +48,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
               onChanged: (val) {},
               suffix: false, isPassword: false,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           CustomTextField(
             readOnly: true,
             title: 'Duration',
