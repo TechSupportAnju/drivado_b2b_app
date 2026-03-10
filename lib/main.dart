@@ -7,6 +7,8 @@ import 'package:drivado_b2b_app/screens/auth/login/bloc/login_bloc.dart';
 import 'package:drivado_b2b_app/screens/auth/login/repositories/login_repository.dart';
 import 'package:drivado_b2b_app/screens/auth/signup/bloc/signup_bloc.dart';
 import 'package:drivado_b2b_app/screens/auth/signup/repositories/sign_up_repository.dart';
+import 'package:drivado_b2b_app/screens/auth/forgot_password/bloc/forgot_password_cubit.dart';
+import 'package:drivado_b2b_app/screens/auth/forgot_password/repositories/forgot_password_repository.dart';
 
 void main() {
   runApp(
@@ -17,6 +19,11 @@ void main() {
         ),
         BlocProvider(
           create: (_) => SignupCubit(repository: SignupRepository()),
+        ),
+        BlocProvider(
+          create: (_) => ForgotPasswordCubit(
+            repository: ForgotPasswordRepository(),
+          ),
         ),
       ],
       child: const MyApp(),
