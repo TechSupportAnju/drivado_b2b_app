@@ -115,6 +115,7 @@ class _AddUserPageState extends State<AddUserPage> {
                   title: 'Username (Email ID)',
                   hintText: 'Enter your username (Email ID)',
                   controller: userEmailId,
+                  isPassword: false,
                   icon: 'null',
                   height: 52,
                   width: MediaQuery.of(context).size.width,
@@ -122,8 +123,8 @@ class _AddUserPageState extends State<AddUserPage> {
                   onTap: () {},
                   suffix: false,
                   readOnly: false,
-                  astric: false,
-                  isPassword: isUserEmailValidator),
+                  astric: true,
+                  error: isUserEmailValidator),
               const SizedBox(
                 height: 16,
               ),
@@ -131,6 +132,7 @@ class _AddUserPageState extends State<AddUserPage> {
                   title: 'First name',
                   hintText: 'Enter your first name',
                   controller: firstName,
+                  isPassword: false,
                   icon: 'null',
                   height: 52,
                   width: MediaQuery.of(context).size.width,
@@ -138,8 +140,8 @@ class _AddUserPageState extends State<AddUserPage> {
                   onTap: () {},
                   suffix: false,
                   readOnly: false,
-                  astric: false,
-                  isPassword: isFirstNameValidator),
+                  astric: true,
+                  error: isFirstNameValidator),
               const SizedBox(
                 height: 16,
               ),
@@ -149,13 +151,14 @@ class _AddUserPageState extends State<AddUserPage> {
                   controller: lastName,
                   icon: 'null',
                   height: 52,
+                  isPassword: false,
                   width: MediaQuery.of(context).size.width,
                   onChanged: () {},
                   onTap: () {},
                   suffix: false,
                   readOnly: false,
-                  astric: false,
-                  isPassword: false),
+                  astric: true,
+                  error: false),
               const SizedBox(
                 height: 16,
               ),
@@ -173,6 +176,7 @@ class _AddUserPageState extends State<AddUserPage> {
                   title: 'Email ID',
                   hintText: 'Enter your email id',
                   controller: emailId,
+                  isPassword: false,
                   icon: 'null',
                   height: 52,
                   width: MediaQuery.of(context).size.width,
@@ -180,8 +184,8 @@ class _AddUserPageState extends State<AddUserPage> {
                   onTap: () {},
                   suffix: false,
                   readOnly: false,
-                  astric: false,
-                  isPassword: isEmailValidator),
+                  astric: true,
+                  error: isEmailValidator),
               const SizedBox(
                 height: 16,
               ),
@@ -189,15 +193,23 @@ class _AddUserPageState extends State<AddUserPage> {
                   title: 'Password',
                   hintText: 'Enter your password',
                   controller: password,
+                  isPassword: observeText,
                   icon: 'null',
                   height: 52,
                   width: MediaQuery.of(context).size.width,
                   onChanged: () {},
-                  onTap: () {},
+                  onTap: () {
+
+                  },
+                  onTapSuffix: () {
+                    setState(() {
+                      observeText = !observeText;
+                    });
+                  },
                   suffix: true,
                   readOnly: false,
-                  astric: false,
-                  isPassword: isPasswordValidator),
+                  astric: true,
+                  error: isPasswordValidator),
               const SizedBox(
                 height: 16,
               ),
@@ -205,15 +217,23 @@ class _AddUserPageState extends State<AddUserPage> {
                   title: 'Confirm Password',
                   hintText: 'Enter your confirm password',
                   controller: confirmPassword,
+                  isPassword: observeTextC,
                   icon: 'null',
                   height: 52,
                   width: MediaQuery.of(context).size.width,
                   onChanged: () {},
-                  onTap: () {},
+                  onTap: () {
+
+                  },
+                  onTapSuffix: () {
+                    setState(() {
+                      observeTextC = !observeTextC;
+                    });
+                  },
                   suffix: true,
                   readOnly: false,
-                  astric: false,
-                  isPassword: isConfirmPasswordValidator),
+                  astric: true,
+                  error: isConfirmPasswordValidator),
               const SizedBox(
                 height: 32,
               ),

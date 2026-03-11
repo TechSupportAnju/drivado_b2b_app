@@ -23,6 +23,7 @@ class _OnewayWidgetState extends State<OnewayWidget> {
             right: 16,
             top: 0,
             child: CustomTextField(
+              isCreateBookingField: true,
               readOnly: true,
               title: 'From',
               hintText: 'Enter your pickup location',
@@ -57,6 +58,7 @@ class _OnewayWidgetState extends State<OnewayWidget> {
             right: 16,
             bottom: 0,
             child: CustomTextField(
+              isCreateBookingField: true,
               readOnly: true,
               title: 'To',
               hintText: 'Enter your drop off location',

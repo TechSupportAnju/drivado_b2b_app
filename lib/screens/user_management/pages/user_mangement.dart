@@ -124,21 +124,22 @@ class _UserMangementPageState extends State<UserMangementPage> {
               ),
             ),
           ),
-          const SizedBox(height: 11.5,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: AnimatedToggleManagement(
-              values: const ['Users', 'Companies'],
-              onToggleCallback: (value) {
-                setState(() {
-                  toggleValue = value;
-                  search.clear();
-                  filteredItems = allItems;
-                });
-              },
+          Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 11.5),
+              child: AnimatedToggleManagement(
+                values: const ['Users', 'Companies'],
+                onToggleCallback: (value) {
+                  setState(() {
+                    toggleValue = value;
+                    search.clear();
+                    filteredItems = allItems;
+                  });
+                },
+              ),
             ),
           ),
-          const SizedBox(height: 11.5,),
           Expanded(
             child: Container(
               color: Colors.white,

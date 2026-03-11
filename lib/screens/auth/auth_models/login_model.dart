@@ -2,6 +2,7 @@ class LoginResponseModel {
   final String? accessToken;
   final String? refreshToken;
   final String? phone;
+
   LoginResponseModel({
     this.accessToken,
     this.refreshToken,
@@ -9,25 +10,16 @@ class LoginResponseModel {
   });
 
   factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    return LoginResponseModel(
-      accessToken: json['accessToken'] ?? "",
-      refreshToken: json['refreshToken'] ?? "",
-      phone: json['user']['phone'] ?? "",
-    );
-  }
-}
-class SignupOtpResponseModel {
-  final String? refreshToken;
-  final String? message;
-  SignupOtpResponseModel({
-    this.refreshToken,
-    this.message,
-  });
+    final user = json['user'];
+    String? phone;
+    if (user is Map<String, dynamic>) {
+      phone = user['phone'] as String?;
+    }
 
-  factory SignupOtpResponseModel.fromJson(Map<String, dynamic> json) {
-    return SignupOtpResponseModel(
-      refreshToken: json['refreshToken'] ?? "",
-      message: json['message'] ?? "",
+    return LoginResponseModel(
+      accessToken: json['accessToken'] as String? ?? "",
+      refreshToken: json['refreshToken'] as String? ?? "",
+      phone: phone ?? "",
     );
   }
 }

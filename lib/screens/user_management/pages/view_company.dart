@@ -141,9 +141,9 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(width: 6,),
                     SizedBox(
-                      width: screenSize.width - 70,
+                      width: screenSize.width - 67,
                       height: screenSize.height,
                       child: isSelect == 0
                       ? SingleChildScrollView(
@@ -243,7 +243,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 15,),
+                            SizedBox(height: 12,),
                             CreditLimitWidget(title1: 'Total unpaid booking', title2: 'Available credit limit', value1: 'USD 462', value2: 'USD 462434'),
                             SizedBox(height: 10,),
                           ],
@@ -251,88 +251,96 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                       )
                       : Column(
                         children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                    image: AssetImage('assets/user_management/userPic.png'),
-                                  ),
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                      color: Colors.white, width: 1.5),
-                                ),
-                                padding: const EdgeInsets.all(5),
-                                alignment: Alignment.center,
-                              ),
-                              const SizedBox(width: 15),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                      title: 'Drivado transfers pvt ltd.',
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFF0D0D0D),
-                                      fontSize: 16),
-                                  const SizedBox(height: 3),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                          title: 'help@drivado.com',
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF3A434C),
-                                          fontSize: 12),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15,),
                           Container(
-                            height: 52,
-                            width: screenWidth ,
                             decoration: CustomDecorations().draggableSheetDecoration(10.0, 0.0, 10.0, 0.0, 1.0,  Colors.white, Color(0xFFEDF1F3)),
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: Row(
+                            padding: EdgeInsets.all(12.0),
+                            child: Column(
                               children: [
-                                search.text.isEmpty ? SvgPicture.asset('assets/user_management/search.svg', height: 18,
-                                    colorFilter: const ColorFilter.mode(
-                                        Color(0xFF606060), BlendMode.srcIn)
-                                ) : Container(),
-                                SizedBox(width: search.text.isEmpty ? 10 : 0,),
-                                Expanded(
-                                  child: TextField(
-                                      controller: search,
-                                      textAlignVertical: TextAlignVertical.center,
-                                      style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 16, color: Color(0xFF0D0D0D)),
-                                      decoration: InputDecoration(
-                                          isDense: true,
-                                          border: InputBorder.none,
-                                          hintStyle: GoogleFonts.plusJakartaSans(
-                                              color: Color(0xFF606060),
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16),
-                                          hintText: 'Search',
-                                          suffixIconConstraints: const BoxConstraints(),
-                                          suffixIcon: search.text.isNotEmpty ? GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              onTap: () {
-                                                setState(() {
-                                                  search.clear();
-                                                });
-                                              },
-                                              child: Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,)) : null
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                          image: AssetImage('assets/user_management/userPic.png'),
+                                        ),
+                                        borderRadius: BorderRadius.circular(100),
+                                        border: Border.all(
+                                            color: Colors.white, width: 1.5),
                                       ),
-                                      onChanged: (value) {
-                                        if(isSelect == 1) {
-                                          _filterList(value);
-                                        } else {
+                                      padding: const EdgeInsets.all(5),
+                                      alignment: Alignment.center,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                            title: 'Drivado transfers pvt ltd.',
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF0D0D0D),
+                                            fontSize: 16),
+                                        const SizedBox(height: 3),
+                                        Row(
+                                          children: [
+                                            CustomText(
+                                                title: 'help@drivado.com',
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFF3A434C),
+                                                fontSize: 12),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 12,),
+                                Container(
+                                  height: 52,
+                                  width: screenWidth ,
+                                  decoration: CustomDecorations().draggableSheetDecoration(10.0, 0.0, 10.0, 0.0, 1.0,  Color(0xFFF5F6FA), Color(0xFFF5F6FA)),
+                                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                  child: Row(
+                                    children: [
+                                      search.text.isEmpty ? SvgPicture.asset('assets/user_management/search.svg', height: 18,
+                                          colorFilter: const ColorFilter.mode(
+                                              Color(0xFF606060), BlendMode.srcIn)
+                                      ) : Container(),
+                                      SizedBox(width: search.text.isEmpty ? 10 : 0,),
+                                      Expanded(
+                                        child: TextField(
+                                            controller: search,
+                                            textAlignVertical: TextAlignVertical.center,
+                                            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 16, color: Color(0xFF0D0D0D)),
+                                            decoration: InputDecoration(
+                                                isDense: true,
+                                                border: InputBorder.none,
+                                                hintStyle: GoogleFonts.plusJakartaSans(
+                                                    color: Color(0xFF606060),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 16),
+                                                hintText: 'Search',
+                                                suffixIconConstraints: const BoxConstraints(),
+                                                suffixIcon: search.text.isNotEmpty ? GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    onTap: () {
+                                                      setState(() {
+                                                        search.clear();
+                                                      });
+                                                    },
+                                                    child: Icon(Icons.clear, color: Color(0xFF0D0D0D), size: 20,)) : null
+                                            ),
+                                            onChanged: (value) {
+                                              if(isSelect == 1) {
+                                                _filterList(value);
+                                              } else {
 
-                                        }
-                                      }
+                                              }
+                                            }
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

@@ -6,14 +6,13 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:drivado_b2b_app/screens/auth/login/bloc/login_bloc.dart';
-import 'package:drivado_b2b_app/screens/auth/login/bloc/login_state.dart';
+import 'package:drivado_b2b_app/screens/auth/login/repositories/login_repository.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -39,6 +38,8 @@ class _LoginPagePageState extends State<LoginPage> {
   bool isLoad = false;
 
   bool isRemember = false;
+  bool _isLoading = false;
+  final LoginRepository _loginRepository = LoginRepository();
 
   @override
   void initState() {
@@ -56,23 +57,7 @@ class _LoginPagePageState extends State<LoginPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: BlocConsumer<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state is LoginSuccess) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => RootShell()),
-              );
-            } else if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
-            }
-          },
-          builder: (context, state) {
-            final bool isLoading = state is LoginLoading;
-
-            return Stack(
+        body: Stack(
               children: [
                 Column(
                   children: [
@@ -255,7 +240,7 @@ class _LoginPagePageState extends State<LoginPage> {
                               ),
                               CustomButtons(
                                   isIcon: false,
-                                  onTap: () {
+                                  onTap: () async {
                                     final email = emailLogin.text.trim();
                                     final pass = password.text.trim();
 
@@ -271,18 +256,61 @@ class _LoginPagePageState extends State<LoginPage> {
                                       return;
                                     }
 
-                                    context.read<LoginCubit>().login(
-                                      email: email,
-                                      password: pass,
-                                    );
-                                  }, title: isLoading ? 'Logging in...' : 'Log in', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              if (isLoading)
-                                const CircularProgressIndicator(
-                                  color: AppColors.secondary,
-                                ),
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+
+                                    try {
+                                      final loginResponse = await _loginRepository.loginWithPassword(
+                                        email: email,
+                                        password: pass,
+                                      );
+
+                                      String? extraAccessToken;
+                                      try {
+                                        extraAccessToken = await _loginRepository.fetchAccessToken(email);
+                                      } catch (e) {
+                                        // Show a warning but do not block login if extra access token fails
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              e.toString().replaceFirst('Exception: ', ''),
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      await AuthService.saveLogin(
+                                        loginResponse: loginResponse,
+                                        email: email,
+                                        extraAccessToken: extraAccessToken,
+                                      );
+
+                                      if (!mounted) return;
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => RootShell()),
+                                      );
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            e.toString().replaceFirst('Exception: ', ''),
+                                          ),
+                                        ),
+                                      );
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    }
+                                  },
+                                  title: _isLoading ? 'Logging in...' : 'Log in',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
                               const SizedBox(
                                 height: 16,
                               ),
@@ -314,7 +342,7 @@ class _LoginPagePageState extends State<LoginPage> {
                       )
                   ),
                 ),
-                if (isLoading)
+                if (_isLoading)
                   Container(
                     color: Colors.black.withOpacity(0.2),
                     child: const Center(
@@ -322,9 +350,7 @@ class _LoginPagePageState extends State<LoginPage> {
                     ),
                   ),
               ],
-            );
-          },
-        ),
+            ),
       ),
     );
   }

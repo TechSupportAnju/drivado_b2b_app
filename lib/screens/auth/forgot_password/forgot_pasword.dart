@@ -203,7 +203,6 @@ class _ForgotPasswordPagePageState extends State<ForgotPasswordPage> {
                                     );
                                     return;
                                   }
-
                                   context.read<ForgotPasswordCubit>().sendResetEmail(mail);
                                 }, title: isLoading ? 'Sending...' : 'Continue', color: Colors.white, fontWeight: FontWeight.w600, fontSize: 14),
                             const SizedBox(

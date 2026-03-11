@@ -30,7 +30,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       );
     }
   }
-
+//---In Case we update password---
   Future<void> resetPassword({
     required String email,
     required String otp,

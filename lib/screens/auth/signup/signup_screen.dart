@@ -10,10 +10,8 @@ import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:drivado_b2b_app/screens/auth/signup/bloc/signup_bloc.dart';
-import 'package:drivado_b2b_app/screens/auth/signup/bloc/signup_state.dart';
+import 'package:drivado_b2b_app/screens/auth/signup/repositories/sign_up_repository.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -45,6 +43,7 @@ class _SignupPageState extends State<SignupPage> {
 
   bool isLoad = false;
   bool isAgree = false;
+  final SignupRepository _signupRepository = SignupRepository();
 
   @override
   void initState() {
@@ -62,23 +61,7 @@ class _SignupPageState extends State<SignupPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        body: BlocConsumer<SignupCubit, SignupState>(
-          listener: (context, state) {
-            if (state is SignupSuccess) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const ThankYouScreen()),
-              );
-            } else if (state is SignupFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
-            }
-          },
-          builder: (context, state) {
-            final bool isLoading = state is SignupLoading;
-
-            return Stack(
+        body: Stack(
               children: [
                 Column(
                   children: [
@@ -249,7 +232,7 @@ class _SignupPageState extends State<SignupPage> {
                                   // setState(() {
                                   // });
                                 },
-                                suffix: true,
+                                suffix: false,
                                 readOnly: false,
                                 astric: true,
                                 error: isConfirmEmailValidator,
@@ -277,7 +260,7 @@ class _SignupPageState extends State<SignupPage> {
                                   // setState(() {
                                   // });
                                 },
-                                suffix: true,
+                                suffix: false,
                                 readOnly: false,
                                 astric: true,
                                 error: isCompanyNameValidator,
@@ -358,7 +341,7 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                               CustomButtons(
                                   isIcon: false,
-                                  onTap: () {
+                                  onTap: () async {
                                     final f = firstName.text.trim();
                                     final l = lastName.text.trim();
                                     final e = email.text.trim();
@@ -387,17 +370,46 @@ class _SignupPageState extends State<SignupPage> {
                                       return;
                                     }
 
-                                    context.read<SignupCubit>().signup(
-                                      firstName: f,
-                                      lastName: l,
-                                      email: e,
-                                      mobile: mobile,
-                                      address: address.text,
-                                      companyName: companyName.text
-                                    );
+                                    setState(() {
+                                      isLoad = true;
+                                    });
+
+                                    try {
+                                      await _signupRepository.SignupWithPassword(
+                                        firstName: f,
+                                        lastName: l,
+                                        email: e,
+                                        companyName: cN,
+                                        address: a,
+                                        mobile: mobile,
+                                      );
+                                      if (!mounted) return;
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const ThankYouScreen(),
+                                        ),
+                                      );
+                                    } catch (e) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            e.toString().replaceFirst('Exception: ', ''),
+                                          ),
+                                        ),
+                                      );
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() {
+                                          isLoad = false;
+                                        });
+                                      }
+                                    }
                                   },
-                                     title: isLoading ? 'Signing up...' : 'Sign up',
-                                     color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),
+                                  title: isLoad ? 'Signing up...' : 'Sign up',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -432,7 +444,7 @@ class _SignupPageState extends State<SignupPage> {
                       )
                   ),
                 ),
-                if (isLoading)
+                if (isLoad)
                   Container(
                     color: Colors.black.withOpacity(0.2),
                     child: const Center(
@@ -440,9 +452,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
               ],
-            );
-          },
-        ),
+            ),
       ),
 
     );
