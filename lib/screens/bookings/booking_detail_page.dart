@@ -36,61 +36,115 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
     );
     double totalLength = double.parse('$totalSourLength') + double.parse('$totalDestLength');
     return Scaffold(
-      body: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Color(0XFF190C0C),
-              ),
-              child: SafeArea(
-                child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 15),
-                    child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: SvgPicture.asset("assets/booking_detail/back_icon.svg")
-                      ),
-                      const Spacer(),
-                      const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            backgroundColor: Colors.transparent,
-                            builder: (context) {
-                              return CancelBottomSheet();
-                            },
-                          );
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF352828),
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          alignment: Alignment.center,
-                          child: SvgPicture.asset("assets/booking_detail/dot_icon.svg")
-                        )
-                      ),
-                    ]
-                  )
+      appBar: AppBar(
+        toolbarHeight: 75,
+        backgroundColor: Color(0XFF190C0C),
+        leadingWidth: 60,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: SvgPicture.asset("assets/booking_detail/back_icon.svg",height: 40, width: 40),
+          )
+        ),
+        title: const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20, height: 1.2),
+        
+       actions: [
+          InkWell(
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (context) {
+                  return SafeArea(
+                    bottom: false,
+                    child: CancelBottomSheet(),
+                  );
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Center(
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF352828),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  alignment: Alignment.center,
+                  child: SvgPicture.asset(
+                    "assets/booking_detail/dot_icon.svg",
+                    height: 28,
+                  ),
                 ),
               ),
             ),
+          ),
+          
+        ],
+      ),
+      body: Column(
+          children: [
+            // Container(
+            //   width: MediaQuery.of(context).size.width,
+            //   decoration: const BoxDecoration(
+            //     color: Color(0XFF190C0C),
+            //   ),
+            //   child: SafeArea(
+            //     child: Padding(
+            //         padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 15),
+            //         child: Row(
+            //         children: [
+            //           GestureDetector(
+            //             onTap: () {
+            //               Navigator.pop(context);
+            //             },
+            //             child: SvgPicture.asset("assets/booking_detail/back_icon.svg")
+            //           ),
+            //           const Spacer(),
+                      
+            //           const Spacer(),
+            //           InkWell(
+            //             onTap: () {
+            //               showModalBottomSheet(
+            //                 context: context,
+            //                 isScrollControlled: true,
+            //                 backgroundColor: Colors.transparent,
+            //                 builder: (context) {
+            //                   return CancelBottomSheet();
+            //                 },
+            //               );
+            //             },
+            //             child: Container(
+            //               height: 40,
+            //               width: 40,
+            //               decoration: BoxDecoration(
+            //                 color: const Color(0xFF352828),
+            //                 borderRadius: BorderRadius.circular(40),
+            //               ),
+            //               alignment: Alignment.center,
+            //               child: SvgPicture.asset("assets/booking_detail/dot_icon.svg")
+            //             )
+            //           ),
+            //         ]
+            //       )
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const SizedBox(height: 20,),
+                      const SizedBox(height: 16,),
                       BookingIdWidget(),
                       const SizedBox(height: 10,),
                       Padding(
@@ -101,11 +155,15 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                           child: Column(
                             children: [
                               SizedBox(
+                                height: 110,
                                 width: MediaQuery.of(context).size.width,
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
+                                      spacing: 8,
                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Row(
                                           children: [
@@ -113,14 +171,14 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                               child: CustomText(title: 'Thu,', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1,)),
                                           ],
                                         ),
-                                        const SizedBox(height: 8,),
+                                        //const SizedBox(height: 8,),
                                         Row(
                                           children: [
                                             SizedBox(
                                                 child: CustomText(title: 'Jan 18, 2024', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1)),
                                           ],
                                         ),
-                                        const SizedBox(height: 8,),
+                                        //const SizedBox(height: 8,),
                                         Row(
                                           children: [
                                             SizedBox(
@@ -136,7 +194,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 12,),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   CustomText(title: 'Vehicle Type', color: Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 12, height: 1.7,),
@@ -171,7 +229,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(width: 8,),
+                                  const SizedBox(width: 8),
                                   Expanded( 
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
