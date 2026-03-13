@@ -5,6 +5,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
@@ -34,6 +35,8 @@ class _LoginPagePageState extends State<LoginPage> {
 
   bool isEmailValid = true;
   bool isEmailValidShow = true;
+  String? emailErrorText;
+  String? passwordErrorText;
 
   bool isLoad = false;
 
@@ -142,10 +145,15 @@ class _LoginPagePageState extends State<LoginPage> {
                                   width: MediaQuery.of(context).size.width,
                                   onChanged: (val) {
                                     isEmailValid = EmailValidator.validate(emailLogin.text);
-                                    if(isEmailValid && emailLogin.text != '') {
-                                      isEmailValidator = false;
-                                    }else {
+                                    if (emailLogin.text.isEmpty) {
                                       isEmailValidator = true;
+                                      emailErrorText = 'Please enter your email ID';
+                                    } else if (!isEmailValid) {
+                                      isEmailValidator = true;
+                                      emailErrorText = 'Please enter a valid email ID';
+                                    } else {
+                                      isEmailValidator = false;
+                                      emailErrorText = null;
                                     }
                                     setState(() {
                                     });
@@ -159,6 +167,7 @@ class _LoginPagePageState extends State<LoginPage> {
                                   readOnly: false,
                                   astric: true,
                                   error: isEmailValidator,),
+                              FormErrorText(text: emailErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Password',
@@ -169,10 +178,12 @@ class _LoginPagePageState extends State<LoginPage> {
                                 height: 52,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(password.text != '') {
-                                    isPasswordValidator = false;
-                                  }else {
+                                  if (password.text.isEmpty) {
                                     isPasswordValidator = true;
+                                    passwordErrorText = 'Please enter your password';
+                                  } else {
+                                    isPasswordValidator = false;
+                                    passwordErrorText = null;
                                   }
                                   setState(() {
                                   });
@@ -192,6 +203,7 @@ class _LoginPagePageState extends State<LoginPage> {
                                 astric: true,
                                 error: isPasswordValidator,
                               ),
+                              FormErrorText(text: passwordErrorText),
                               const SizedBox(
                                 height: 12,
                               ),
@@ -247,12 +259,28 @@ class _LoginPagePageState extends State<LoginPage> {
                                     final validEmail = EmailValidator.validate(email);
                                     final validPassword = pass.isNotEmpty;
 
-                                    if (!validEmail || !validPassword) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Please enter valid email and password.'),
-                                        ),
-                                      );
+                                    setState(() {
+                                      if (email.isEmpty) {
+                                        isEmailValidator = true;
+                                        emailErrorText = 'Please enter your email ID';
+                                      } else if (!validEmail) {
+                                        isEmailValidator = true;
+                                        emailErrorText = 'Please enter a valid email ID';
+                                      } else {
+                                        isEmailValidator = false;
+                                        emailErrorText = null;
+                                      }
+
+                                      if (!validPassword) {
+                                        isPasswordValidator = true;
+                                        passwordErrorText = 'Please enter your password';
+                                      } else {
+                                        isPasswordValidator = false;
+                                        passwordErrorText = null;
+                                      }
+                                    });
+
+                                    if (isEmailValidator || isPasswordValidator) {
                                       return;
                                     }
 
@@ -269,6 +297,19 @@ class _LoginPagePageState extends State<LoginPage> {
                                       String? extraAccessToken;
                                       try {
                                         extraAccessToken = await _loginRepository.fetchAccessToken(email);
+                                        await AuthService.saveLogin(
+                                          loginResponse: loginResponse,
+                                          email: email,
+                                          extraAccessToken: extraAccessToken,
+                                        );
+
+                                        print('extraAccessToken =========== >>>>>>>>');
+                                        print(extraAccessToken);
+                                        if (!mounted) return;
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => RootShell()),
+                                        );
                                       } catch (e) {
                                         // Show a warning but do not block login if extra access token fails
                                         ScaffoldMessenger.of(context).showSnackBar(
@@ -279,18 +320,6 @@ class _LoginPagePageState extends State<LoginPage> {
                                           ),
                                         );
                                       }
-
-                                      await AuthService.saveLogin(
-                                        loginResponse: loginResponse,
-                                        email: email,
-                                        extraAccessToken: extraAccessToken,
-                                      );
-
-                                      if (!mounted) return;
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => RootShell()),
-                                      );
                                     } catch (e) {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(

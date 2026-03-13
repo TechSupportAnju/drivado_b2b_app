@@ -69,7 +69,7 @@ class _ContactTextFieldState extends State<ContactTextField> {
                 text: TextSpan(
                     text: 'Contact number',
                     style: GoogleFonts.plusJakartaSans(
-                        color: AppColors.textFieldTextColor,
+                        color: widget.isContactValidator ? AppColors.secondary : AppColors.textFieldTextColor,
                         fontWeight: FontWeight.w400),
                     children: const [
                       TextSpan(
@@ -85,7 +85,7 @@ class _ContactTextFieldState extends State<ContactTextField> {
             isDense: true,
             border: InputBorder.none,
             hintStyle: GoogleFonts.plusJakartaSans(
-                color: AppColors.textFieldTextColor,
+                color: widget.isContactValidator ? AppColors.secondary : AppColors.textFieldTextColor,
                 fontWeight: FontWeight.w500,
                 fontSize: 13),
             hintText: 'Enter your contact number'),

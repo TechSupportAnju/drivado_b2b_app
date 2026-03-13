@@ -1,8 +1,11 @@
 import 'package:drivado_b2b_app/screens/common_widgets/country_code_widget/contact_text_field.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,6 +57,14 @@ class _AddUserPageState extends State<AddUserPage> {
   bool observeText = true;
   bool observeTextC = true;
   bool isRemember = false;
+
+  String? usernameErrorText;
+  String? firstNameErrorText;
+  String? lastNameErrorText;
+  String? contactErrorText;
+  String? emailErrorText;
+  String? passwordErrorText;
+  String? confirmPasswordErrorText;
 
 
 
@@ -107,169 +118,335 @@ class _AddUserPageState extends State<AddUserPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20,),
-              CustomTextField(
-                  title: 'Username (Email ID)',
-                  hintText: 'Enter your username (Email ID)',
-                  controller: userEmailId,
-                  isPassword: false,
-                  icon: 'null',
-                  height: 52,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
-                  onTap: () {},
-                  suffix: false,
-                  readOnly: false,
-                  astric: true,
-                  error: isUserEmailValidator),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextField(
-                  title: 'First name',
-                  hintText: 'Enter your first name',
-                  controller: firstName,
-                  isPassword: false,
-                  icon: 'null',
-                  height: 52,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
-                  onTap: () {},
-                  suffix: false,
-                  readOnly: false,
-                  astric: true,
-                  error: isFirstNameValidator),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextField(
-                  title: 'Last name',
-                  hintText: 'Enter your last name',
-                  controller: lastName,
-                  icon: 'null',
-                  height: 52,
-                  isPassword: false,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
-                  onTap: () {},
-                  suffix: false,
-                  readOnly: false,
-                  astric: true,
-                  error: false),
-              const SizedBox(
-                height: 16,
-              ),
-              ContactTextField(
-                isContactValidator: isContactValidator,
-                isTapContactName: isTapContactName,
-                controller: phoneNumber,
-                onTap: () {},
-                onChanged: () {},
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextField(
-                  title: 'Email ID',
-                  hintText: 'Enter your email id',
-                  controller: emailId,
-                  isPassword: false,
-                  icon: 'null',
-                  height: 52,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
-                  onTap: () {},
-                  suffix: false,
-                  readOnly: false,
-                  astric: true,
-                  error: isEmailValidator),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextField(
-                  title: 'Password',
-                  hintText: 'Enter your password',
-                  controller: password,
-                  isPassword: observeText,
-                  icon: 'null',
-                  height: 52,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            decoration: CustomDecorations().baseBackgroundDecoration(12.0, 1.0, Colors.white, Color(0xFFE6E8E7)),
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            child: Column(
+              children: [
+                CustomTextField(
+                    title: 'Username (Email ID)',
+                    hintText: 'Enter your username (Email ID)',
+                    controller: userEmailId,
+                    isPassword: false,
+                    icon: 'null',
+                    height: 52,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      final text = userEmailId.text.trim();
+                      final validEmail = EmailValidator.validate(text);
+                      if (text.isEmpty) {
+                        isUserEmailValidator = true;
+                        usernameErrorText = 'Please enter username (email ID)';
+                      } else if (!validEmail) {
+                        isUserEmailValidator = true;
+                        usernameErrorText = 'Please enter a valid email ID';
+                      } else {
+                        isUserEmailValidator = false;
+                        usernameErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    suffix: false,
+                    readOnly: false,
+                    astric: true,
+                    error: isUserEmailValidator),
+                FormErrorText(text: usernameErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomTextField(
+                    title: 'First name',
+                    hintText: 'Enter your first name',
+                    controller: firstName,
+                    isPassword: false,
+                    icon: 'null',
+                    height: 52,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      if (firstName.text.trim().isEmpty) {
+                        isFirstNameValidator = true;
+                        firstNameErrorText = 'Please enter first name';
+                      } else {
+                        isFirstNameValidator = false;
+                        firstNameErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    suffix: false,
+                    readOnly: false,
+                    astric: true,
+                    error: isFirstNameValidator),
+                FormErrorText(text: firstNameErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomTextField(
+                    title: 'Last name',
+                    hintText: 'Enter your last name',
+                    controller: lastName,
+                    icon: 'null',
+                    height: 52,
+                    isPassword: false,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      if (lastName.text.trim().isEmpty) {
+                        isLastNameValidator = true;
+                        lastNameErrorText = 'Please enter last name';
+                      } else {
+                        isLastNameValidator = false;
+                        lastNameErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    suffix: false,
+                    readOnly: false,
+                    astric: true,
+                    error: isLastNameValidator),
+                FormErrorText(text: lastNameErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                ContactTextField(
+                  isContactValidator: isContactValidator,
+                  isTapContactName: isTapContactName,
+                  controller: phoneNumber,
                   onTap: () {
-
-                  },
-                  onTapSuffix: () {
                     setState(() {
-                      observeText = !observeText;
+                      isTapContactName = true;
                     });
                   },
-                  suffix: true,
-                  readOnly: false,
-                  astric: true,
-                  error: isPasswordValidator),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextField(
-                  title: 'Confirm Password',
-                  hintText: 'Enter your confirm password',
-                  controller: confirmPassword,
-                  isPassword: observeTextC,
-                  icon: 'null',
-                  height: 52,
-                  width: MediaQuery.of(context).size.width,
-                  onChanged: () {},
+                  onChanged: () {
+                    if (phoneNumber.text.trim().isEmpty) {
+                      isContactValidator = true;
+                      contactErrorText = 'Please enter contact number';
+                    } else {
+                      isContactValidator = false;
+                      contactErrorText = null;
+                    }
+                    setState(() {});
+                  },
+                ),
+                FormErrorText(text: contactErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomTextField(
+                    title: 'Email ID',
+                    hintText: 'Enter your email id',
+                    controller: emailId,
+                    isPassword: false,
+                    icon: 'null',
+                    height: 52,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      final text = emailId.text.trim();
+                      final validEmail = EmailValidator.validate(text);
+                      if (text.isEmpty) {
+                        isEmailValidator = true;
+                        emailErrorText = 'Please enter email ID';
+                      } else if (!validEmail) {
+                        isEmailValidator = true;
+                        emailErrorText = 'Please enter a valid email ID';
+                      } else {
+                        isEmailValidator = false;
+                        emailErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    suffix: false,
+                    readOnly: false,
+                    astric: true,
+                    error: isEmailValidator),
+                FormErrorText(text: emailErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomTextField(
+                    title: 'Password',
+                    hintText: 'Enter your password',
+                    controller: password,
+                    isPassword: observeText,
+                    icon: 'null',
+                    height: 52,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      if (password.text.isEmpty) {
+                        isPasswordValidator = true;
+                        passwordErrorText = 'Please enter password';
+                      } else {
+                        isPasswordValidator = false;
+                        passwordErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    onTapSuffix: () {
+                      setState(() {
+                        observeText = !observeText;
+                      });
+                    },
+                    suffix: true,
+                    readOnly: false,
+                    astric: true,
+                    error: isPasswordValidator),
+                FormErrorText(text: passwordErrorText),
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomTextField(
+                    title: 'Confirm Password',
+                    hintText: 'Enter your confirm password',
+                    controller: confirmPassword,
+                    isPassword: observeTextC,
+                    icon: 'null',
+                    height: 52,
+                    width: MediaQuery.of(context).size.width,
+                    onChanged: () {
+                      if (confirmPassword.text.isEmpty) {
+                        isConfirmPasswordValidator = true;
+                        confirmPasswordErrorText = 'Please enter confirm password';
+                      } else if (confirmPassword.text != password.text) {
+                        isConfirmPasswordValidator = true;
+                        confirmPasswordErrorText = 'Password and confirm password must be same';
+                      } else {
+                        isConfirmPasswordValidator = false;
+                        confirmPasswordErrorText = null;
+                      }
+                      setState(() {});
+                    },
+                    onTap: () {},
+                    onTapSuffix: () {
+                      setState(() {
+                        observeTextC = !observeTextC;
+                      });
+                    },
+                    suffix: true,
+                    readOnly: false,
+                    astric: true,
+                    error: isConfirmPasswordValidator),
+                FormErrorText(text: confirmPasswordErrorText),
+                const SizedBox(
+                  height: 32,
+                ),
+                GestureDetector(
                   onTap: () {
+                   final fName = firstName.text.trim();
+                   final lName = lastName.text.trim();
+                   final username = userEmailId.text.trim();
+                   final phone = phoneNumber.text.trim();
+                   final mail = emailId.text.trim();
+                   final pass = password.text;
+                   final cPass = confirmPassword.text;
 
-                  },
-                  onTapSuffix: () {
-                    setState(() {
-                      observeTextC = !observeTextC;
-                    });
-                  },
-                  suffix: true,
-                  readOnly: false,
-                  astric: true,
-                  error: isConfirmPasswordValidator),
-              const SizedBox(
-                height: 32,
-              ),
-              GestureDetector(
-                onTap: () {
-                 if(firstName.text != '' && lastName.text != '' && userEmailId.text != '' && emailId.text != '' && phoneNumber.text != '' && password.text != '' && confirmPassword.text == password.text){
-                   showSucessDialog(context, emailId.text);
-                 } else {
+                   final usernameValid = EmailValidator.validate(username);
+                   final mailValid = EmailValidator.validate(mail);
+
                    setState(() {
-                     // firstName.text =
+                     if (username.isEmpty) {
+                       isUserEmailValidator = true;
+                       usernameErrorText = 'Please enter username (email ID)';
+                     } else if (!usernameValid) {
+                       isUserEmailValidator = true;
+                       usernameErrorText = 'Please enter a valid email ID';
+                     } else {
+                       isUserEmailValidator = false;
+                       usernameErrorText = null;
+                     }
+
+                     if (fName.isEmpty) {
+                       isFirstNameValidator = true;
+                       firstNameErrorText = 'Please enter first name';
+                     } else {
+                       isFirstNameValidator = false;
+                       firstNameErrorText = null;
+                     }
+
+                     if (lName.isEmpty) {
+                       isLastNameValidator = true;
+                       lastNameErrorText = 'Please enter last name';
+                     } else {
+                       isLastNameValidator = false;
+                       lastNameErrorText = null;
+                     }
+
+                     if (phone.isEmpty) {
+                       isContactValidator = true;
+                       contactErrorText = 'Please enter contact number';
+                     } else {
+                       isContactValidator = false;
+                       contactErrorText = null;
+                     }
+
+                     if (mail.isEmpty) {
+                       isEmailValidator = true;
+                       emailErrorText = 'Please enter email ID';
+                     } else if (!mailValid) {
+                       isEmailValidator = true;
+                       emailErrorText = 'Please enter a valid email ID';
+                     } else {
+                       isEmailValidator = false;
+                       emailErrorText = null;
+                     }
+
+                     if (pass.isEmpty) {
+                       isPasswordValidator = true;
+                       passwordErrorText = 'Please enter password';
+                     } else {
+                       isPasswordValidator = false;
+                       passwordErrorText = null;
+                     }
+
+                     if (cPass.isEmpty) {
+                       isConfirmPasswordValidator = true;
+                       confirmPasswordErrorText = 'Please enter confirm password';
+                     } else if (cPass != pass) {
+                       isConfirmPasswordValidator = true;
+                       confirmPasswordErrorText =
+                           'Password and confirm password must be same';
+                     } else {
+                       isConfirmPasswordValidator = false;
+                       confirmPasswordErrorText = null;
+                     }
                    });
-                 }
-                },
-                child: Container(
-                  height: 48,
-                  decoration: ShapeDecoration(
-                    color: AppColors.secondary,
-                    shape: SmoothRectangleBorder(
-                      borderRadius: SmoothBorderRadius(
-                        cornerRadius: 10,
-                        cornerSmoothing: 1,
+
+                   final allValid = !isUserEmailValidator &&
+                       !isFirstNameValidator &&
+                       !isLastNameValidator &&
+                       !isContactValidator &&
+                       !isEmailValidator &&
+                       !isPasswordValidator &&
+                       !isConfirmPasswordValidator;
+
+                   if (allValid) {
+                     showSucessDialog(context, emailId.text);
+                   }
+                  },
+                  child: Container(
+                    height: 48,
+                    decoration: ShapeDecoration(
+                      color: AppColors.secondary,
+                      shape: SmoothRectangleBorder(
+                        borderRadius: SmoothBorderRadius(
+                          cornerRadius: 10,
+                          cornerSmoothing: 1,
+                        ),
                       ),
                     ),
+                    alignment: Alignment.center,
+                    child: CustomText(
+                        title: 'Add user',
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14),
                   ),
-                  alignment: Alignment.center,
-                  child: CustomText(
-                      title: 'Add user',
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,13 @@ class _SignupPageState extends State<SignupPage> {
   bool isAddressValidator = false;
   bool isEmailValid = true;
   bool isEmailValidShow = true;
+  String? emailErrorText;
+  String? confirmEmailErrorText;
+  String? firstNameErrorText;
+  String? lastNameErrorText;
+  String? companyNameErrorText;
+  String? addressErrorText;
+  String? contactErrorText;
 
   bool isLoad = false;
   bool isAgree = false;
@@ -144,13 +152,14 @@ class _SignupPageState extends State<SignupPage> {
                                 height: 52,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(firstName.text != '') {
-                                    isFirstValidator = false;
-                                  }else {
+                                  if (firstName.text.isEmpty) {
                                     isFirstValidator = true;
+                                    firstNameErrorText = 'Please enter your first name';
+                                  } else {
+                                    isFirstValidator = false;
+                                    firstNameErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                   // setState(() {
@@ -160,6 +169,7 @@ class _SignupPageState extends State<SignupPage> {
                                 readOnly: false,
                                 astric: true,
                                 error: isFirstValidator,),
+                              FormErrorText(text: firstNameErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Last Name',
@@ -170,13 +180,14 @@ class _SignupPageState extends State<SignupPage> {
                                 height: 52,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(lastName.text != '') {
-                                    isLastValidator = false;
-                                  }else {
+                                  if (lastName.text.isEmpty) {
                                     isLastValidator = true;
+                                    lastNameErrorText = 'Please enter your last name';
+                                  } else {
+                                    isLastValidator = false;
+                                    lastNameErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                 },
@@ -184,6 +195,7 @@ class _SignupPageState extends State<SignupPage> {
                                 readOnly: false,
                                 astric: true,
                                 error: isLastValidator,),
+                              FormErrorText(text: lastNameErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Email ID',
@@ -195,20 +207,25 @@ class _SignupPageState extends State<SignupPage> {
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
                                   isEmailValid = EmailValidator.validate(email.text);
-                                  if(isEmailValid && email.text != '') {
-                                    isEmailValidator = false;
-                                  }else {
+                                  if (email.text.isEmpty) {
                                     isEmailValidator = true;
+                                    emailErrorText = 'Please enter your email ID';
+                                  } else if (!isEmailValid) {
+                                    isEmailValidator = true;
+                                    emailErrorText = 'Please enter a valid email ID';
+                                  } else {
+                                    isEmailValidator = false;
+                                    emailErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                 },
                                 suffix: false,
                                 readOnly: false,
                                 astric: true,
-                                error: isEmailValidator,),
+                              error: isEmailValidator,),
+                              FormErrorText(text: emailErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Confirm Email ID',
@@ -219,13 +236,17 @@ class _SignupPageState extends State<SignupPage> {
                                 height: 52,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(confirmEmail.text != '') {
-                                    isConfirmEmailValidator = false;
-                                  }else {
+                                  if (confirmEmail.text.isEmpty) {
                                     isConfirmEmailValidator = true;
+                                    confirmEmailErrorText = 'Please enter your confirm email ID';
+                                  } else if (confirmEmail.text.trim() != email.text.trim()) {
+                                    isConfirmEmailValidator = true;
+                                    confirmEmailErrorText = 'Email and confirm email must be same';
+                                  } else {
+                                    isConfirmEmailValidator = false;
+                                    confirmEmailErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                   // isTapPassword = true;
@@ -237,6 +258,7 @@ class _SignupPageState extends State<SignupPage> {
                                 astric: true,
                                 error: isConfirmEmailValidator,
                               ),
+                              FormErrorText(text: confirmEmailErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Company Name',
@@ -247,13 +269,14 @@ class _SignupPageState extends State<SignupPage> {
                                 height: 52,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(companyName.text != '') {
-                                    isCompanyNameValidator = false;
-                                  }else {
+                                  if (companyName.text.isEmpty) {
                                     isCompanyNameValidator = true;
+                                    companyNameErrorText = 'Please enter your company name';
+                                  } else {
+                                    isCompanyNameValidator = false;
+                                    companyNameErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                   // isTapPassword = true;
@@ -265,14 +288,29 @@ class _SignupPageState extends State<SignupPage> {
                                 astric: true,
                                 error: isCompanyNameValidator,
                               ),
+                              FormErrorText(text: companyNameErrorText),
                               const SizedBox(height: 12,),
                               ContactTextField(
                                 isContactValidator: isContactValidator,
                                 isTapContactName: isTapContactName,
                                 controller: contactNumber,
-                                onTap: () {},
-                                onChanged: () {},
+                              onTap: () {
+                                setState(() {
+                                  isTapContactName = true;
+                                });
+                              },
+                              onChanged: () {
+                                if (contactNumber.text.isEmpty) {
+                                  isContactValidator = true;
+                                  contactErrorText = 'Please enter your contact number';
+                                } else {
+                                  isContactValidator = false;
+                                  contactErrorText = null;
+                                }
+                                setState(() {});
+                              },
                               ),
+                              FormErrorText(text: contactErrorText),
                               const SizedBox(height: 12,),
                               CustomTextField(
                                 title: 'Address',
@@ -284,13 +322,14 @@ class _SignupPageState extends State<SignupPage> {
                                 height: 100,
                                 width: MediaQuery.of(context).size.width,
                                 onChanged: (val) {
-                                  if(address.text != '') {
-                                    isAddressValidator = false;
-                                  }else {
+                                  if (address.text.isEmpty) {
                                     isAddressValidator = true;
+                                    addressErrorText = 'Please enter your address';
+                                  } else {
+                                    isAddressValidator = false;
+                                    addressErrorText = null;
                                   }
-                                  setState(() {
-                                  });
+                                  setState(() {});
                                 },
                                 onTap: () {
                                   // isTapPassword = true;
@@ -302,6 +341,7 @@ class _SignupPageState extends State<SignupPage> {
                                 astric: true,
                                 error: isAddressValidator,
                               ),
+                              FormErrorText(text: addressErrorText),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -350,23 +390,72 @@ class _SignupPageState extends State<SignupPage> {
                                     final cE = confirmEmail.text.trim();
                                     final mobile = contactNumber.text.trim();
 
-                                    final valid = f.isNotEmpty &&
-                                        l.isNotEmpty &&
-                                        e.isNotEmpty &&
-                                        cE.isNotEmpty &&
-                                        cN.isNotEmpty &&
-                                        a.isNotEmpty &&
-                                        mobile.isNotEmpty &&
-                                        EmailValidator.validate(e) &&
-                                        e == cE &&
+                                    setState(() {
+                                      isFirstValidator = f.isEmpty;
+                                      firstNameErrorText =
+                                          isFirstValidator ? 'Please enter your first name' : null;
+
+                                      isLastValidator = l.isEmpty;
+                                      lastNameErrorText =
+                                          isLastValidator ? 'Please enter your last name' : null;
+
+                                      final emailValid = EmailValidator.validate(e);
+                                      if (e.isEmpty) {
+                                        isEmailValidator = true;
+                                        emailErrorText = 'Please enter your email ID';
+                                      } else if (!emailValid) {
+                                        isEmailValidator = true;
+                                        emailErrorText = 'Please enter a valid email ID';
+                                      } else {
+                                        isEmailValidator = false;
+                                        emailErrorText = null;
+                                      }
+
+                                      if (cE.isEmpty) {
+                                        isConfirmEmailValidator = true;
+                                        confirmEmailErrorText =
+                                            'Please enter your confirm email ID';
+                                      } else if (cE != e) {
+                                        isConfirmEmailValidator = true;
+                                        confirmEmailErrorText =
+                                            'Email and confirm email must be same';
+                                      } else {
+                                        isConfirmEmailValidator = false;
+                                        confirmEmailErrorText = null;
+                                      }
+
+                                      isCompanyNameValidator = cN.isEmpty;
+                                      companyNameErrorText = isCompanyNameValidator
+                                          ? 'Please enter your company name'
+                                          : null;
+
+                                      isAddressValidator = a.isEmpty;
+                                      addressErrorText =
+                                          isAddressValidator ? 'Please enter your address' : null;
+
+                                      isContactValidator = mobile.isEmpty;
+                                      contactErrorText = isContactValidator
+                                          ? 'Please enter your contact number'
+                                          : null;
+                                    });
+
+                                    final allValid = !isFirstValidator &&
+                                        !isLastValidator &&
+                                        !isEmailValidator &&
+                                        !isConfirmEmailValidator &&
+                                        !isCompanyNameValidator &&
+                                        !isAddressValidator &&
+                                        !isContactValidator &&
                                         isAgree;
 
-                                    if (!valid) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Please fill all required fields correctly and accept consent.'),
-                                        ),
-                                      );
+                                    if (!allValid) {
+                                      if (!isAgree) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Please fill all required fields correctly and accept consent.'),
+                                          ),
+                                        );
+                                      }
                                       return;
                                     }
 

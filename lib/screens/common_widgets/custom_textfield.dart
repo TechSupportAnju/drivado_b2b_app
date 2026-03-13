@@ -88,9 +88,11 @@ class CustomTextField extends StatelessWidget {
               decoration: InputDecoration(
                 alignLabelWithHint: maxLine == 1 ? false : true,
                 suffixIconConstraints: const BoxConstraints().loosen(),
-                suffixIcon: error
-                    ? SvgPicture.asset('assets/auth/info-circle.svg')
-                    : suffix
+                suffixIcon:
+                // error
+                //     ? SvgPicture.asset('assets/auth/info-circle.svg')
+                //     :
+                suffix
                       ? isExpand
                         ? GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -109,9 +111,11 @@ class CustomTextField extends StatelessWidget {
                       isPassword ? 'assets/auth/eyeHide.svg' : 'assets/auth/eye.svg'),
                 )
                     : null,
-                label: error
-                    ? null
-                    : Container(
+                label:
+                // error
+                //     ? null
+                //     :
+                Container(
                   transform: Matrix4.translationValues(0.0, 0.0, 0.0),
                   child: RichText(
                     text: TextSpan(

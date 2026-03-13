@@ -38,14 +38,12 @@ class LoginRepository {
     final uri = Uri.parse("$baseUrl/user/access_Token").replace(
       queryParameters: {'email': email},
     );
-    final response = await http.get(uri);
+    final response = await http.post(uri);
     log('Access token response: ${response.body}');
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
-      final token = jsonResponse['accessToken'] ??
-          jsonResponse['token'] ??
-          jsonResponse['data']?['accessToken'];
+      final token = jsonResponse['accessToken'];
       if (token is String && token.isNotEmpty) {
         return token;
       }
