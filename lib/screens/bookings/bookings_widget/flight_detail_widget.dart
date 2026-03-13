@@ -25,6 +25,7 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
           },
           child: isFlightTap? 
           SizedBox(
+            height: 110,
             child: Row(
               children: [
                 Column(
@@ -163,20 +164,22 @@ class _FlightDetailWidgetState extends State<FlightDetailWidget> {
             ),
           )
           : Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.all(10),
             height: 38,
             alignment: Alignment.center,
             decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFFB4156)),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/booking_detail/flight_icon.svg'),
-                const SizedBox(width: 4,),
-                const CustomText(title: 'Flight Status', color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 12, height: 2.2),
+                const SizedBox(width: 5),
+                const CustomText(title: 'Flight Status', color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 12, height: 1),
               ],
             ),
           ),
         ),
-        isFlightTap ? Container(): const SizedBox(height: 35,)
+        isFlightTap ? Container(): const SizedBox(height: 45)
       ],
     );
   }

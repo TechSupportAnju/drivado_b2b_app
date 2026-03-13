@@ -15,7 +15,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: TextField(
+        cursorColor: Colors.black,
         decoration: InputDecoration(
+          
           hintText: 'Search',
           prefixIcon: Icon(Icons.search, color: Color(0XFF606060)),
           fillColor: Color(0XFFF5F6FA),
@@ -26,6 +28,14 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+           
+            borderSide: BorderSide(
+              color: Colors.transparent, 
+              style: BorderStyle.none
+            ),
           ),
         ),
         onChanged: (value) {
