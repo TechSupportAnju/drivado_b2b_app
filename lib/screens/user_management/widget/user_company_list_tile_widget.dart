@@ -8,7 +8,7 @@ userCompanyListTileWidget(context, title, value) {
   return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        if(value == 0) {
+        if(value == 1) {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ViewUserPage()));
         } else {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ViewCompanyPage()));
@@ -18,7 +18,7 @@ userCompanyListTileWidget(context, title, value) {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
         child: Row(
         children: [
-        SvgPicture.asset(value == 0 ? 'assets/user_management/manageUser.svg' : 'assets/user_management/company.svg'),
+        SvgPicture.asset(value == 1 ? 'assets/user_management/manageUser.svg' : 'assets/user_management/company.svg'),
         const SizedBox(width: 12,),
         CustomText(title: title , color: Color(0xff0D0D0D), fontWeight: FontWeight.w500, fontSize: 12),],),
         ),

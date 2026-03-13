@@ -1,6 +1,7 @@
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
@@ -46,6 +47,9 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
 
   bool isEmailValid = true;
   bool isEmailValidShow = true;
+
+  String? companyNameErrorText;
+  String? companyEmailErrorText;
 
 
   @override
@@ -106,13 +110,14 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     height: 52,
                     width: MediaQuery.of(context).size.width,
                   onChanged: (val) {
-                    if(companyName.text != '') {
-                      isCompanyNameValidator = false;
-                    }else {
+                    if (companyName.text.trim().isEmpty) {
                       isCompanyNameValidator = true;
+                      companyNameErrorText = 'Please enter company name';
+                    } else {
+                      isCompanyNameValidator = false;
+                      companyNameErrorText = null;
                     }
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   onTap: () {
                     isTapCompanyName = true;
@@ -123,6 +128,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     readOnly: false,
                     astric: true,
                     isPassword: false, error: isCompanyNameValidator,),
+                FormErrorText(text: companyNameErrorText),
                 const SizedBox(
                   height: 12,
                 ),
@@ -134,14 +140,19 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     height: 52,
                     width: MediaQuery.of(context).size.width,
                   onChanged: (val) {
-                    isEmailValid = EmailValidator.validate(emailId.text);
-                    if(isEmailValid && emailId.text != '') {
-                      isEmailValidator = false;
-                    }else {
+                    final text = emailId.text.trim();
+                    isEmailValid = EmailValidator.validate(text);
+                    if (text.isEmpty) {
                       isEmailValidator = true;
+                      companyEmailErrorText = 'Please enter company email ID';
+                    } else if (!isEmailValid) {
+                      isEmailValidator = true;
+                      companyEmailErrorText = 'Please enter a valid email ID';
+                    } else {
+                      isEmailValidator = false;
+                      companyEmailErrorText = null;
                     }
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   onTap: () {
                     isTapEmailName = true;
@@ -152,6 +163,7 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     readOnly: false,
                     astric: true,
                     isPassword: false, error: isEmailValidator,),
+                FormErrorText(text: companyEmailErrorText),
                 const SizedBox(
                   height: 12,
                 ),
@@ -205,15 +217,32 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                 ),
                GestureDetector(
                   onTap: () {
-                    if(companyName.text == '') {
-                      setState(() {
+                    final name = companyName.text.trim();
+                    final mail = emailId.text.trim();
+                    final mailValid = EmailValidator.validate(mail);
+
+                    setState(() {
+                      if (name.isEmpty) {
                         isCompanyNameValidator = true;
-                      });
-                    } else if(emailId.text == '') {
-                      setState(() {
+                        companyNameErrorText = 'Please enter company name';
+                      } else {
+                        isCompanyNameValidator = false;
+                        companyNameErrorText = null;
+                      }
+
+                      if (mail.isEmpty) {
                         isEmailValidator = true;
-                      });
-                    } else {
+                        companyEmailErrorText = 'Please enter company email ID';
+                      } else if (!mailValid) {
+                        isEmailValidator = true;
+                        companyEmailErrorText = 'Please enter a valid email ID';
+                      } else {
+                        isEmailValidator = false;
+                        companyEmailErrorText = null;
+                      }
+                    });
+
+                    if (!isCompanyNameValidator && !isEmailValidator) {
                       showSucessDialog(context, companyName.text);
                     }
                   },

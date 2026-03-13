@@ -23,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final bool error;
   final bool isExpand;
   final bool? autofocus;
+  final bool? isCreateBookingField;
 
   const CustomTextField({
     super.key,
@@ -43,7 +44,8 @@ class CustomTextField extends StatelessWidget {
     required this.isPassword,
     this.error = false,
     this.isExpand = false,
-    this.autofocus
+    this.autofocus,
+    this.isCreateBookingField = false
   });
 
   @override
@@ -86,11 +88,13 @@ class CustomTextField extends StatelessWidget {
               decoration: InputDecoration(
                 alignLabelWithHint: maxLine == 1 ? false : true,
                 suffixIconConstraints: const BoxConstraints().loosen(),
-                suffixIcon: error
-                    ? SvgPicture.asset('assets/auth/info-circle.svg')
-                    : suffix
-                    ? isExpand
-                    ? GestureDetector(
+                suffixIcon:
+                // error
+                //     ? SvgPicture.asset('assets/auth/info-circle.svg')
+                //     :
+                suffix
+                      ? isExpand
+                        ? GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     onTapSuffix!();
@@ -98,7 +102,7 @@ class CustomTextField extends StatelessWidget {
                   child: SvgPicture.asset(
                      'assets/create_booking/expand.svg'),
                 )
-                    : GestureDetector(
+                        : GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     onTapSuffix!();
@@ -107,14 +111,18 @@ class CustomTextField extends StatelessWidget {
                       isPassword ? 'assets/auth/eyeHide.svg' : 'assets/auth/eye.svg'),
                 )
                     : null,
-                label: error
-                    ? null
-                    : Container(
+                label:
+                // error
+                //     ? null
+                //     :
+                Container(
                   transform: Matrix4.translationValues(0.0, 0.0, 0.0),
                   child: RichText(
                     text: TextSpan(
-                      text: controller.text.isEmpty
-                          ? hintText
+                      text: isCreateBookingField!
+                          ? controller.text.isEmpty
+                               ? hintText
+                               : title
                           : title,
                       style: GoogleFonts.plusJakartaSans(
                         color: effectiveLabelColor,

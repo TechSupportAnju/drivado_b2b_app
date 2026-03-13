@@ -102,6 +102,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                             Expanded(
                               flex: 1,
                               child: CustomTextField(
+                                isCreateBookingField: true,
                                 readOnly: true,
                                 title: 'Date',
                                 hintText: 'Date',
@@ -132,6 +133,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                             Expanded(
                               flex: 1,
                               child: CustomTextField(
+                                isCreateBookingField: true,
                                 readOnly: true,
                                 title: 'Time',
                                 hintText: 'Time',
@@ -290,6 +292,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                               Expanded(
                                 flex: 1,
                                 child: CustomTextField(
+                                  isCreateBookingField: true,
                                   readOnly: true,
                                   title: 'Currency',
                                   hintText: 'Currency',

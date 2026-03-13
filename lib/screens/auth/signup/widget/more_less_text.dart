@@ -21,7 +21,7 @@ class _MoreLessTextState extends State<MoreLessText> {
       children: [
         CustomText(
           title: widget.text,
-          height: 1.2,
+          height: 1.4,
           maxLine: isExpanded ? 6 : 2,
           overflow: TextOverflow.ellipsis,
           fontWeight: FontWeight.w500,

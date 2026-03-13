@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.all(16.0),
+            margin: EdgeInsets.only(left: 16.0, right: 16, top: 16),
             padding: EdgeInsets.all(12.0),
             decoration: CustomDecorationsCards().baseBackgroundShadow(radius: 12.0, smooth: 1.0, color: Colors.white),
             child: Column(
@@ -120,9 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
             child: CreditLimitWidget(title1: 'Total unpaid booking', title2: 'Available credit limit', value1: 'USD 462', value2: 'USD 462434'),
           ),
 

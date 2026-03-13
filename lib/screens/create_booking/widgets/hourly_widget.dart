@@ -25,6 +25,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
         children: [
           CustomTextField(
               readOnly: true,
+              isCreateBookingField: true,
               title: 'From',
               hintText: 'Enter your pickup location',
               icon: 'assets/create_booking/location_icon.svg',
@@ -51,6 +52,7 @@ class _HourlyWidgetState extends State<HourlyWidget> {
           const SizedBox(height: 16),
           CustomTextField(
             readOnly: true,
+            isCreateBookingField: true,
             title: 'Duration',
             hintText: 'Select Duration',
             icon: 'assets/create_booking/hourly_duration.svg',

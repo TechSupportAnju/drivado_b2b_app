@@ -1,4 +1,6 @@
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
+import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -9,7 +11,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-
   @override
   void initState() {
     super.initState();
@@ -20,8 +21,13 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> appStarted() async {
     await Future.delayed(const Duration(seconds: 2));
+    final loggedIn = await AuthService.isLoggedIn();
+    if (!mounted) return;
     Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => LoginPage())
+      context,
+      MaterialPageRoute(
+        builder: (context) => loggedIn ? RootShell() : const LoginPage(),
+      ),
     );
   }
 
@@ -33,7 +39,8 @@ class _SplashPageState extends State<SplashPage> {
         padding: const EdgeInsets.symmetric(horizontal: 35.0),
         child: Center(
           child: Image.asset(
-            'assets/logo.png', height: 1470,
+            'assets/logo.png',
+            height: 1470,
           ),
         ),
       ),

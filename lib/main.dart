@@ -2,9 +2,19 @@ import 'package:drivado_b2b_app/screens/common_widgets/connectivity_widget.dart'
 import 'package:drivado_b2b_app/screens/splash/splash_screen.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:drivado_b2b_app/screens/auth/forgot_password/bloc/forgot_password_cubit.dart';
+import 'package:drivado_b2b_app/screens/auth/forgot_password/repositories/forgot_password_repository.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    BlocProvider(
+      create: (_) => ForgotPasswordCubit(
+        repository: ForgotPasswordRepository(),
+      ),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,22 +25,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Drivado b2b',
-        theme: ThemeData(
-            fontFamily: 'PlusJakartaSans',
-            primarySwatch: buildMaterialColor(AppColors.secondary),
-            useMaterial3: false
-        ),
-      home: SplashPage(),
+      theme: ThemeData(
+        fontFamily: 'PlusJakartaSans',
+        primarySwatch: buildMaterialColor(AppColors.secondary),
+        useMaterial3: false,
+      ),
+      home: const SplashPage(),
       builder: (context, child) {
         return Stack(
           children: [
             child!,
-            ConnectivityWidget()
+            ConnectivityWidget(),
           ],
         );
       },
     );
   }
+
   MaterialColor buildMaterialColor(Color color) {
     List strengths = <double>[.05];
     Map<int, Color> swatch = {};

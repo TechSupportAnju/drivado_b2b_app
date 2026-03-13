@@ -14,7 +14,7 @@ class CreditLimitWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: 15.0, vertical: 10),
+          horizontal: 12.0, vertical: 12),
       decoration: CustomDecorations()
           .baseBackgroundDecoration(
           12.0, 1.0, Color(0xffffffff),Color(0xFFE6E8E7)),
@@ -29,7 +29,7 @@ class CreditLimitWidget extends StatelessWidget {
                   fontSize: 16),
             ],
           ),
-          SizedBox(height: 15,),
+          SizedBox(height: 16,),
           Row(
             children: [
               CustomText(title: title1,
@@ -43,7 +43,7 @@ class CreditLimitWidget extends StatelessWidget {
                   fontSize: 14),
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 12,),
           Row(
             children: [
               CustomText(title: title2,
