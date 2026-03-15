@@ -1,6 +1,8 @@
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
+import 'package:drivado_b2b_app/screens/auth/login/repositories/login_repository.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +68,16 @@ showLogoutPopup(context) {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      final navigator = Navigator.of(context);
+                      final token = await AuthService.getAccessToken();
+                      await LoginRepository().logout(token);
+                      await AuthService.logout();
+                      if (!context.mounted) return;
+                      navigator.pop();
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        (route) => false,
+                      );
                     },
                     child: Container(
                         height: 42,
