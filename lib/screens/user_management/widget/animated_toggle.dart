@@ -36,7 +36,13 @@ class _AnimatedToggleStateM extends State<AnimatedToggleManagement> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: 44,
-            decoration:CustomDecorations().baseBackgroundDecoration(8.0, 1.0, Colors.white, Color(0xFFE6E7E8)),
+            decoration:CustomDecorationsCards().baseBackgroundShadow(
+                radius: 8.0, smooth: 1.0,
+                color:  Colors.white, borderColor: Color(0xFFE6E7E8),
+                boxShadowColor: Color(0x14323232),
+                spreadRadius: 1.0,
+                blurRadius: 20.0,
+                x: 0.0, y: 0.0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:[

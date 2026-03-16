@@ -77,7 +77,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'What is Drivado?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
@@ -143,7 +143,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'How do I book a ride with Drivado?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
@@ -164,7 +164,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'Are Drivado’s prices fixed?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
@@ -185,7 +185,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'What vehicles are available for booking?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
@@ -206,7 +206,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'Do I need to wait if my flight is delayed?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
@@ -268,7 +268,7 @@ class _FaqPageState extends State<FaqPage> {
                               child: ExpansionTile(
                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'Can I cancel or modify my booking?',
                                   color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[

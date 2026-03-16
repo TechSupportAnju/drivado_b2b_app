@@ -368,7 +368,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                 Positioned(
                                   right: 10,
                                   bottom: 65,
-                                  child: userCompanyAddButtonWidget(context, isSelect)
+                                  child: userCompanyAddButtonWidget(context, isSelect),
                                 )
                               ],
                             ),
