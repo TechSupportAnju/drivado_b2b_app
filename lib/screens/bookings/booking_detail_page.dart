@@ -50,7 +50,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
           )
         ),
         title: const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20, height: 1.2),
-        
+        centerTitle: true,
        actions: [
           InkWell(
             highlightColor: Colors.transparent,
@@ -59,10 +59,18 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(38),
+                  ),
+                ),
                 builder: (context) {
-                  return SafeArea(
-                    bottom: false,
+                  return Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewPadding.bottom,
+                    ),
+                    decoration: CustomDecorations().baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
                     child: CancelBottomSheet(),
                   );
                 },

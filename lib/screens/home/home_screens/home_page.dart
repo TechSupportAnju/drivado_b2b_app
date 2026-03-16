@@ -29,19 +29,6 @@ class _HomePageState extends State<HomePage> {
         height: MediaQuery.of(context).size.height * 0.9,
         child: Stack(
           children: [
-            // Container(
-            //   height: 212,
-            //   width: MediaQuery.of(context).size.width,
-            //   decoration: const BoxDecoration(
-            //     color: Color(0xFF190C0C),
-            //     // image: DecorationImage(
-            //     //   image: AssetImage('assets/create_booking/mask.png'),
-            //     //   fit: BoxFit.fitWidth,
-            //     // ),
-            //   ),
-            //   padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 31),
-            //   child: CommonHeaderTest()
-            // ),
             Positioned.fill(
               top: 0,
               child: Container(

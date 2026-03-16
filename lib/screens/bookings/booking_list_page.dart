@@ -19,90 +19,7 @@ class _BookingListPageState extends State<BookingListPage> {
       resizeToAvoidBottomInset: false,
       extendBody: true,
       backgroundColor: Color(0XFFFFFFFF),
-      // appBar: CommonAppBar(
-      //   bottomContent: Column(
-      //     children: [
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           SearchBarWidget(),
-      //           InkWell(
-      //             onTap: () {
-      //               Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                   builder: (context) => SearchFilterPage(),
-      //                 ),
-      //               );
-      //             },
-      //             child: FilterBooking(),
-      //           )
-      //         ],
-      //       ),
-
-      //       const SizedBox(height: 16),
-
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           Row(
-      //             children: [
-      //               CustomText(
-      //                 title: "All Booking",
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.w500,
-      //                 fontSize: 14,
-      //               ),
-      //               const SizedBox(width: 10),
-      //               Container(
-      //                 height: 20,
-      //                 width: 38,
-      //                 decoration: BoxDecoration(
-      //                   color: const Color(0XFF352828),
-      //                   borderRadius: BorderRadius.circular(32),
-      //                 ),
-      //                 child: const Center(
-      //                   child: CustomText(
-      //                     title: "250",
-      //                     color: Colors.white,
-      //                     fontWeight: FontWeight.w600,
-      //                     fontSize: 12,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-
-      //           Row(
-      //             children: [
-      //               CustomText(
-      //                 title: "Download report",
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.w500,
-      //                 fontSize: 14,
-      //               ),
-      //               const SizedBox(width: 10),
-      //               Container(
-      //                 height: 22,
-      //                 width: 22,
-      //                 decoration: BoxDecoration(
-      //                   color: const Color(0XFF352828),
-      //                   borderRadius: BorderRadius.circular(20),
-      //                 ),
-      //                 child: Padding(
-      //                   padding: const EdgeInsets.all(5),
-      //                   child: SvgPicture.asset(
-      //                     "assets/booking/download_icon.svg",
-      //                   ),
-      //                 ),
-      //               ),
-      //             ],
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
+      
       appBar: CommonAppBar(
         bottomHeight: 120,
         bottomWidget: Column(
@@ -196,7 +113,7 @@ class _BookingListPageState extends State<BookingListPage> {
         ),
       ),
       body: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.9,
+        height: MediaQuery.of(context).size.height * 0.6,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
