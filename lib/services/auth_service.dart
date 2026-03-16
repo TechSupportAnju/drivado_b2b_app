@@ -7,6 +7,9 @@ class AuthService {
   static const String _keyRefreshToken = 'refresh_token';
   static const String _keyEmail = 'user_email';
   static const String _keyExtraAccessToken = 'extra_access_token';
+  static const String _keyRememberMe = 'remember_me';
+  static const String _keySavedEmail = 'saved_email';
+  static const String _keySavedPassword = 'saved_password';
 
   static Future<void> saveLogin({
     required LoginResponseModel loginResponse,
@@ -54,6 +57,40 @@ class AuthService {
   static Future<String?> getEmail() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyEmail);
+  }
+
+  /// Remember me: save email and password (only when user checks Remember me).
+  /// Not cleared on logout so last credentials can be restored.
+  static Future<void> saveRememberMeCredentials({
+    required String email,
+    required String password,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyRememberMe, true);
+    await prefs.setString(_keySavedEmail, email);
+    await prefs.setString(_keySavedPassword, password);
+  }
+
+  static Future<void> clearRememberMeCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_keyRememberMe, false);
+    await prefs.remove(_keySavedEmail);
+    await prefs.remove(_keySavedPassword);
+  }
+
+  static Future<bool> getRememberMe() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_keyRememberMe) ?? false;
+  }
+
+  static Future<String?> getSavedEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keySavedEmail);
+  }
+
+  static Future<String?> getSavedPassword() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keySavedPassword);
   }
 }
 

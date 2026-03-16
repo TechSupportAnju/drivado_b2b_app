@@ -85,13 +85,13 @@ class CustomTextField extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 14,
               ),
+              onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
               decoration: InputDecoration(
                 alignLabelWithHint: maxLine == 1 ? false : true,
                 suffixIconConstraints: const BoxConstraints().loosen(),
                 suffixIcon:
-                // error
-                //     ? SvgPicture.asset('assets/auth/info-circle.svg')
-                //     :
                 suffix
                       ? isExpand
                         ? GestureDetector(
@@ -112,9 +112,6 @@ class CustomTextField extends StatelessWidget {
                 )
                     : null,
                 label:
-                // error
-                //     ? null
-                //     :
                 Container(
                   transform: Matrix4.translationValues(0.0, 0.0, 0.0),
                   child: RichText(

@@ -48,6 +48,24 @@ class _LoginPagePageState extends State<LoginPage> {
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    _loadRememberMeCredentials();
+  }
+
+  Future<void> _loadRememberMeCredentials() async {
+    final rememberMe = await AuthService.getRememberMe();
+    if (!rememberMe) return;
+    final savedEmail = await AuthService.getSavedEmail();
+    final savedPassword = await AuthService.getSavedPassword();
+    if (!mounted) return;
+    setState(() {
+      isRemember = true;
+      if (savedEmail != null && savedEmail.isNotEmpty) {
+        emailLogin.text = savedEmail;
+      }
+      if (savedPassword != null && savedPassword.isNotEmpty) {
+        password.text = savedPassword;
+      }
+    });
   }
 
   @override
@@ -302,9 +320,12 @@ class _LoginPagePageState extends State<LoginPage> {
                                           email: email,
                                           extraAccessToken: extraAccessToken,
                                         );
+                                        if (isRemember) {
+                                          await AuthService.saveRememberMeCredentials(email: email, password: pass);
+                                        } else {
+                                          await AuthService.clearRememberMeCredentials();
+                                        }
 
-                                        print('extraAccessToken =========== >>>>>>>>');
-                                        print(extraAccessToken);
                                         if (!mounted) return;
                                         Navigator.pushReplacement(
                                           context,

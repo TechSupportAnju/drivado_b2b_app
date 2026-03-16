@@ -58,4 +58,36 @@ class LoginRepository {
       }
     }
   }
+
+  /// Call logout API to invalidate session on server. Pass [accessToken] from AuthService.
+  /// Returns true when API responds with message "logged out successfully" or success true.
+  Future<bool> logout(String? accessToken) async {
+    final headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+    if (accessToken != null && accessToken.isNotEmpty) {
+      headers['Authorization'] = 'Bearer $accessToken';
+    }
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/user/logout"),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body) as Map<String, dynamic>?;
+        if (data != null) {
+          final message = data['message'] as String?;
+          final success = data['success'] as bool?;
+          if (message == 'logged out successfully' || success == true) {
+            return true;
+          }
+        }
+      } else {
+        log('Logout API: ${response.statusCode} ${response.body}');
+      }
+    } catch (e) {
+      log('Logout API error: $e');
+    }
+    return false;
+  }
 }

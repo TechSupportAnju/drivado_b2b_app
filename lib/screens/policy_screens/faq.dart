@@ -12,9 +12,6 @@ class FaqPage extends StatefulWidget {
 }
 
 class _FaqPageState extends State<FaqPage> {
-  int activeIndex = -1;
-  List faqTitleText = ['How do I create an account on Drivado B2B app?', 'Can I track my booking in real-time?', 'How do I view my booking history?', 'How do I make payment for my booking?', 'Can I cancel my booking?', 'How can I contact Drivado customer support?'];
-
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -82,7 +79,7 @@ class _FaqPageState extends State<FaqPage> {
                                 dense: true,
                                 tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                                 title: CustomText(title: 'What is Drivado?',
-                                  color: Color(0xFF606060), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
+                                  color: Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 14, height: 1.4,),
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(left: 18.0, right: 18, bottom: 15, top: 0),
