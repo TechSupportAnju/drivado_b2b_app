@@ -73,7 +73,7 @@ class InvoiceVoucherWidget extends StatelessWidget {
           radius: 12,
           smooth: 1,
           color: Colors.white,
-          borderColor: isSelected ? Colors.black : const Color(0XFF606060),
+          borderColor: isSelected ? Color(0x7F606060) : Color(0x7F606060),
           width: 0.8,
           boxShadowColor: const Color(0XFF474747).withOpacity(0.1),
           blurRadius: 15,
@@ -155,7 +155,7 @@ class DriverDetailsWidget extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Colors.black : const Color(0XFF606060),
+            color: isSelected ? Color(0x7F606060) : Color(0x7F606060),
           ),
         ),
         child: Row(

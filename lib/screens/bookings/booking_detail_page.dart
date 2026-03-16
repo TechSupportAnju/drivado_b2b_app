@@ -50,7 +50,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
           )
         ),
         title: const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20, height: 1.2),
-        
+        centerTitle: true,
        actions: [
           InkWell(
             highlightColor: Colors.transparent,
@@ -59,10 +59,18 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                backgroundColor: Colors.transparent,
+                backgroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(38),
+                  ),
+                ),
                 builder: (context) {
-                  return SafeArea(
-                    bottom: false,
+                  return Container(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewPadding.bottom,
+                    ),
+                    decoration: CustomDecorations().baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
                     child: CancelBottomSheet(),
                   );
                 },
@@ -236,7 +244,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                       children: [
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width * 0.69,
-                                          child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10)),
+                                          child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.4, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 12)),
                                         const SizedBox(height: 17,),
                                         SizedBox(
                                           child: Row(
@@ -264,7 +272,7 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                                         const SizedBox(height: 17,),
                                         SizedBox(
                                         width: MediaQuery.of(context).size.width * 0.69,
-                                        child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.3, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 10, letterSpacing: 1))
+                                        child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.4, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 12, letterSpacing: 1))
                                       ],
                                     ),
                                   ),

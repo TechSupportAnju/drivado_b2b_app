@@ -49,10 +49,9 @@ class _RootShellState extends State<RootShell> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         onPressed: () {
-            setState(() {
-              bottomBarIndex = 4; // index of AddScreen
-            });
-          // Navigator.push(context, MaterialPageRoute(builder: (context) => CreateBookingPage()));
+          setState(() {
+            bottomBarIndex = 4;
+          });
         },
         child: Container(
           height: 58,

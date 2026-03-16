@@ -1,7 +1,9 @@
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_status_widget.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/constant/constant.dart';
+import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:flutter/material.dart';
 
 class PropertyFilterWidget extends StatefulWidget {
@@ -37,6 +39,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                   onTap: () async {},
                   onChanged: (val) {},
                   suffix: false,
+                  autofocus: false,
                 ),
                 CustomTextField(
                   readOnly: false,
@@ -51,6 +54,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                   onTap: () async {},
                   onChanged: (val) {},
                   suffix: false,
+                  autofocus: false,
                 ),
               ],
             ),
@@ -70,6 +74,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
               suffix: false,
               readOnly: false, 
               astric: false,
+              autofocus: false,
             ),
             SizedBox(height: 12),
             CustomTextField(
@@ -85,6 +90,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
               suffix: false,
               readOnly: false, 
               astric: false,
+              autofocus: false,
             ),
             SizedBox(height: 12),
             CustomTextField(
@@ -100,6 +106,41 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
               suffix: false,
               readOnly: false, 
               astric: false,
+              autofocus: false,
+            ),
+            SizedBox(height: 16),
+            CustomText(title: "Passenger details", color: const Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16, height: 1.06),
+            SizedBox(height: 16),
+            CustomTextField(
+              title: 'Enter passenger name',
+              hintText: 'Enter passenger name',
+              controller: passengerNameController,
+              isPassword: false,
+              icon: 'null',
+              height: 52,
+              width: MediaQuery.of(context).size.width,
+              onChanged: (val) {},
+              onTap: () {},
+              suffix: false,
+              readOnly: false, 
+              astric: false,
+              autofocus: false,
+            ),
+            SizedBox(height: 12),
+            CustomTextField(
+              title: 'Enter passenger number',
+              hintText: 'Enter passenger number',
+              controller: passengerNumberController,
+              isPassword: false,
+              icon: 'null',
+              height: 52,
+              width: MediaQuery.of(context).size.width,
+              onChanged: (val) {},
+              onTap: () {},
+              suffix: false,
+              readOnly: false, 
+              astric: false,
+              autofocus: false,
             ),
             SizedBox(height: 16),
             CustomText(title: "Booking status", color: const Color(0xFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16, height: 1.06),
@@ -153,6 +194,27 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                   },
                 ),
               ],
+            ),
+            SizedBox(height: 16),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: CustomButtons(
+                  isIcon: false,
+                  title: 'Search',
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  onTap: () {
+                    FocusScope.of(context).unfocus(); 
+                    Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => RootShell(bottomBarIndex: 1)),
+                    (Route<dynamic> route) => false,
+                  );
+                  },
+                ),
+              ),
             ),
           ],
         ),

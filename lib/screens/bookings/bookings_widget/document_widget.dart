@@ -37,7 +37,10 @@ class _DocumentWidgetState extends State<DocumentWidget> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0XFF190C0C),
+        toolbarHeight: 75,
+        leadingWidth: 60,
         leading: InkWell(
+          
           onTap: () {
             Navigator.pop(context);
           },
@@ -46,8 +49,11 @@ class _DocumentWidgetState extends State<DocumentWidget> {
             child: SvgPicture.asset("assets/booking_detail/back_icon.svg"),
           ),
         ),
-        title: CustomText(title: "Documents", color: Color(0XFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 20, height: 2.4),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: CustomText(title: "Documents", color: Color(0XFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 20, height: 2.4),
+        ),
+       
         centerTitle: true,
       ),
       body: SingleChildScrollView(

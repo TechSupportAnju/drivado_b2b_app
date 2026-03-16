@@ -35,6 +35,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Color(0XFF190C0C),
+        leadingWidth: 60,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -44,8 +45,11 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
             child: SvgPicture.asset("assets/booking_detail/back_icon.svg"),
           ),
         ),
-        title: CustomText(title: "Property Filter", color: Color(0XFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 20, height: 2.4),
-        toolbarHeight: MediaQuery.of(context).size.height * 0.1,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: CustomText(title: "Property Filter", color: Color(0XFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 20, height: 2.4),
+        ),
+        toolbarHeight: 75,
         centerTitle: true,
         actions: [
           InkWell(
@@ -66,7 +70,8 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20),
-              child: CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
+              child: SvgPicture.asset("assets/booking_detail/reset_icon.svg")
+              //CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
             ),
           )
         ],
@@ -82,6 +87,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
               Container(
                 decoration: CustomDecorations().baseBackgroundDecoration(55.0, 1.0, Colors.white, Colors.transparent),
                 child: TabBar(
+                  
                   controller: tabController,
                   indicator: BoxDecoration(
                     borderRadius: BorderRadius.circular(
@@ -89,10 +95,11 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
                     ),
                     color: Color(0XFFFB4156)
                   ),
+                  
                   indicatorSize: TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
                   labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black,
+                  unselectedLabelColor: const Color(0xFF606060),
                   tabs: [
                     Tab(
                       text: 'Booking Date',
@@ -105,37 +112,45 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
               ),
               SizedBox(height: 16),
               Expanded(
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    PropertyFilterWidget(),
-                    PropertyFilterWidget()
-                  ],
+                child: SizedBox(
+                 height: 38,
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      PropertyFilterWidget(),
+                      PropertyFilterWidget()
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         )
       ),
-       bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: CustomButtons(
-            isIcon: false,
-            title: 'Search',
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 16,
-            onTap: () {
-              FocusScope.of(context).unfocus(); 
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RootShell()),
-              );
-            },
-          ),
-        ),
-      ),
+      //  bottomNavigationBar: SafeArea(
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(16),
+      //     child: CustomButtons(
+      //       isIcon: false,
+      //       title: 'Search',
+      //       color: Colors.white,
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 16,
+      //       onTap: () {
+      //         FocusScope.of(context).unfocus(); 
+      //         // Navigator.pushAndRemoveUntil(
+      //         //   context,
+      //         //   MaterialPageRoute(builder: (context) => RootShell(bottomBarIndex: 1)),
+      //         // );
+      //         Navigator.pushAndRemoveUntil(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => RootShell(bottomBarIndex: 1)),
+      //         (Route<dynamic> route) => false,
+      //       );
+      //       },
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
