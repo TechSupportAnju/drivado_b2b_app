@@ -18,8 +18,7 @@ class _BookingListPageState extends State<BookingListPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
-      backgroundColor: Color(0XFFFFFFFF),
-      
+
       appBar: CommonAppBar(
         bottomHeight: 120,
         bottomWidget: Column(
@@ -108,34 +107,12 @@ class _BookingListPageState extends State<BookingListPage> {
                 ],
               ),
             ),
-            SizedBox(height: 16,)
+            SizedBox(height: 16)
           ],
         ),
       ),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.6,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                decoration: CustomDecorations().baseBackgroundDecoration(
-                  0.0,
-                  1.0,
-                  Color(0XFFF5F6FA),
-                  Colors.transparent,
-                ),
-                child: BookingCardWidget(),
-              ),
-            ),
-          ],
-        ),
-      ),
+      //body: BookingCardWidget(),
+      body: BookingCardWidget(),
     );
   }
 }
