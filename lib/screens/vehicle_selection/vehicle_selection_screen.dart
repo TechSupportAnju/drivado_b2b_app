@@ -6,6 +6,7 @@ import 'package:drivado_b2b_app/screens/vehicle_selection/widget/elipse_widget.d
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/inclusion_detail_widget.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/max_data.dart';
 import 'package:drivado_b2b_app/utils/constant.dart';
+import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -155,7 +156,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
       decoration: const BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/vehicle/mask.png'),
-            fit: BoxFit.fitWidth,
+            fit: BoxFit.contain,
             alignment: Alignment.topCenter
         ),
         gradient: LinearGradient(
@@ -177,34 +178,40 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
             backgroundColor: Colors.transparent,
             elevation: 0,
             leading: InkWell(
-              child: const Icon(
-                Icons.arrow_back,
-                size: 20,
-                color: Color(0xFFE6E8E7),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: const Icon(
+                  Icons.keyboard_backspace,
+                  size: 24,
+                  color: Color(0xFFE6E8E7),
+                ),
               ),
               onTap: () {
                 Navigator.of(context).pop();
               },
             ),
             centerTitle: true,
-            title: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: InkWell(
-                onTap: () {
-                  log(((widget.selectedVehicle['price']).toString()));
-                },
-                child: const CustomText(
-                  title:  "Choose a vehicle",
-                  fontWeight: FontWeight.w500,
-                  color:Color(0xFFFFFFFF),
-                  //fontSize: screenWidth * 0.05
-                  fontSize: 20,
-                ),
-              )
+            title: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: InkWell(
+                  onTap: () {
+                    log(((widget.selectedVehicle['price']).toString()));
+                  },
+                  child: const CustomText(
+                    title:  "Choose a vehicle class",
+                    fontWeight: FontWeight.w600,
+                    color:Color(0xFFFFFFFF),
+                    //fontSize: screenWidth * 0.05
+                    fontSize: 20,
+                  ),
+                )
+              ),
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 10, top: 15),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
@@ -242,20 +249,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                       },
                     );
                   },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: CustomDecorations().baseBackgroundDecoration(
-                      40.0,
-                      1.0,
-                      Colors.white,
-                      Colors.transparent,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: SvgPicture.asset("assets/vehicle/inclusion_icon.svg")
-                    ),
-                  ),
+                  child: SvgPicture.asset("assets/vehicle/inclusion_icon.svg"),
                 ),
               ),
             ],
@@ -268,7 +262,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: screenHeight * 0.01),
                 Center(
                   heightFactor: screenHeight * 0.001,
                   child: AnimatedSwitcher(
@@ -291,9 +285,8 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                 ),
               ],
             ),
-            
             Positioned(
-              top: screenHeight * 0.27,
+              top: screenHeight * 0.24,
               left: 0,
               right: 0,
               child: Container(
@@ -302,15 +295,15 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                   35.0,
                   1.0,
                   Color(0xFF0D0D0D),
-                  Colors.transparent,
+                  Color(0xFF0D0D0D),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  padding: EdgeInsets.symmetric(horizontal: 21),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: screenHeight * 0.02),
+                      SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,13 +311,14 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                           Expanded(
                             child: CustomText(title: vehicleWithPrice['vehicleType'] ?? "No data found",
                               color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: screenHeight * 0.02,
+                              height: 1.4,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
                             ),
                           ),
                           Container(
-                            height: screenHeight * 0.025,
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.005),
+                            // height: screenHeight * 0.025,
+                            padding: EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                             decoration: ShapeDecoration(
                               color: Color(0XFFFB4156).withOpacity(0.2),
                               shape: RoundedRectangleBorder(
@@ -337,53 +331,40 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                                 CustomText(title: "30 km",
                                   //"${newOnewayVehicleKm ?? "No data found"} km",
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: screenHeight * 0.014,
-                                ),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                  height: 1.4,
 
-                                SizedBox(width: screenWidth * 0.015),
+                                ),
+                                SizedBox(width: 7),
                                 Icon(
                                   Icons.circle,
                                   size: screenHeight * 0.009,
                                   color: Colors.white,
                                 ),
-                                SizedBox(width: screenWidth * 0.015),
-                                CustomText(title: "2 hr",
+                                SizedBox(width: 7),
+                                CustomText(title: "2 hr 35 min",
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize:  screenHeight * 0.014,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 12,
+                                  height: 1.4,
                                 ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: screenHeight * 0.0015),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 0),
-                        child: SizedBox(
-                          width: screenWidth,
-                          height: screenHeight * 0.06,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                title: vehicleWithPrice['description'] ?? "No data found",
-                                maxLine: 2,
-                                  color: Color(0xFFABABAB),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize:  screenHeight * 0.018,
-                                  height: 1.4,
-                                  
-                                overflow: TextOverflow.ellipsis,
-                                
-                              ),
-                            ],
-                          ),
-                        ),
+                      SizedBox(height: 4),
+                      CustomText(
+                        title: vehicleWithPrice['description'] ?? "No data found",
+                        maxLine: 2,
+                          color: Color(0xFFABABAB),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          height: 1.4,
+                        // overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: screenHeight * 0.015),
+                      SizedBox(height: 12),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -408,38 +389,35 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                                 title: "Price: ",
                                 fontWeight: FontWeight.w700,
                                 fontSize: 15,
-                                color: Color(0xFFFB4156),
+                                color: AppColors.secondary,
                                 height: 1,
                               ),
-                              InkWell(
-                                onTap: () {
-                                },
-                                child: CustomText(
-                                  title: "${vehicleWithPrice['price']} ${vehicleWithPrice['unit']}",
-                                  color: const Color(0xFFE6E8E7),
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                  letterSpacing: -0.3,
-                                  height: 1,
-                                ),
+                              SizedBox(width: 10,),
+                              CustomText(
+                                title: "${vehicleWithPrice['price']} ${vehicleWithPrice['unit']}",
+                                color: const Color(0xFFE6E8E7),
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                                // letterSpacing: -0.3,
+                                height: 1,
                               ),
                             ],
                           ),
                         ],
                       ),
-                      SizedBox(height: screenHeight * 0.02),
+                      SizedBox(height: 15),
                       Center(
                         child: CustomSliderButton(onActionCompleted: navigateToPassengerDetails),
                       ),
-                      SizedBox(height: screenHeight * 0.015),
+                      SizedBox(height: 16),
                     ],
                   ),
                 ),
               ),
             ),
             DraggableScrollableSheet(
-              initialChildSize: 0.4,
-              minChildSize: 0.4,
+              initialChildSize: 0.46,
+              minChildSize: 0.46,
               maxChildSize: 1.0,
               snap: true,
               controller: draggableSheetController,

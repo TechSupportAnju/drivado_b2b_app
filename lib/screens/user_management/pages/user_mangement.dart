@@ -55,6 +55,9 @@ class _UserMangementPageState extends State<UserMangementPage> {
 
     return Scaffold(
       backgroundColor: Color(0xffF5F6FA),
+      appBar: CommonAppBar(
+        bottomHeight: 10,
+      ),
       body: Column(
         children: [
           Container(
@@ -63,14 +66,14 @@ class _UserMangementPageState extends State<UserMangementPage> {
                 color: Color(0xff190C0C),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
               child: SafeArea(
                 bottom: false,
                 child: Column(
                   children: [
-                    const SizedBox(height: 14,),
-                    CommonHeaderTest(),
-                    const SizedBox(height: 16,),
+                    // const SizedBox(height: 14,),
+                    // CommonHeaderTest(),
+                    // const SizedBox(height: 16,),
                     Container(
                       height: 52,
                       width: screenWidth,
@@ -157,7 +160,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
                   ),
                   Positioned(
                     right: 10,
-                    bottom: 130,
+                    bottom: MediaQuery.of(context).size.height * 0.15,
                     child: userCompanyAddButtonWidget(context, toggleValue),
                   )
                 ],
@@ -168,5 +171,4 @@ class _UserMangementPageState extends State<UserMangementPage> {
       ),
     );
   }
-
 }

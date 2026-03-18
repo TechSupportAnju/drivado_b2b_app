@@ -26,17 +26,24 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Drivado b2b',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          scrolledUnderElevation: 0.0,
+          surfaceTintColor: Colors.transparent
+        ),
         fontFamily: 'PlusJakartaSans',
         primarySwatch: buildMaterialColor(AppColors.secondary),
         useMaterial3: false,
       ),
       home: const SplashPage(),
       builder: (context, child) {
-        return Stack(
-          children: [
-            child!,
-            ConnectivityWidget(),
-          ],
+        return ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: Stack(
+            children: [
+              child!,
+              ConnectivityWidget(),
+            ],
+          ),
         );
       },
     );
