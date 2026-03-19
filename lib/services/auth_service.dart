@@ -25,8 +25,9 @@ class AuthService {
     if (loginResponse.refreshToken != null && loginResponse.refreshToken!.isNotEmpty) {
       await prefs.setString(_keyRefreshToken, loginResponse.refreshToken!);
     }
+    // Fresh token from `/user/access_Token` overrides login token (single access token).
     if (extraAccessToken != null && extraAccessToken.isNotEmpty) {
-      await prefs.setString(_keyExtraAccessToken, extraAccessToken);
+      await prefs.setString(_keyAccessToken, extraAccessToken);
     }
   }
 
@@ -47,6 +48,13 @@ class AuthService {
   static Future<String?> getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_keyAccessToken);
+  }
+
+  /// Overwrites stored access token (e.g. after `/user/access_Token` on each app open).
+  static Future<void> saveAccessToken(String token) async {
+    if (token.isEmpty) return;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyAccessToken, token);
   }
 
   static Future<String?> getExtraAccessToken() async {
