@@ -45,7 +45,7 @@ class _ContactTextFieldState extends State<ContactTextField> {
         cursorWidth: 1.5,
         keyboardType: TextInputType.number,
         style: GoogleFonts.plusJakartaSans(
-            fontWeight: FontWeight.w600, fontSize: 14),
+            fontWeight: FontWeight.w500, fontSize: 14),
         decoration: InputDecoration(
             prefixIcon: !widget.isTapContactName?
             Stack(
@@ -59,8 +59,7 @@ class _ContactTextFieldState extends State<ContactTextField> {
             Stack(
               alignment: Alignment.centerLeft,
               children: [
-                _countryCodePicker(
-                    context), // Positioned country code picker
+                _countryCodePicker(context), // Positioned country code picker
               ],
             ) : null,
             label: Container(

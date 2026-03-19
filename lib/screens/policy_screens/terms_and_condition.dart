@@ -81,7 +81,7 @@ class _TermsAndConditionPageState extends State<TermsAndConditionPage> {
                               child: ExpansionTile(
                                                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'General',
                                   height: 1.4,
                                   color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w600, fontSize: 14,),
@@ -556,7 +556,7 @@ class _TermsAndConditionPageState extends State<TermsAndConditionPage> {
                               child: ExpansionTile(
                                                                 collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'The Cancellation of Service Agreements',
                                   height: 1.4,
                                   color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w600, fontSize: 14,),
@@ -993,7 +993,7 @@ class _TermsAndConditionPageState extends State<TermsAndConditionPage> {
                               child: ExpansionTile(
                                collapsedIconColor: AppColors.secondary,
                                 dense: true,
-                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                                tilePadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                                 title: CustomText(title: 'Company Identification',
                                   height: 1.4,
                                   color: AppColors.textFieldLabelTextColor, fontWeight: FontWeight.w600, fontSize: 14,),

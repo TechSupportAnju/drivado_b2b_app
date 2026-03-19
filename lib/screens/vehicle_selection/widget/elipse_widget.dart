@@ -26,7 +26,7 @@ class EllipseWidget extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          SvgPicture.asset("assets/vehicle/ellipse.svg",  fit: BoxFit.contain),
+          SvgPicture.asset("assets/vehicle/ellipse.svg",  fit: BoxFit.contain, width: carWidth,),
           Positioned(
             top: containerHeight * 0.2,
             child: GestureDetector(

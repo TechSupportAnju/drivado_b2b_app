@@ -31,7 +31,7 @@ class _CarDetailState extends State<CarDetail> {
           borderColor: const Color(0xFFD3D3D3),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 12, left: 12, bottom: 12, right: 6),
+          padding: const EdgeInsets.only(top: 8, left: 12, bottom: 12, right: 6),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -40,18 +40,20 @@ class _CarDetailState extends State<CarDetail> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: 8,),
                     CustomText(
                       title: widget.carDetailData['vehicleType'] ?? 'Data not found',
-                      fontSize: screenHeight * 0.025,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                       color: widget.isSelected? Color(0xffffffff) : const Color(0xFF002A48),
+                      height: 1.4,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: screenHeight * 0.01),
+                    SizedBox(height: 2),
                     CustomText(
                         title: widget.carDetailData['description'] ?? 'Data not found',
                         color: widget.isSelected? Color(0xffffffff) : const Color(0xFF6A6A6A),
-                        fontSize: screenHeight * 0.016,
+                        fontSize: 12,
                         fontWeight: FontWeight.w500,
                         height: 1.4
                     ),
@@ -61,15 +63,15 @@ class _CarDetailState extends State<CarDetail> {
                         _maxData(
                             ("assets/vehicle/passenger_icon.svg"),
                             'Max. ${widget.carDetailData['passengerCount'] ?? ''}', widget.isSelected ? Color(0xffffffff) : const Color(0xFF606060),
-                            widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
-                            fontWeight : FontWeight.w500
+                            widget.isSelected? const Color(0xFF0D0D0D) : Color(0xffffffff),
+                            fontWeight : FontWeight.w600
                         ),
-                        SizedBox(width: screenWidth * 0.015),
+                        SizedBox(width: 8),
                         _maxData(
                             ("assets/vehicle/luggage_icon.svg"),
                             'Max. ${widget.carDetailData['luggageCount'] ?? ''}', widget.isSelected? Color(0xffffffff) : const Color(0xFF606060),
-                            widget.isSelected? const Color(0xFF1A2126) : Color(0xffffffff),
-                            fontWeight : FontWeight.w500
+                            widget.isSelected? const Color(0xFF0D0D0D) : Color(0xffffffff),
+                            fontWeight : FontWeight.w600
                         ),
                       ],
                     ),
@@ -77,38 +79,39 @@ class _CarDetailState extends State<CarDetail> {
                 ),
               ),
               Flexible(
-                child: SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Image.network(
-                        widget.carDetailData['image'] ?? 'assets/vehicle/default_car_image.png',
-                        alignment: Alignment.centerRight,
-                        height: screenHeight * 0.07,
-                        width: screenWidth * 0.3,
-                        fit: BoxFit.contain,
-                        // loadingBuilder: (context, child, loadingProgress) {
-                        //   if (loadingProgress == null) {
-                        //     return child;
-                        //   }
-                        //   return CustomSingleLineShimmer(
-                        //     width: screenWidth * 0.3,
-                        //     height: screenHeight * 0.07,
-                        //   );
-                        // },
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.image_not_supported, size: 80, color: Colors.grey);
-                        },
-                      ),
-                      SizedBox(height: screenHeight * 0.015),
-                      CustomText(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Image.network(
+                      widget.carDetailData['image'] ?? 'assets/vehicle/default_car_image.png',
+                      alignment: Alignment.centerRight,
+                      height: 80,
+                      width: screenWidth /2,
+                      fit: BoxFit.fill,
+                      // loadingBuilder: (context, child, loadingProgress) {
+                      //   if (loadingProgress == null) {
+                      //     return child;
+                      //   }
+                      //   return CustomSingleLineShimmer(
+                      //     width: screenWidth * 0.3,
+                      //     height: screenHeight * 0.07,
+                      //   );
+                      // },
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.image_not_supported, size: 80, color: Colors.grey);
+                      },
+                    ),
+                    SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: CustomText(
                         title: "${widget.carDetailData['unit'] ?? ""} ${widget.carDetailData['price'] ?? ""}",
-                        fontSize: screenHeight * 0.022,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                         color: widget.isSelected? Color(0xffffffff) : const Color(0xFFFB4156),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -148,6 +151,7 @@ class _CarDetailState extends State<CarDetail> {
             child: Text(label,
               style: GoogleFonts.plusJakartaSans(
                 color: textColor,
+                fontSize: 10,
                 fontWeight: fontWeight,
               ),
             ),

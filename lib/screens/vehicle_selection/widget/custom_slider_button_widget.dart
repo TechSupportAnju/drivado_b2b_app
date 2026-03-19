@@ -49,14 +49,19 @@ class _CustomSliderButtonState extends State<CustomSliderButton> {
                 child: Stack(
                   alignment: Alignment.centerLeft,
                   children: [
-                    Center(
-                      child: CustomText( title:
-                        _actionCompleted ? '' : 'Book Now   >>>>',
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: screenHeight * 0.02,
-                        ),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomText( title:
+                          _actionCompleted ? '' : 'Book Now',
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        SizedBox(width: 7,),
+                        SvgPicture.asset('assets/vehicle/arrow.svg')
+                      ],
+                    ),
                     Positioned(
                       left: _dragPosition,
                       child: GestureDetector(
