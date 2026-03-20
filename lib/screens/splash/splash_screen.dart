@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
+import 'package:drivado_b2b_app/screens/auth/login/repositories/login_repository.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +25,17 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> appStarted() async {
     await Future.delayed(const Duration(seconds: 2));
     final loggedIn = await AuthService.isLoggedIn();
+    if (loggedIn) {
+      final email = await AuthService.getEmail();
+      if (email != null && email.isNotEmpty) {
+        try {
+          final newToken = await LoginRepository().fetchAccessToken(email);
+          await AuthService.saveAccessToken(newToken);
+        } catch (e, st) {
+          log('Splash: refresh access token failed: $e', stackTrace: st);
+        }
+      }
+    }
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
