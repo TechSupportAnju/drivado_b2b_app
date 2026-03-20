@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:drivado_b2b_app/screens/auth/forgot_password/bloc/forgot_password_cubit.dart';
 import 'package:drivado_b2b_app/screens/auth/forgot_password/repositories/forgot_password_repository.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async{
+  //makes sure Flutter’s connection with the engine is ready before you run code that needs it.
+  //as initializes Flutter before runApp() for things that must be set up first.
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env.test");
   runApp(
     BlocProvider(
       create: (_) => ForgotPasswordCubit(
