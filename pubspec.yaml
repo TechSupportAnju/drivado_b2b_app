@@ -110,6 +110,7 @@ flutter:
    - assets/booking_recipet/
    - assets/booking_recipet/congress.gif
    - assets/booking_summary/
+   - .env.test
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

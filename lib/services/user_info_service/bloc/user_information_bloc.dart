@@ -4,9 +4,9 @@ import 'package:drivado_b2b_app/services/user_info_service/user_information_repo
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserInformationBloc extends Bloc<UserInformationEvent, UserInformationState> {
-  final UserInformationRepository userRepository;
+  final UserInformationRepository userInformationRepository;
 
-  UserInformationBloc({required this.userRepository}) : super(UserInformationInitial()) {
+  UserInformationBloc({required this.userInformationRepository}) : super(UserInformationInitial()) {
     on<UserInformationLoadDetails>(_onLoadUserDetails);
   }
 
@@ -17,7 +17,7 @@ class UserInformationBloc extends Bloc<UserInformationEvent, UserInformationStat
     emit(UserInformationLoading());
     
     try {
-      final response = await userRepository.getUserDetails(accessToken: event.accessToken ?? "");
+      final response = await userInformationRepository.getUserDetails(accessToken: event.accessToken ?? "");
       
       if (response.success && response.data != null) {
         emit(UserInformationLoaded(response.data!, response));
