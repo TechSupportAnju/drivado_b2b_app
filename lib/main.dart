@@ -1,17 +1,31 @@
 import 'package:drivado_b2b_app/screens/common_widgets/connectivity_widget.dart';
 import 'package:drivado_b2b_app/screens/splash/splash_screen.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/user_information_repository.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:drivado_b2b_app/screens/auth/forgot_password/bloc/forgot_password_cubit.dart';
 import 'package:drivado_b2b_app/screens/auth/forgot_password/repositories/forgot_password_repository.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  //makes sure Flutter’s connection with the engine is ready before you run code that needs it.
+  //as initializes Flutter before runApp() for things that must be set up first.
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env.test");
   runApp(
-    BlocProvider(
-      create: (_) => ForgotPasswordCubit(
-        repository: ForgotPasswordRepository(),
-      ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ForgotPasswordCubit(repository: ForgotPasswordRepository()),
+        ),
+        BlocProvider<UserInformationBloc>(
+          create: (context) => UserInformationBloc(
+            userInformationRepository: UserInformationRepository(),
+          ),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -28,7 +42,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           scrolledUnderElevation: 0.0,
-          surfaceTintColor: Colors.transparent
+          surfaceTintColor: Colors.transparent,
         ),
         fontFamily: 'PlusJakartaSans',
         primarySwatch: buildMaterialColor(AppColors.secondary),
@@ -38,12 +52,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return ScrollConfiguration(
           behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: Stack(
-            children: [
-              child!,
-              ConnectivityWidget(),
-            ],
-          ),
+          child: Stack(children: [child!, ConnectivityWidget()]),
         );
       },
     );
@@ -69,4 +78,3 @@ class MyApp extends StatelessWidget {
     return MaterialColor(color.value, swatch);
   }
 }
-
