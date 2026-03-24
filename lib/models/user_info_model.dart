@@ -1,3 +1,13 @@
+/// JSON numbers often decode as [double]; maps cleanly to [int?].
+int? _intFromJson(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is double) return value.toInt();
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
+}
+
 class UserInformationModel<T> {
   final bool success;
   final String message;
@@ -45,32 +55,39 @@ class UserData {
 
   factory UserData.fromJson(Map<String, dynamic> json) {
     return UserData(
-      id: json['_id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      userName: json['userName'],
-      email: json['email'],
-      mobile: json['mobile'],
-      role: json['role'],
-      userActiveStatus: json['userActiveStatus'],
-      position: json['position'],
-      loginAttempts: json['loginAttempts'],
-      userLocked: json['userLocked'],
-      isDeleted: json['isDeleted'],
-      language: json['language'],
-      unpaidBooking: json['unpaidBooking'],
-      markup: json['markup'],
-      discount: json['discount'],
+      id: json['_id']?.toString(),
+      firstName: json['firstName']?.toString(),
+      lastName: json['lastName']?.toString(),
+      userName: json['userName']?.toString(),
+      email: json['email']?.toString(),
+      mobile: _stringFromJson(json['mobile']),
+      role: json['role']?.toString(),
+      userActiveStatus: json['userActiveStatus']?.toString(),
+      position: json['position']?.toString(),
+      loginAttempts: _intFromJson(json['loginAttempts']),
+      userLocked: json['userLocked'] as bool?,
+      isDeleted: json['isDeleted'] as bool?,
+      language: json['language']?.toString(),
+      unpaidBooking: _intFromJson(json['unpaidBooking']),
+      markup: _intFromJson(json['markup']),
+      discount: _intFromJson(json['discount']),
       cityprice: json['cityprice'],
       company: json['company'] != null ? CompanyData.fromJson(json['company']) : null,
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
       permission: json['permission'] != null ? PermissionData.fromJson(json['permission']) : null,
-      refreshToken: json['refresh_token'],
+      refreshToken: json['refresh_token']?.toString(),
       refreshTokenExpiry: json['refresh_token_expiry'] != null ? DateTime.parse(json['refresh_token_expiry']) : null,
       forgotPasswordExpiry: json['forgotPasswordExpiry'] != null ? DateTime.parse(json['forgotPasswordExpiry']) : null,
-      forgotPasswordToken: json['forgotPasswordToken'],
+      forgotPasswordToken: json['forgotPasswordToken']?.toString(),
     );
+  }
+
+  static String? _stringFromJson(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value;
+    if (value is num) return value.toString();
+    return null;
   }
 }
 
@@ -107,19 +124,19 @@ class CompanyData {
 
   factory CompanyData.fromJson(Map<String, dynamic> json) {
     return CompanyData(
-      id: json['_id'],
-      companyName: json['companyName'],
-      companyId: json['companyId'],
-      email: json['email'],
-      website: json['website'],
-      address: json['address'],
-      isDeleted: json['isDeleted'],
-      gstVat: json['gst_vat'],
-      creditLimit: json['creditLimit'],
-      discount: json['discount'],
-      markUp: json['markUp'],
-      totalUnpaidBooking: json['totalUnpaidBooking'],
-      availableLimit: json['availableLimit'],
+      id: json['_id']?.toString(),
+      companyName: json['companyName']?.toString(),
+      companyId: json['companyId']?.toString(),
+      email: json['email']?.toString(),
+      website: json['website']?.toString(),
+      address: json['address']?.toString(),
+      isDeleted: json['isDeleted'] as bool?,
+      gstVat: json['gst_vat']?.toString(),
+      creditLimit: _intFromJson(json['creditLimit']),
+      discount: _intFromJson(json['discount']),
+      markUp: _intFromJson(json['markUp']),
+      totalUnpaidBooking: _intFromJson(json['totalUnpaidBooking']),
+      availableLimit: _intFromJson(json['availableLimit']),
       invoiceable: json['invoiceable'],
       cityprice: json['cityprice'],
       thresholdValues: json['thresholdValues'],
@@ -154,19 +171,37 @@ class PermissionData {
 
   factory PermissionData.fromJson(Map<String, dynamic> json) {
     return PermissionData(
-      newBooking: json['newBooking'],
-      flatRateBooking: json['flatRateBooking'],
-      manageBooking: json['manageBooking'],
-      affiliate: json['affiliate'],
-      regions: json['regions'],
-      flatRegions: json['flatRegions'],
-      generalSettings: json['generalSettings'],
-      userManagement: json['userManagement'],
-      vehicleTypes: json['vehicleTypes'],
-      imageUploader: json['imageUploader'],
-      apiDocs: json['apiDocs'],
-      whiteLevelDocs: json['whiteLevelDocs'],
+      newBooking: _mapFromJson(json['newBooking']),
+      flatRateBooking: _stringFromJson(json['flatRateBooking']),
+      manageBooking: _mapFromJson(json['manageBooking']),
+      affiliate: _stringFromJson(json['affiliate']),
+      regions: _stringFromJson(json['regions']),
+      flatRegions: _stringFromJson(json['flatRegions']),
+      generalSettings: _stringFromJson(json['generalSettings']),
+      userManagement: _mapFromJson(json['userManagement']),
+      vehicleTypes: _stringFromJson(json['vehicleTypes']),
+      imageUploader: _stringFromJson(json['imageUploader']),
+      apiDocs: _stringFromJson(json['apiDocs']),
+      whiteLevelDocs: _stringFromJson(json['whiteLevelDocs']),
     );
+  }
+
+  /// API often sends `{ "permission": "..." }` where older models expected a [String].
+  static String? _stringFromJson(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value;
+    if (value is Map) {
+      final p = value['permission'];
+      if (p != null) return p.toString();
+      return null;
+    }
+    return value.toString();
+  }
+
+  static Map<String, dynamic>? _mapFromJson(dynamic value) {
+    if (value == null) return null;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return null;
   }
 }
 

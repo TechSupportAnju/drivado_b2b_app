@@ -1,10 +1,65 @@
+import 'dart:convert';
+
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sliding_toast/flutter_sliding_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class AppToast {
   AppToast._();
+
+  /// Turns exceptions / raw JSON strings into a short user-facing line.
+  static String humanizeError(Object error) {
+    String s = error.toString().replaceFirst('Exception: ', '').trim();
+    if (s.startsWith('{')) {
+      try {
+        final end = s.lastIndexOf('}');
+        if (end > 0) {
+          final map = jsonDecode(s.substring(0, end + 1));
+          if (map is Map<String, dynamic>) {
+            final msg = map['message'] ?? map['error'] ?? map['msg'];
+            if (msg != null && msg.toString().trim().isNotEmpty) {
+              return msg.toString();
+            }
+          }
+        }
+      } catch (_) {}
+    }
+    if (s.contains('FormatException') || s.contains('json')) {
+      return 'Something went wrong. Please try again.';
+    }
+    if (s.isEmpty) return 'Something went wrong. Please try again.';
+    return s;
+  }
+
+  static void showError(
+    BuildContext context,
+    Object error, {
+    String title = 'Error',
+    Duration displayDuration = const Duration(seconds: 3),
+  }) {
+    show(
+      context: context,
+      title: title,
+      subtitle: humanizeError(error),
+      displayDuration: displayDuration,
+    );
+  }
+
+  static void showSuccess(
+    BuildContext context,
+    String message, {
+    String title = 'Success',
+    Duration displayDuration = const Duration(seconds: 3),
+  }) {
+    show(
+      context: context,
+      title: title,
+      subtitle: message,
+      displayDuration: displayDuration,
+    );
+  }
 
   static void show({
     required BuildContext context,
@@ -64,7 +119,7 @@ class AppToast {
             offset: const Offset(0, 20),
           ),
         ],
-        progressBarColor: Color(0XFF16A329),
+        progressBarColor: AppColors.secondary,
       ),
       
       // toastSetting: SlidingToastSetting(
@@ -79,7 +134,7 @@ class AppToast {
       // ),
       toastSetting: SlidingToastSetting(
         maxWidth: MediaQuery.of(context).size.width * 0.9,
-        animationDuration: const Duration(milliseconds:6500),
+        animationDuration: const Duration(milliseconds:1000),
         displayDuration: displayDuration,
         toastStartPosition: ToastPosition.top,
         toastAlignment: Alignment.center,
@@ -151,9 +206,8 @@ class ToastLeading extends StatelessWidget {
             gradient: RadialGradient(
               radius: 0.5,
               colors: [
-                const Color(0xFF16A329).withOpacity(0.35),
-                const Color(0xFF22C55E).withOpacity(0.2),
-                
+                AppColors.secondary.withOpacity(0.35),
+                AppColors.secondary.withOpacity(0.2),
               ],
               stops: const [0.0, 0.6],
             ),

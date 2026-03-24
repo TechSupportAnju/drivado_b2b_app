@@ -16,3 +16,8 @@ class UserInformationLoadDetails extends UserInformationEvent {
   List<Object?> get props => [accessToken];
 }
 
+/// Clears profile (e.g. after logout).
+class UserInformationReset extends UserInformationEvent {
+  const UserInformationReset();
+}
+

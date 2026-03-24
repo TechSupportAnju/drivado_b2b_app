@@ -1,3 +1,4 @@
+import 'package:drivado_b2b_app/models/booking_list_item.dart';
 import 'package:drivado_b2b_app/screens/bookings/booking_detail_page.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
@@ -255,31 +256,78 @@ import 'package:dotted_line/dotted_line.dart';
 //   }
 // }
 
-class BookingCardWidget extends StatefulWidget {
-  const BookingCardWidget({super.key});
+class BookingCardWidget extends StatelessWidget {
+  final List<BookingListItem> bookings;
+  final bool isLoading;
+  final bool isLoadingMore;
 
-  @override
-  State<BookingCardWidget> createState() => _BookingCardWidgetState();
-}
+  const BookingCardWidget({
+    super.key,
+    this.bookings = const [],
+    this.isLoading = false,
+    this.isLoadingMore = false,
+  });
 
-class _BookingCardWidgetState extends State<BookingCardWidget> {
+  static Color _statusColor(String status) {
+    final s = status.toLowerCase();
+    if (s.contains('confirm')) return const Color(0xFF28A745);
+    if (s.contains('cancel')) return const Color(0xFFDC3545);
+    if (s.contains('pending') || s.contains('assign')) return const Color(0xFFFFC107);
+    return const Color(0xFF606060);
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final fontScale = screenWidth / 375;  
+    final fontScale = screenWidth / 375;
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.65,
-      
-      child: ListView.separated(
-        itemCount: 9,
-        padding: EdgeInsets.only(top: 16, bottom: 16 ),
+    if (isLoading && bookings.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFFFB4156)),
+      );
+    }
+
+    if (bookings.isEmpty) {
+      return const Center(
+        child: CustomText(
+          title: 'No bookings found',
+          color: Color(0xFF606060),
+          fontWeight: FontWeight.w500,
+          fontSize: 14,
+        ),
+      );
+    }
+
+    final bottomInset =
+        MediaQuery.paddingOf(context).bottom + kBottomNavigationBarHeight + 56;
+
+    final tail = isLoadingMore ? 1 : 0;
+    return ListView.separated(
+        itemCount: bookings.length + tail,
+        padding: EdgeInsets.only(top: 16, bottom: bottomInset),
         itemBuilder: (context, index) {
+          if (index >= bookings.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Center(
+                child: SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFFB4156),
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+            );
+          }
+          final item = bookings[index];
+          final statusColor = _statusColor(item.status);
+
           return Padding(
-            padding: EdgeInsets.only(left: 19 , right: 19 ),
+            padding: const EdgeInsets.only(left: 19, right: 19),
             child: Container(
-              width: screenWidth - (38), 
+              width: screenWidth - 38,
               decoration: CustomDecorationsCards().baseBackgroundShadow(
                 radius: 12,
                 smooth: 1,
@@ -291,71 +339,81 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(12, 12, 12 , 12 ),
+                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: screenWidth * 0.5, 
+                          width: screenWidth * 0.5,
                           child: Row(
                             children: [
-                              SizedBox(
-                                child: SvgPicture.asset("assets/booking/pax_icon.svg"),
-                              ),
-                              SizedBox(width: 6),
+                              SvgPicture.asset('assets/booking/pax_icon.svg'),
+                              const SizedBox(width: 6),
                               Expanded(
                                 child: CustomText(
-                                  title: "Mr. Khaled abdul rehman", 
-                                  color: Color(0XFF0D0D0D), 
-                                  fontWeight: FontWeight.w600, 
+                                  title: item.paxName,
+                                  color: const Color(0xFF0D0D0D),
+                                  fontWeight: FontWeight.w600,
                                   fontSize: 12,
                                   maxLine: 1,
                                   overflow: TextOverflow.ellipsis,
-                                )
+                                ),
                               ),
                             ],
                           ),
                         ),
                         InkWell(
-                          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BookingDetailPage())),
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const BookingDetailPage(),
+                            ),
+                          ),
                           child: StatusWidget(
-                            text: "Confirmed", textColor: Color(0XFF28A745), borderColor: Color(0XFF28A745).withOpacity(0.5),borderWidth: 0.5, backgroundColor: Color(0XFF28A745).withOpacity(0.1), fontSize: 10, fontWeight: FontWeight.w600
+                            text: item.status,
+                            textColor: statusColor,
+                            borderColor: statusColor.withOpacity(0.5),
+                            borderWidth: 0.5,
+                            backgroundColor: statusColor.withOpacity(0.1),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  DottedLine(
+                  const DottedLine(
                     direction: Axis.horizontal,
-                    lineThickness: 1.0 ,
+                    lineThickness: 1.0,
                     dashColor: Colors.grey,
                   ),
+                  SizedBox(height: 12,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              title: "D0223-6854",
+                              title: item.bookingRef,
                               color: const Color(0xFFFB4156),
                               fontWeight: FontWeight.w500,
                               fontSize: 10,
                               height: 1,
                             ),
-                            SizedBox(height: 8 ),
+                            const SizedBox(height: 8),
                             CustomText(
-                              title: "Thu, Jan 18",
+                              title: item.dateLabel,
                               color: const Color(0xFFFB4156),
                               fontWeight: FontWeight.w700,
                               fontSize: 12,
                               height: 1,
                             ),
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             CustomText(
-                              title: "13:25",
+                              title: item.timeLabel,
                               color: const Color(0xFF606060),
                               fontWeight: FontWeight.w800,
                               fontSize: 24,
@@ -372,13 +430,13 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
                               width: screenWidth * 0.6,
                               child: Row(
                                 children: [
-                                  SvgPicture.asset("assets/booking/source_icon.svg"),
-                                  SizedBox(width: 9),
+                                  SvgPicture.asset('assets/booking/source_icon.svg'),
+                                  const SizedBox(width: 9),
                                   Expanded(
                                     child: Transform.translate(
-                                      offset: Offset(0, 4 ),
+                                      offset: const Offset(0, 4),
                                       child: CustomText(
-                                        title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo",
+                                        title: item.pickup,
                                         color: const Color(0xFF606060),
                                         fontWeight: FontWeight.w500,
                                         fontSize: 10 * fontScale,
@@ -409,11 +467,11 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
                               width: screenWidth * 0.6,
                               child: Row(
                                 children: [
-                                  SvgPicture.asset("assets/booking/destination_icon.svg"),
-                                  SizedBox(width: 9),
+                                  SvgPicture.asset('assets/booking/destination_icon.svg'),
+                                  const SizedBox(width: 9),
                                   Expanded(
                                     child: CustomText(
-                                      title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo",
+                                      title: item.dropoff,
                                       color: const Color(0xFF606060),
                                       fontWeight: FontWeight.w500,
                                       fontSize: 10,
@@ -426,35 +484,37 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(12),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   BookingTypeWidget(
-                                    bookingType: "Oneway",
+                                    bookingType: item.bookingType,
                                     textColor: const Color(0xFFFB4156),
                                     fontWeight: FontWeight.w600,
                                     fontSize: 12,
                                     height: 1,
                                   ),
-                                  SizedBox(width: 12 ),
+                                  const SizedBox(width: 12),
                                   Container(
-                                    height: 24,
-                                    width: 124,
+                                    // constraints: const BoxConstraints(maxWidth: 140),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 6,
+                                    ),
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFF5F6FA),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Center(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                        child: CustomText(
-                                          title: "37 km | 2 hr 53 min",
-                                          color: const Color(0xFFFB4156),
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12,
-                                          height: 1,
-                                        ),
+                                      child: CustomText(
+                                        title: item.durationLabel,
+                                        color: const Color(0xFFFB4156),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 11,
+                                        height: 1,
+                                        maxLine: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   ),
@@ -471,66 +531,93 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
                     children: [
                       SizedBox(
                         width: screenWidth,
-                        child: SvgPicture.asset("assets/booking/card.svg"),
+                        child: SvgPicture.asset('assets/booking/card.svg'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset("assets/booking/driver_icon.svg"),
-                              SizedBox(width: 2),
-                              CustomText(
-                                title: "Reda Julien Ghilana",
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                height: 1,
-                              ),
-                            ],
+                          Flexible(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset('assets/booking/driver_icon.svg'),
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: CustomText(
+                                    title: item.driverName,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    height: 1,
+                                    maxLine: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Row(
-                            children: [
-                              SvgPicture.asset("assets/booking/driver_contact_icon.svg"),
-                              SizedBox(width: 2),
-                              CustomText(
-                                title: "+91 9876543210",
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                height: 1,
-                              ),
-                            ],
+                          Flexible(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset('assets/booking/driver_contact_icon.svg'),
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: CustomText(
+                                    title: item.driverPhone,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    height: 1,
+                                    maxLine: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(12 , 5, 12 , 12 ),
+                    padding: const EdgeInsets.fromLTRB(12, 5, 12, 12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(
-                          title: "LUXURY SEDAN",
-                          color: const Color(0xFF0D0D0D),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12 * fontScale,
-                          height: 1,
+                        Expanded(
+                        flex: 1,
+                          child: CustomText(
+                            textAlign: TextAlign.center,
+                            title: item.vehicleLabel,
+                            color: const Color(0xFF0D0D0D),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12 * fontScale,
+                            height: 1,
+                            maxLine: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         CustomText(
-                          title: " | ",
+                          title: ' | ',
                           color: const Color(0xFF0D0D0D),
                           fontWeight: FontWeight.w700,
                           fontSize: 14 * fontScale,
                           height: 1,
                         ),
-                        CustomText(
-                          title: "USD 234.00",
-                          color: const Color(0xFF0D0D0D),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12 * fontScale,
-                          height: 1,
+
+                        Expanded(
+                          flex: 1,
+                          child: CustomText(
+                            textAlign: TextAlign.center,
+                            title: item.priceLabel,
+                            color: const Color(0xFF0D0D0D),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12 * fontScale,
+                            height: 1,
+                            maxLine: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
@@ -540,8 +627,7 @@ class _BookingCardWidgetState extends State<BookingCardWidget> {
             ),
           );
         },
-        separatorBuilder: (context, index) => SizedBox(height: 12),
-      ),
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
     );
   }
 }

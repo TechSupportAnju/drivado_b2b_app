@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:drivado_b2b_app/utils/api_error_message.dart';
 import 'package:http/http.dart' as http;
 
 class ForgotPasswordRepository {
@@ -20,8 +21,10 @@ class ForgotPasswordRepository {
     log(response.body.toString());
 
     if (response.statusCode != 200) {
-      final errorJson = jsonDecode(response.body);
-      final message = errorJson['error'] ?? 'Unable to send reset email';
+      final message = parseApiErrorMessage(
+        response.body,
+        fallback: 'Unable to send reset email',
+      );
       throw Exception(message);
     }
   }
@@ -46,8 +49,10 @@ class ForgotPasswordRepository {
     log(response.body.toString());
 
     if (response.statusCode != 200) {
-      final errorJson = jsonDecode(response.body);
-      final message = errorJson['error'] ?? 'Unable to reset password';
+      final message = parseApiErrorMessage(
+        response.body,
+        fallback: 'Unable to reset password',
+      );
       throw Exception(message);
     }
   }

@@ -3,9 +3,16 @@ import 'package:drivado_b2b_app/screens/auth/login/repositories/login_repository
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/services/auth_service.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_list_bloc.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_list_event.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/single_company_bloc.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/single_company_event.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_event.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 showLogoutPopup(context) {
@@ -69,9 +76,15 @@ showLogoutPopup(context) {
                   child: GestureDetector(
                     onTap: () async {
                       final navigator = Navigator.of(context);
+                      final bookingBloc = context.read<BookingListBloc>();
+                      final userBloc = context.read<UserInformationBloc>();
+                      final companyBloc = context.read<SingleCompanyBloc>();
                       final token = await AuthService.getAccessToken();
                       await LoginRepository().logout(token);
                       await AuthService.logout();
+                      bookingBloc.add(const BookingListReset());
+                      userBloc.add(const UserInformationReset());
+                      companyBloc.add(const SingleCompanyReset());
                       if (!context.mounted) return;
                       navigator.pop();
                       navigator.pushAndRemoveUntil(

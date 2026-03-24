@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:drivado_b2b_app/screens/auth/auth_models/signup_model.dart';
+import 'package:drivado_b2b_app/utils/api_error_message.dart';
 import 'package:http/http.dart' as http;
 
 class SignupRepository {
@@ -35,8 +36,10 @@ class SignupRepository {
         print(jsonResponse);
         return SignupResponseModel.fromJson(jsonResponse);
       } else {
-        final errorJson = jsonDecode(response.body);
-        final message = errorJson['error'] ?? 'Email not registered';
+        final message = parseApiErrorMessage(
+          response.body,
+          fallback: 'Unable to complete sign up',
+        );
         throw Exception(message);
       }
   }

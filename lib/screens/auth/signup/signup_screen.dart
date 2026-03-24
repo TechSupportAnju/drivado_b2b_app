@@ -6,6 +6,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_toaster.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
@@ -450,10 +451,9 @@ class _SignupPageState extends State<SignupPage> {
 
                                     if (!allValid) {
                                       if (!isAgree) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Please fill all required fields correctly and accept consent.'),
-                                          ),
+                                        AppToast.showError(
+                                          context,
+                                          'Please fill all required fields correctly and accept consent.',
                                         );
                                       }
                                       return;
@@ -480,13 +480,8 @@ class _SignupPageState extends State<SignupPage> {
                                         ),
                                       );
                                     } catch (e) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            e.toString().replaceFirst('Exception: ', ''),
-                                          ),
-                                        ),
-                                      );
+                                      if (!mounted) return;
+                                      AppToast.showError(context, e);
                                     } finally {
                                       if (mounted) {
                                         setState(() {

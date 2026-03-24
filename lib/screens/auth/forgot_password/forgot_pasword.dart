@@ -1,5 +1,6 @@
 import 'package:drivado_b2b_app/screens/auth/login/login_screen.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_toaster.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
@@ -51,10 +52,9 @@ class _ForgotPasswordPagePageState extends State<ForgotPasswordPage> {
       body: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
         listener: (context, state) {
           if (state.emailSent) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Password reset link has been sent to your email.'),
-              ),
+            AppToast.showSuccess(
+              context,
+              'Password reset link has been sent to your email.',
             );
             context.read<ForgotPasswordCubit>().clearFlags();
             Navigator.pushAndRemoveUntil(
@@ -64,9 +64,8 @@ class _ForgotPasswordPagePageState extends State<ForgotPasswordPage> {
             );
           }
           if (state.error != null && state.error!.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error!)),
-            );
+            AppToast.showError(context, state.error!);
+            context.read<ForgotPasswordCubit>().clearError();
           }
         },
         builder: (context, state) {
@@ -196,10 +195,9 @@ class _ForgotPasswordPagePageState extends State<ForgotPasswordPage> {
                                   final mail = email.text.trim();
                                   final valid = EmailValidator.validate(mail);
                                   if (!valid) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please enter a valid email address.'),
-                                      ),
+                                    AppToast.showError(
+                                      context,
+                                      'Please enter a valid email address.',
                                     );
                                     return;
                                   }

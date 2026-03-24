@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:drivado_b2b_app/screens/auth/auth_models/login_model.dart';
+import 'package:drivado_b2b_app/utils/api_error_message.dart';
 import 'package:http/http.dart' as http;
 
 class LoginRepository {
@@ -23,12 +24,12 @@ class LoginRepository {
       ),
     );
     log(response.body.toString());
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
+    log('response.body.toString()');
+    final jsonResponse = json.decode(response.body);
+    if (jsonResponse['success'] == true) {
       return LoginResponseModel.fromJson(jsonResponse);
     } else {
-      final errorJson = jsonDecode(response.body);
-      final message = errorJson['error'] ?? 'Email not registered';
+      final message = jsonResponse['message'];
       throw Exception(message);
     }
   }
@@ -49,13 +50,11 @@ class LoginRepository {
       }
       throw Exception('Access token not found in response');
     } else {
-      try {
-        final errorJson = jsonDecode(response.body);
-        final message = errorJson['error'] ?? 'Failed to fetch access token';
-        throw Exception(message);
-      } catch (_) {
-        throw Exception('Failed to fetch access token');
-      }
+      final message = parseApiErrorMessage(
+        response.body,
+        fallback: 'Failed to fetch access token',
+      );
+      throw Exception(message);
     }
   }
 

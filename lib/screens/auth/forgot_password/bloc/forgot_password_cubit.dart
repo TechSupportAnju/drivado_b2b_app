@@ -70,5 +70,9 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
       ),
     );
   }
+
+  void clearError() {
+    emit(state.copyWith(error: null));
+  }
 }
 

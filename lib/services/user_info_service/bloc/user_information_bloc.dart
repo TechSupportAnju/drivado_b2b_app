@@ -8,6 +8,11 @@ class UserInformationBloc extends Bloc<UserInformationEvent, UserInformationStat
 
   UserInformationBloc({required this.userInformationRepository}) : super(UserInformationInitial()) {
     on<UserInformationLoadDetails>(_onLoadUserDetails);
+    on<UserInformationReset>(_onReset);
+  }
+
+  void _onReset(UserInformationReset event, Emitter<UserInformationState> emit) {
+    emit(UserInformationInitial());
   }
 
   Future<void> _onLoadUserDetails(

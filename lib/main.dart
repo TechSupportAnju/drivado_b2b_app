@@ -1,7 +1,11 @@
 import 'package:drivado_b2b_app/screens/common_widgets/connectivity_widget.dart';
 import 'package:drivado_b2b_app/screens/splash/splash_screen.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_list_bloc.dart';
+import 'package:drivado_b2b_app/services/bookings/booking_list_repository.dart';
 import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
 import 'package:drivado_b2b_app/services/user_info_service/user_information_repository.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/single_company_bloc.dart';
+import 'package:drivado_b2b_app/services/user_management/single_company_repository.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +17,7 @@ void main() async {
   //makes sure Flutter’s connection with the engine is ready before you run code that needs it.
   //as initializes Flutter before runApp() for things that must be set up first.
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env.test");
+  await dotenv.load(fileName: "api_key.env");
   runApp(
     MultiBlocProvider(
       providers: [
@@ -21,8 +25,17 @@ void main() async {
           create: (_) => ForgotPasswordCubit(repository: ForgotPasswordRepository()),
         ),
         BlocProvider<UserInformationBloc>(
-          create: (context) => UserInformationBloc(
-            userInformationRepository: UserInformationRepository(),
+          create: (context) => UserInformationBloc(userInformationRepository: UserInformationRepository(),
+          ),
+        ),
+        BlocProvider<BookingListBloc>(
+          create: (context) => BookingListBloc(
+            repository: BookingListRepository(),
+          ),
+        ),
+        BlocProvider<SingleCompanyBloc>(
+          create: (context) => SingleCompanyBloc(
+            repository: SingleCompanyRepository(),
           ),
         ),
       ],

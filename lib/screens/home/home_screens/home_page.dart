@@ -1,42 +1,18 @@
-import 'dart:developer';
-
 import 'package:drivado_b2b_app/screens/common_widgets/appbar_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/number_of_booking_card_widget.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/recent_booking_list.dart';
-import 'package:drivado_b2b_app/services/auth_service.dart';
-import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
-import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_event.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
   @override
   State<HomePage> createState() => _HomePageState();
-} 
+}
+
 class _HomePageState extends State<HomePage> {
-  @override
-  @override
-void initState() {
-  super.initState();
-
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    final accessToken = await AuthService.getAccessToken();
-
-    if (accessToken != null) {
-        context.read<UserInformationBloc>().add(
-          UserInformationLoadDetails(accessToken: accessToken),
-        );
-        log(accessToken);
-      } else {
-        
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
