@@ -42,6 +42,8 @@ class UserData {
   final DateTime? refreshTokenExpiry;
   final DateTime? forgotPasswordExpiry;
   final String? forgotPasswordToken;
+  /// Profile image URL from API (e.g. `profilePicture`, `photo`, `image`, …).
+  final String? profilePicture;
 
   UserData({
     this.id, this.firstName, this.lastName, this.userName, this.email,
@@ -50,7 +52,7 @@ class UserData {
     this.unpaidBooking, this.markup, this.discount, this.cityprice,
     this.company, this.createdAt, this.updatedAt, this.permission,
     this.refreshToken, this.refreshTokenExpiry, this.forgotPasswordExpiry,
-    this.forgotPasswordToken,
+    this.forgotPasswordToken, this.profilePicture,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -80,7 +82,29 @@ class UserData {
       refreshTokenExpiry: json['refresh_token_expiry'] != null ? DateTime.parse(json['refresh_token_expiry']) : null,
       forgotPasswordExpiry: json['forgotPasswordExpiry'] != null ? DateTime.parse(json['forgotPasswordExpiry']) : null,
       forgotPasswordToken: json['forgotPasswordToken']?.toString(),
+      profilePicture: _profilePictureFromJson(json),
     );
+  }
+
+  static String? _profilePictureFromJson(Map<String, dynamic> json) {
+    const keys = [
+      'profilePicture',
+      'profileImage',
+      'profile_photo',
+      'photo',
+      'image',
+      'avatar',
+      'picture',
+      'userImage',
+      'profilePic',
+    ];
+    for (final key in keys) {
+      final v = json[key];
+      if (v != null && v.toString().trim().isNotEmpty) {
+        return v.toString().trim();
+      }
+    }
+    return null;
   }
 
   static String? _stringFromJson(dynamic value) {

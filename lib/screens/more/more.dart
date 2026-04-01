@@ -1,13 +1,19 @@
+import 'package:drivado_b2b_app/models/user_data_extensions.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/more/account_settings_page.dart';
 import 'package:drivado_b2b_app/screens/more/profile.dart';
+import 'package:drivado_b2b_app/screens/more/widgets/profile_user_avatar.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/faq.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/privacy_policy.dart';
 import 'package:drivado_b2b_app/screens/policy_screens/terms_and_condition.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_event.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'widgets/account_widget.dart';
 
@@ -19,15 +25,21 @@ class MorePage extends StatefulWidget {
 }
 
 class _MorePageState extends State<MorePage> {
-
-  var isLoad = true;
-  String? name;
-  String? email;
-
   @override
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureUserProfileLoaded());
+  }
+
+  Future<void> _ensureUserProfileLoaded() async {
+    if (!mounted) return;
+    final bloc = context.read<UserInformationBloc>();
+    final s = bloc.state;
+    if (s is UserInformationLoaded || s is UserInformationLoading) return;
+    final token = await AuthService.getAccessToken();
+    if (!mounted || token == null || token.isEmpty) return;
+    bloc.add(UserInformationLoadDetails(accessToken: token));
   }
 
   @override
@@ -79,38 +91,71 @@ class _MorePageState extends State<MorePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: CustomDecorations().baseBackgroundDecoration(16.0, 1.0, Colors.white, Color(0xFFE6E8E7)),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset("assets/more/profile.svg", height: 40,),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  BlocBuilder<UserInformationBloc, UserInformationState>(
+                    builder: (context, state) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ProfilePage()),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: CustomDecorations().baseBackgroundDecoration(
+                              16.0, 1.0, Colors.white, const Color(0xFFE6E8E7)),
+                          child: Row(
                             children: [
-                              CustomText(
-                                  title: 'Sumit Modi',
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF0D0D0D),
-                                    fontSize: 16,
-                              ),
-                              const SizedBox(height: 4),
-                              CustomText(
-                                title: 'test@drivado.com',
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF606060),
-                                    fontSize: 14
+                              if (state is UserInformationLoading)
+                                const SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: Center(
+                                    child: SizedBox(
+                                      width: 22,
+                                      height: 22,
+                                      child: CircularProgressIndicator(strokeWidth: 2),
+                                    ),
+                                  ),
+                                )
+                              else if (state is UserInformationLoaded)
+                                ProfileUserAvatar(user: state.userData, size: 40)
+                              else
+                                ProfileUserAvatar(user: null, size: 40),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText(
+                                      title: state is UserInformationLoaded
+                                          ? state.userData.displayName
+                                          : state is UserInformationError
+                                              ? 'Profile unavailable'
+                                              : 'Loading…',
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xFF0D0D0D),
+                                      fontSize: 16,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    CustomText(
+                                      title: state is UserInformationLoaded
+                                          ? (state.userData.email ?? '—')
+                                          : state is UserInformationError
+                                              ? state.message
+                                              : '',
+                                      fontWeight: FontWeight.w500,
+                                      color: const Color(0xFF606060),
+                                      fontSize: 14,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(height: 12),
                   Container(

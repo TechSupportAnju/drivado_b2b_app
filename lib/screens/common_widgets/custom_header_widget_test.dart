@@ -1,5 +1,3 @@
-import 'package:drivado_b2b_app/screens/bookings/bookings_widget/search_bar_widget.dart';
-import 'package:drivado_b2b_app/screens/bookings/search_filter_page.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +32,7 @@ class CommonHeaderTest extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
-        notificationWidget()
+        const NotificationIconButton()
       ],
     );
   }

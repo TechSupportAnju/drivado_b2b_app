@@ -324,6 +324,7 @@ class _UserMangementPageState extends State<UserMangementPage> {
             context,
             users[index].displayTitle,
             1,
+            userId: users[index].id,
           );
         },
       );

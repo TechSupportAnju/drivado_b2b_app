@@ -1,8 +1,5 @@
-import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/notification_widget.dart';
-import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'greeting_widget.dart';
 
@@ -26,7 +23,7 @@ class CreateBookingHeaderWidget extends StatelessWidget {
         children: [
           GreetingWidget(),
           const Spacer(),
-          notificationWidget()
+          const NotificationIconButton()
         ],
       ),
     );

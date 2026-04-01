@@ -506,6 +506,7 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                               context,
                                               _filteredUsers[index].userName,
                                               1,
+                                              userId: _filteredUsers[index].id,
                                             );
                                           }
                                           final child =

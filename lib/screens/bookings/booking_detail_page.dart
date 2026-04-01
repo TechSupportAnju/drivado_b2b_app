@@ -1,57 +1,57 @@
+import 'package:drivado_b2b_app/models/booking_detail_model.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_id.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancel_bottom_sheet.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/custom_booking_box.dart';
-
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/flight_detail_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_bloc.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_event.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dash/flutter_dash.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BookingDetailPage extends StatefulWidget {
-  const BookingDetailPage({super.key});
+  final String bookingId;
+
+  const BookingDetailPage({super.key, required this.bookingId});
 
   @override
   State<BookingDetailPage> createState() => _BookingDetailPageState();
 }
 
-String source = 'J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan';
 class _BookingDetailPageState extends State<BookingDetailPage> {
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
-    final double screenWidth = screenSize.width;
-    int totalSourLength = _calculateNumberOfLines(
-      source,
-      GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 10),
-      screenWidth * 0.7, 
-    );
-    int totalDestLength = _calculateNumberOfLines(
-      source,
-      GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 10),
-     screenWidth * 0.7, 
-    );
-    double totalLength = double.parse('$totalSourLength') + double.parse('$totalDestLength');
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 75,
-        backgroundColor: Color(0XFF190C0C),
+        backgroundColor: const Color(0xFF190C0C),
         leadingWidth: 60,
         leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
+          onTap: () => Navigator.pop(context),
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
-            child: SvgPicture.asset("assets/booking_detail/back_icon.svg",height: 40, width: 40),
-          )
+            child: SvgPicture.asset(
+              'assets/booking_detail/back_icon.svg',
+              height: 40,
+              width: 40,
+            ),
+          ),
         ),
-        title: const CustomText(title: 'Booking Summary', color: Color(0XFFFFFFFF), fontWeight: FontWeight.w500, fontSize: 20, height: 1.2),
+        title: const CustomText(
+          title: 'Booking Summary',
+          color: Color(0xFFFFFFFF),
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+          height: 1.2,
+        ),
         centerTitle: true,
-       actions: [
+        actions: [
           InkWell(
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
@@ -61,17 +61,16 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                 isScrollControlled: true,
                 backgroundColor: Colors.white,
                 shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(38),
-                  ),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(38)),
                 ),
                 builder: (context) {
                   return Container(
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewPadding.bottom,
                     ),
-                    decoration: CustomDecorations().baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
-                    child: CancelBottomSheet(),
+                    decoration: CustomDecorations()
+                        .baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
+                    child: const CancelBottomSheet(),
                   );
                 },
               );
@@ -88,308 +87,423 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
                   ),
                   alignment: Alignment.center,
                   child: SvgPicture.asset(
-                    "assets/booking_detail/dot_icon.svg",
+                    'assets/booking_detail/dot_icon.svg',
                     height: 28,
                   ),
                 ),
               ),
             ),
           ),
-          
         ],
       ),
-      body: Column(
+      body: BlocBuilder<BookingDetailBloc, BookingDetailState>(
+        builder: (context, state) {
+          if (state is BookingDetailLoading || state is BookingDetailInitial) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFFFB4156)),
+            );
+          }
+          if (state is BookingDetailFailure) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      title: state.message,
+                      color: const Color(0xFF606060),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        context.read<BookingDetailBloc>().add(
+                              BookingDetailLoadRequested(
+                                bookingId: widget.bookingId,
+                              ),
+                            );
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          if (state is BookingDetailLoaded) {
+            return _DetailScrollView(detail: state.data);
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+}
+
+class _DetailScrollView extends StatelessWidget {
+  final BookingDetailData detail;
+
+  const _DetailScrollView({required this.detail});
+
+  int _calculateNumberOfLines(String text, TextStyle style, double maxWidth) {
+    final textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: null,
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: maxWidth);
+    return textPainter.computeLineMetrics().length;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final lineStyle =
+        GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w500, fontSize: 10);
+    final sourceLines =
+        _calculateNumberOfLines(detail.sourcePlace, lineStyle, screenWidth * 0.7);
+    final destLines =
+        _calculateNumberOfLines(detail.destinationPlace, lineStyle, screenWidth * 0.7);
+    final totalLength = sourceLines + destLines;
+    final (dayPrefix, dateLine, timeLarge) = detail.travelHeaderLabels;
+
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: SingleChildScrollView(
+        child: Column(
           children: [
-            // Container(
-            //   width: MediaQuery.of(context).size.width,
-            //   decoration: const BoxDecoration(
-            //     color: Color(0XFF190C0C),
-            //   ),
-            //   child: SafeArea(
-            //     child: Padding(
-            //         padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15, bottom: 15),
-            //         child: Row(
-            //         children: [
-            //           GestureDetector(
-            //             onTap: () {
-            //               Navigator.pop(context);
-            //             },
-            //             child: SvgPicture.asset("assets/booking_detail/back_icon.svg")
-            //           ),
-            //           const Spacer(),
-                      
-            //           const Spacer(),
-            //           InkWell(
-            //             onTap: () {
-            //               showModalBottomSheet(
-            //                 context: context,
-            //                 isScrollControlled: true,
-            //                 backgroundColor: Colors.transparent,
-            //                 builder: (context) {
-            //                   return CancelBottomSheet();
-            //                 },
-            //               );
-            //             },
-            //             child: Container(
-            //               height: 40,
-            //               width: 40,
-            //               decoration: BoxDecoration(
-            //                 color: const Color(0xFF352828),
-            //                 borderRadius: BorderRadius.circular(40),
-            //               ),
-            //               alignment: Alignment.center,
-            //               child: SvgPicture.asset("assets/booking_detail/dot_icon.svg")
-            //             )
-            //           ),
-            //         ]
-            //       )
-            //     ),
-            //   ),
-            // ),
-            Expanded(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 16,),
-                      BookingIdWidget(),
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFE6E8E7)),
-                          child: Column(
+            const SizedBox(height: 16),
+            BookingIdWidget(
+              bookingId: detail.bookingId,
+              status: detail.bookingStatus,
+              paymentStatus: detail.paymentStatus,
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
+                decoration: CustomDecorations().baseBackgroundDecoration(
+                  10.0,
+                  1.0,
+                  Colors.white,
+                  const Color(0xFFE6E8E7),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 110,
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SizedBox(
-                                height: 110,
-                                width: MediaQuery.of(context).size.width,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      spacing: 8,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              child: CustomText(title: 'Thu,', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1,)),
-                                          ],
-                                        ),
-                                        //const SizedBox(height: 8,),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                                child: CustomText(title: 'Jan 18, 2024', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 14, height: 1)),
-                                          ],
-                                        ),
-                                        //const SizedBox(height: 8,),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              child:  CustomText(title: '13:25', color: Color(0XFF606060), fontWeight: FontWeight.w700, fontSize: 36, height: 1)),
-                                              
-                                          ],
-                                        ),
-                                        
-                                      ],
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    child: CustomText(
+                                      title: dayPrefix,
+                                      color: const Color(0xFF606060),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      height: 1,
                                     ),
-                                    const Spacer(),
-                                    FlightDetailWidget()
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  CustomText(title: 'Vehicle Type', color: Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 12, height: 1.7,),
-                                  Spacer(),
-                                  CustomText(title: 'Price', color: Color(0XFF606060), fontWeight: FontWeight.w500, fontSize: 12, height: 1.7),
+                                  SizedBox(
+                                    child: CustomText(
+                                      title: dateLine,
+                                      color: const Color(0xFF606060),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14,
+                                      height: 1,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 8,),
-                              Row(
-                                children: [
-                                  CustomText(title: 'Standard Sedan'.toUpperCase(), color: Color(0XFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16, height: 1),
-                                  const Spacer(),
-                                  CustomText(title: 'USD 112', color: Color(0XFFFB4156), fontWeight: FontWeight.w700, fontSize: 16, height: 1,),
-                                ],
-                              ),
-                              const SizedBox(height: 15,),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   SizedBox(
-                                    width: 30,
-                                    child: Column(
-                                      children: [
-                                        SvgPicture.asset("assets/booking_detail/source_detail_icon.svg", color: Colors.red),
-                                        Dash(
-                                          direction: Axis.vertical,
-                                          length: totalLength * 2 + totalLength < 2 ? 40 : totalLength < 3 ? 50 : 70,
-                                          dashLength: 5,
-                                          dashThickness: 1.2,
-                                          dashColor: Colors.grey),
-                                        SvgPicture.asset("assets/booking_detail/dest_detail_icon.svg", color: Colors.red),
-                                        const SizedBox(height: 8,),
-                                      ],
+                                    child: CustomText(
+                                      title: timeLarge,
+                                      color: const Color(0xFF606060),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 36,
+                                      height: 1,
                                     ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded( 
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.69,
-                                          child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.4, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 12)),
-                                        const SizedBox(height: 17,),
-                                        SizedBox(
-                                          child: Row(
-                                            children: [
-                                              BookingTypeWidget(bookingType: "Oneway"),
-                                              const SizedBox(width: 5,),
-                                              BookingDurationWidget(bookingDuration: "37 km | 2 hr 53 min", textColor: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 12, height: 1),
-                                              const SizedBox(width: 5,),
-                                              Container(
-                                                height: 22,
-                                                decoration: CustomDecorations().baseBackgroundDecoration(20.0, 0.0,Color(0XFFF5F6FA), Colors.transparent, ),
-                                                padding: const EdgeInsets.only(left: 8, right: 8, top: 0.8),
-                                                alignment: Alignment.center,
-                                                child: Row(
-                                                  children: [
-                                                    SvgPicture.asset('assets/booking_detail/navigate_icon.svg',),
-                                                    const SizedBox(width: 1,),
-                                                    const CustomText(title: 'Navigate', color: Colors.black, fontWeight: FontWeight.w500, fontSize: 10),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(height: 17,),
-                                        SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.69,
-                                        child: CustomText(title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihonbashi-Honkokuchō, Nihonbashihongokuchō, Chuo City, Tokyo 103-0021, Japan", height: 1.4, color: Color(0XFF0D0D0D), fontWeight: FontWeight.w400, fontSize: 12, letterSpacing: 1))
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20,),
-                              Column(
-                                children: [
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Pax Name:',
-                                    desc: 'Sumit Modi',
-                                    image: 'assets/booking_detail/pax_icon.svg',
-                                  ),
-                                  SizedBox(height:12),
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Mob. number:',
-                                    desc: '+919876543210',
-                                    image: 'assets/booking_detail/contact_icon.svg',
-                                  ),
-                                  SizedBox(height:12),
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Email ID:',
-                                    desc: 'tech@drivado.com',
-                                    image: 'assets/booking_detail/email_icon.svg',
-                                  ),
-                                  SizedBox(height:12),
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Passenger count:',
-                                    desc: '03 Pax',
-                                    image: 'assets/booking_detail/pax_count_icon.svg',
-                                  ),
-                                  SizedBox(height:12),
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Chauffeur name: ',
-                                    desc: 'Sumit Modi',
-                                    image: 'assets/booking_detail/pax_icon.svg',
-                                  ),
-                                  SizedBox(height:12),
-                                  CustomBookingSummaryDataRowWithIcon(
-                                    title: 'Chauffeur number:',
-                                    desc: '+919876543210',
-                                    image: 'assets/booking_detail/contact_icon.svg',
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                        ),
+                          const Spacer(),
+                          const FlightDetailWidget(),
+                        ],
                       ),
-                      
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 15.0, bottom: 11.3, right: 15, top: 10),
-                          decoration: CustomDecorations().baseBackgroundDecoration(10.0, 1.0, Colors.white, Color(0XFFE6E8E7)),
-                          alignment: Alignment.center,
-                          child: Theme(
-                            data: ThemeData().copyWith(dividerColor: Colors.transparent),
-                            child: ExpansionTile(
-                              dense: true,
-                              minTileHeight: 5,
-                              iconColor: Color(0XFF0D0D0D),
-                              collapsedIconColor: Color(0XFF0D0D0D),
-                              tilePadding: EdgeInsets.zero,
-                              childrenPadding: EdgeInsets.zero,
-                              title: const CustomText(title: 'Additional Details', color: Color(0XFF0D0D0D), fontWeight: FontWeight.w500, fontSize: 14, height: 1),
-                              children: <Widget>[
-                                SizedBox(height:12),
-                                CustomBookingSummaryDataRowWithIcon(
-                                  title: 'Booked by:',
-                                  desc: 'camila.lopez@servantrip.com',
-                                  image: 'assets/booking_detail/booked_by_icon.svg',
-                                ),
-                                SizedBox(height:12),
-                                CustomBookingSummaryDataRowWithIcon(
-                                  title: 'Created date:',
-                                  desc: '01-08-2024',
-                                  image: 'assets/booking_detail/created_date_icon.svg',
-                                ),
-                                SizedBox(height:12),
-                                CustomBookingSummaryDataRowWithIcon(
-                                  title: 'Ref. number:',
-                                  desc: '123456789456123789',
-                                  image: 'assets/booking_detail/email_icon.svg',
-                                ),
-                                SizedBox(height:12),
-                                CustomBookingSummaryDataRowWithIcon(
-                                  title: 'Spl. request:',
-                                  desc: 'I need one water bottle',
-                                  image: 'assets/booking_detail/special_request_icon.svg',
-                                ),
-                                
-                              ],
-                            ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Row(
+                      children: [
+                        CustomText(
+                          title: 'Vehicle Type',
+                          color: Color(0xFF606060),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          height: 1.7,
+                        ),
+                        Spacer(),
+                        CustomText(
+                          title: 'Price',
+                          color: Color(0xFF606060),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          height: 1.7,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomText(
+                            title: detail.vehicleCategory.toUpperCase(),
+                            color: const Color(0xFF0D0D0D),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            height: 1,
                           ),
                         ),
+                        CustomText(
+                          title: detail.priceLabel,
+                          color: const Color(0xFFFB4156),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          height: 1,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 30,
+                          child: Column(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/booking_detail/source_detail_icon.svg',
+                                color: Colors.red,
+                              ),
+                              Dash(
+                                direction: Axis.vertical,
+                                length: totalLength < 2
+                                    ? 40
+                                    : totalLength < 3
+                                        ? 50
+                                        : 70,
+                                dashLength: 5,
+                                dashThickness: 1.2,
+                                dashColor: Colors.grey,
+                              ),
+                              SvgPicture.asset(
+                                'assets/booking_detail/dest_detail_icon.svg',
+                                color: Colors.red,
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                title: detail.sourcePlace,
+                                height: 1.4,
+                                color: const Color(0xFF0D0D0D),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
+                              const SizedBox(height: 17),
+                              Row(
+                                children: [
+                                  BookingTypeWidget(
+                                    bookingType: detail.bookingTypeLabel,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  BookingDurationWidget(
+                                    bookingDuration: detail.durationDistanceLine,
+                                    textColor: const Color(0xFF0D0D0D),
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    height: 1,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Container(
+                                    height: 22,
+                                    decoration: CustomDecorations()
+                                        .baseBackgroundDecoration(
+                                      20.0,
+                                      0.0,
+                                      const Color(0xFFF5F6FA),
+                                      Colors.transparent,
+                                    ),
+                                    padding:
+                                        const EdgeInsets.only(left: 8, right: 8, top: 0.8),
+                                    alignment: Alignment.center,
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/booking_detail/navigate_icon.svg'),
+                                        const SizedBox(width: 1),
+                                        const CustomText(
+                                          title: 'Navigate',
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 17),
+                              CustomText(
+                                title: detail.destinationPlace,
+                                height: 1.4,
+                                color: const Color(0xFF0D0D0D),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                                letterSpacing: 1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        CustomBookingSummaryDataRowWithIcon(
+                          title: 'Pax Name:',
+                          desc: detail.paxName,
+                          image: 'assets/booking_detail/pax_icon.svg',
+                        ),
+                        const SizedBox(height: 12),
+                        CustomBookingSummaryDataRowWithIcon(
+                          title: 'Mob. number:',
+                          desc: detail.paxPhoneDisplay,
+                          image: 'assets/booking_detail/contact_icon.svg',
+                        ),
+                        const SizedBox(height: 12),
+                        CustomBookingSummaryDataRowWithIcon(
+                          title: 'Email ID:',
+                          desc: detail.paxEmail,
+                          image: 'assets/booking_detail/email_icon.svg',
+                        ),
+                        const SizedBox(height: 12),
+                        CustomBookingSummaryDataRowWithIcon(
+                          title: 'Passenger count:',
+                          desc: detail.passengerCountLabel,
+                          image: 'assets/booking_detail/pax_count_icon.svg',
+                        ),
+                        const SizedBox(height: 12),
+                        const CustomBookingSummaryDataRowWithIcon(
+                          title: 'Chauffeur name: ',
+                          desc: '—',
+                          image: 'assets/booking_detail/pax_icon.svg',
+                        ),
+                        const SizedBox(height: 12),
+                        const CustomBookingSummaryDataRowWithIcon(
+                          title: 'Chauffeur number:',
+                          desc: '—',
+                          image: 'assets/booking_detail/contact_icon.svg',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 15.0,
+                  bottom: 11.3,
+                  right: 15,
+                  top: 10,
+                ),
+                decoration: CustomDecorations().baseBackgroundDecoration(
+                  10.0,
+                  1.0,
+                  Colors.white,
+                  const Color(0xFFE6E8E7),
+                ),
+                alignment: Alignment.center,
+                child: Theme(
+                  data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    dense: true,
+                    minTileHeight: 5,
+                    iconColor: const Color(0xFF0D0D0D),
+                    collapsedIconColor: const Color(0xFF0D0D0D),
+                    tilePadding: EdgeInsets.zero,
+                    childrenPadding: EdgeInsets.zero,
+                    title: const CustomText(
+                      title: 'Additional Details',
+                      color: Color(0xFF0D0D0D),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      height: 1,
+                    ),
+                    children: <Widget>[
+                      const SizedBox(height: 12),
+                      CustomBookingSummaryDataRowWithIcon(
+                        title: 'Booked by:',
+                        desc: detail.bookedBy,
+                        image: 'assets/booking_detail/booked_by_icon.svg',
                       ),
-                      const SizedBox(height: 20,),
+                      const SizedBox(height: 12),
+                      CustomBookingSummaryDataRowWithIcon(
+                        title: 'Created date:',
+                        desc: detail.createdDateLabel,
+                        image: 'assets/booking_detail/created_date_icon.svg',
+                      ),
+                      const SizedBox(height: 12),
+                      CustomBookingSummaryDataRowWithIcon(
+                        title: 'Ref. number:',
+                        desc: detail.referenceNumber,
+                        image: 'assets/booking_detail/email_icon.svg',
+                      ),
+                      const SizedBox(height: 12),
+                      CustomBookingSummaryDataRowWithIcon(
+                        title: 'Spl. request:',
+                        desc: detail.specialRequest,
+                        image: 'assets/booking_detail/special_request_icon.svg',
+                      ),
                     ],
                   ),
                 ),
               ),
-              
             ),
-            
+            const SizedBox(height: 20),
           ],
-        )
+        ),
+      ),
     );
-  }
-  int _calculateNumberOfLines(String text, TextStyle style, double maxWidth) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      maxLines: null, // Allow for unlimited lines
-      textDirection: TextDirection.ltr,
-    )..layout(maxWidth: maxWidth);
-
-    return textPainter.computeLineMetrics().length;
   }
 }

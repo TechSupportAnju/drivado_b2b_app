@@ -1,10 +1,14 @@
 import 'package:drivado_b2b_app/models/booking_list_item.dart';
 import 'package:drivado_b2b_app/screens/bookings/booking_detail_page.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_bloc.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_event.dart';
+import 'package:drivado_b2b_app/services/bookings/booking_detail_repository.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/home/home_widget/status_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:dotted_line/dotted_line.dart';
 
@@ -363,12 +367,24 @@ class BookingCardWidget extends StatelessWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const BookingDetailPage(),
-                            ),
-                          ),
+                          onTap: () {
+                            final id = item.bookingRef.trim();
+                            if (id.isEmpty || id == '—') return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BlocProvider(
+                                  create: (_) => BookingDetailBloc(
+                                    repository: BookingDetailRepository(),
+                                  )..add(
+                                      BookingDetailLoadRequested(
+                                          bookingId: id),
+                                    ),
+                                  child: BookingDetailPage(bookingId: id),
+                                ),
+                              ),
+                            );
+                          },
                           child: StatusWidget(
                             text: item.status,
                             textColor: statusColor,

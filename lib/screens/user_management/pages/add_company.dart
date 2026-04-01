@@ -243,7 +243,8 @@ class _AddCompanyPageState extends State<AddCompanyPage> {
                     });
 
                     if (!isCompanyNameValidator && !isEmailValidator) {
-                      showSucessDialog(context, companyName.text);
+                      showSucessDialog(context, companyName.text,
+                          isCompany: true);
                     }
                   },
                   child: Container(
