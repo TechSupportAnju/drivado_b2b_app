@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:drivado_b2b_app/models/booking_search_filter_payload.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/property_filter_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
@@ -14,7 +15,8 @@ class SearchFilterPage extends StatefulWidget {
   State<SearchFilterPage> createState() => _SearchFilterPageState();
 }
 
-class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerProviderStateMixin{
+class _SearchFilterPageState extends State<SearchFilterPage>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
 
   @override
@@ -31,7 +33,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Color(0XFF190C0C),
@@ -47,7 +49,13 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
         ),
         title: Padding(
           padding: const EdgeInsets.only(bottom: 20),
-          child: CustomText(title: "Property Filter", color: Color(0XFFFFFFFF), fontWeight: FontWeight.w600, fontSize: 20, height: 2.4),
+          child: CustomText(
+            title: "Property Filter",
+            color: Color(0XFFFFFFFF),
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+            height: 2.4,
+          ),
         ),
         toolbarHeight: 75,
         centerTitle: true,
@@ -59,6 +67,9 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
               bookingIdController.clear();
               companyNameController.clear();
               usernameController.clear();
+              driverNameController.clear();
+              driverNumberController.clear();
+              quoteByController.clear();
               isConfirmedSelected = false;
               isCompletedSelected = false;
               isCancelledSelected = false;
@@ -70,10 +81,10 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20),
-              child: SvgPicture.asset("assets/booking_detail/reset_icon.svg")
+              child: SvgPicture.asset("assets/booking_detail/reset_icon.svg"),
               //CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
             ),
-          )
+          ),
         ],
       ),
       body: Center(
@@ -82,50 +93,56 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(title: "Date range", color: Color(0XFF0D0D0D), fontWeight: FontWeight.w600, fontSize: 16, height: 1.4),
+              CustomText(
+                title: "Date range",
+                color: Color(0XFF0D0D0D),
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                height: 1.4,
+              ),
               SizedBox(height: 16),
               Container(
-                decoration: CustomDecorations().baseBackgroundDecoration(55.0, 1.0, Colors.white, Colors.transparent),
+                decoration: CustomDecorations().baseBackgroundDecoration(
+                  55.0,
+                  1.0,
+                  Colors.white,
+                  Colors.transparent,
+                ),
                 child: TabBar(
-                  
                   controller: tabController,
                   indicator: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      45.0,
-                    ),
-                    color: Color(0XFFFB4156)
+                    borderRadius: BorderRadius.circular(45.0),
+                    color: Color(0XFFFB4156),
                   ),
-                  
+
                   indicatorSize: TabBarIndicatorSize.tab,
                   dividerColor: Colors.transparent,
                   labelColor: Colors.white,
                   unselectedLabelColor: const Color(0xFF606060),
-                  tabs: [
-                    Tab(
-                      text: 'Booking Date',
-                    ),
-                    Tab(
-                      text: 'Travel Date',
-                    ),
-                  ],
+                  tabs: [Tab(text: 'Booking Date'), Tab(text: 'Travel Date')],
                 ),
               ),
               SizedBox(height: 16),
               Expanded(
                 child: SizedBox(
-                 height: 38,
+                  height: 38,
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      PropertyFilterWidget(),
-                      PropertyFilterWidget()
+                      PropertyFilterWidget(
+                        dateRangeKind:
+                            BookingFilterDateRangeKind.bookingCreated,
+                      ),
+                      PropertyFilterWidget(
+                        dateRangeKind: BookingFilterDateRangeKind.travel,
+                      ),
                     ],
                   ),
                 ),
               ),
             ],
           ),
-        )
+        ),
       ),
       //  bottomNavigationBar: SafeArea(
       //   child: Padding(
@@ -137,7 +154,7 @@ class _SearchFilterPageState extends State<SearchFilterPage> with SingleTickerPr
       //       fontWeight: FontWeight.w600,
       //       fontSize: 16,
       //       onTap: () {
-      //         FocusScope.of(context).unfocus(); 
+      //         FocusScope.of(context).unfocus();
       //         // Navigator.pushAndRemoveUntil(
       //         //   context,
       //         //   MaterialPageRoute(builder: (context) => RootShell(bottomBarIndex: 1)),

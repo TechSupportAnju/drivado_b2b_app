@@ -179,6 +179,7 @@ class _DetailScrollView extends StatelessWidget {
               bookingId: detail.bookingId,
               status: detail.bookingStatus,
               paymentStatus: detail.paymentStatus,
+              detail: detail,
             ),
             const SizedBox(height: 10),
             Padding(
@@ -248,7 +249,11 @@ class _DetailScrollView extends StatelessWidget {
                             ],
                           ),
                           const Spacer(),
-                          const FlightDetailWidget(),
+                          if (detail.canShowFlightStatus)
+                            FlightDetailWidget(
+                              flightNumber: detail.flightNumber!.trim(),
+                              lookupDate: detail.effectiveFlightLookupDate!,
+                            ),
                         ],
                       ),
                     ),

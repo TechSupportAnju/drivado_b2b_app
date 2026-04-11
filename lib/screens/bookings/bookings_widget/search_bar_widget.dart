@@ -1,3 +1,4 @@
+import 'package:drivado_b2b_app/screens/bookings/search_filter_page.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,15 +16,24 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: TextField(
+        readOnly: true,
+        enableInteractiveSelection: false,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (context) => const SearchFilterPage(),
+            ),
+          );
+        },
         cursorColor: Colors.black,
         decoration: InputDecoration(
-          
-          hintText: 'Search',
-          prefixIcon: Icon(Icons.search, color: Color(0XFF606060)),
-          fillColor: Color(0XFFF5F6FA),
+          hintText: 'Search & filter',
+          prefixIcon: const Icon(Icons.search, color: Color(0XFF606060)),
+          fillColor: const Color(0XFFF5F6FA),
           filled: true,
-          contentPadding: EdgeInsets.symmetric(
-            vertical: 14, 
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 14,
             horizontal: 16,
           ),
           border: OutlineInputBorder(
@@ -31,16 +41,12 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-           
-            borderSide: BorderSide(
-              color: Colors.transparent, 
-              style: BorderStyle.none
+            borderSide: const BorderSide(
+              color: Colors.transparent,
+              style: BorderStyle.none,
             ),
           ),
         ),
-        onChanged: (value) {
-          print("Search query: $value");
-        },
       ),
     );
   }

@@ -16,7 +16,7 @@ import 'package:dotted_line/dotted_line.dart';
 //   const BookingCardWidget({
 //     super.key,
 //   });
-  
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return ListView.separated(
@@ -50,9 +50,9 @@ import 'package:dotted_line/dotted_line.dart';
 //                             SizedBox(width: 6),
 //                             Expanded(
 //                               child: CustomText(
-//                                 title: "Mr. Khaled abdul rehman hfndjfn", 
-//                                 color: Color(0XFF0D0D0D), 
-//                                 fontWeight: FontWeight.w600, 
+//                                 title: "Mr. Khaled abdul rehman hfndjfn",
+//                                 color: Color(0XFF0D0D0D),
+//                                 fontWeight: FontWeight.w600,
 //                                 fontSize: 12,
 //                                 maxLine: 1,
 //                                 overflow: TextOverflow.ellipsis,
@@ -113,11 +113,11 @@ import 'package:dotted_line/dotted_line.dart';
 //                                   child: Transform.translate(
 //                                     offset: Offset(0, 4),
 //                                     child: CustomText(
-//                                       title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo", 
-//                                       color: Color(0XFF606060), 
-//                                       fontWeight: FontWeight.w500, 
-//                                       fontSize: 10, 
-//                                       height: 1.4, 
+//                                       title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo",
+//                                       color: Color(0XFF606060),
+//                                       fontWeight: FontWeight.w500,
+//                                       fontSize: 10,
+//                                       height: 1.4,
 //                                       maxLine: 2,
 //                                       overflow: TextOverflow.ellipsis
 //                                     ),
@@ -152,18 +152,18 @@ import 'package:dotted_line/dotted_line.dart';
 //                                 SizedBox(width: 9),
 //                                 Expanded(
 //                                   child: CustomText(
-//                                     title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo", 
-//                                     color: Color(0XFF606060), 
-//                                     fontWeight: FontWeight.w500, 
-//                                     fontSize: 10, 
-//                                     height: 1.4, 
+//                                     title: "J Hotel Tokyo Geo, 3 Chome-1-6 Nihon Geo, 3 Chome-1-6 Nihon, J Hotel Tokyo Geo",
+//                                     color: Color(0XFF606060),
+//                                     fontWeight: FontWeight.w500,
+//                                     fontSize: 10,
+//                                     height: 1.4,
 //                                     maxLine: 2
 //                                   ),
 //                                 ),
 //                               ],
 //                             ),
 //                           ),
-                          
+
 //                           Padding(
 //                             padding: const EdgeInsets.all(12.0),
 //                             child: Row(
@@ -276,8 +276,27 @@ class BookingCardWidget extends StatelessWidget {
     final s = status.toLowerCase();
     if (s.contains('confirm')) return const Color(0xFF28A745);
     if (s.contains('cancel')) return const Color(0xFFDC3545);
-    if (s.contains('pending') || s.contains('assign')) return const Color(0xFFFFC107);
+    if (s.contains('pending') || s.contains('assign'))
+      return const Color(0xFFFFC107);
     return const Color(0xFF606060);
+  }
+
+  static void _openBookingDetail(BuildContext context, BookingListItem item) {
+    final id = item.bookingRef.trim();
+    if (id.isEmpty || id == '—') return;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (_) => BlocProvider(
+              create:
+                  (_) =>
+                      BookingDetailBloc(repository: BookingDetailRepository())
+                        ..add(BookingDetailLoadRequested(bookingId: id)),
+              child: BookingDetailPage(bookingId: id),
+            ),
+      ),
+    );
   }
 
   @override
@@ -307,29 +326,32 @@ class BookingCardWidget extends StatelessWidget {
 
     final tail = isLoadingMore ? 1 : 0;
     return ListView.separated(
-        itemCount: bookings.length + tail,
-        padding: EdgeInsets.only(top: 16, bottom: bottomInset),
-        itemBuilder: (context, index) {
-          if (index >= bookings.length) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Center(
-                child: SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: CircularProgressIndicator(
-                    color: Color(0xFFFB4156),
-                    strokeWidth: 2,
-                  ),
+      itemCount: bookings.length + tail,
+      padding: EdgeInsets.only(top: 16, bottom: bottomInset),
+      itemBuilder: (context, index) {
+        if (index >= bookings.length) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: SizedBox(
+                width: 28,
+                height: 28,
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFB4156),
+                  strokeWidth: 2,
                 ),
               ),
-            );
-          }
-          final item = bookings[index];
-          final statusColor = _statusColor(item.status);
+            ),
+          );
+        }
+        final item = bookings[index];
+        final statusColor = _statusColor(item.status);
 
-          return Padding(
-            padding: const EdgeInsets.only(left: 19, right: 19),
+        return Padding(
+          padding: const EdgeInsets.only(left: 19, right: 19),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => _openBookingDetail(context, item),
             child: Container(
               width: screenWidth - 38,
               decoration: CustomDecorationsCards().baseBackgroundShadow(
@@ -366,34 +388,14 @@ class BookingCardWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            final id = item.bookingRef.trim();
-                            if (id.isEmpty || id == '—') return;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BlocProvider(
-                                  create: (_) => BookingDetailBloc(
-                                    repository: BookingDetailRepository(),
-                                  )..add(
-                                      BookingDetailLoadRequested(
-                                          bookingId: id),
-                                    ),
-                                  child: BookingDetailPage(bookingId: id),
-                                ),
-                              ),
-                            );
-                          },
-                          child: StatusWidget(
-                            text: item.status,
-                            textColor: statusColor,
-                            borderColor: statusColor.withOpacity(0.5),
-                            borderWidth: 0.5,
-                            backgroundColor: statusColor.withOpacity(0.1),
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        StatusWidget(
+                          text: item.status,
+                          textColor: statusColor,
+                          borderColor: statusColor.withOpacity(0.5),
+                          borderWidth: 0.5,
+                          backgroundColor: statusColor.withOpacity(0.1),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
@@ -403,7 +405,7 @@ class BookingCardWidget extends StatelessWidget {
                     lineThickness: 1.0,
                     dashColor: Colors.grey,
                   ),
-                  SizedBox(height: 12,),
+                  SizedBox(height: 12),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -446,7 +448,9 @@ class BookingCardWidget extends StatelessWidget {
                               width: screenWidth * 0.6,
                               child: Row(
                                 children: [
-                                  SvgPicture.asset('assets/booking/source_icon.svg'),
+                                  SvgPicture.asset(
+                                    'assets/booking/source_icon.svg',
+                                  ),
                                   const SizedBox(width: 9),
                                   Expanded(
                                     child: Transform.translate(
@@ -483,7 +487,9 @@ class BookingCardWidget extends StatelessWidget {
                               width: screenWidth * 0.6,
                               child: Row(
                                 children: [
-                                  SvgPicture.asset('assets/booking/destination_icon.svg'),
+                                  SvgPicture.asset(
+                                    'assets/booking/destination_icon.svg',
+                                  ),
                                   const SizedBox(width: 9),
                                   Expanded(
                                     child: CustomText(
@@ -556,7 +562,9 @@ class BookingCardWidget extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                SvgPicture.asset('assets/booking/driver_icon.svg'),
+                                SvgPicture.asset(
+                                  'assets/booking/driver_icon.svg',
+                                ),
                                 const SizedBox(width: 8),
                                 Flexible(
                                   child: CustomText(
@@ -576,7 +584,9 @@ class BookingCardWidget extends StatelessWidget {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                SvgPicture.asset('assets/booking/driver_contact_icon.svg'),
+                                SvgPicture.asset(
+                                  'assets/booking/driver_contact_icon.svg',
+                                ),
                                 const SizedBox(width: 8),
                                 Flexible(
                                   child: CustomText(
@@ -602,7 +612,7 @@ class BookingCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                        flex: 1,
+                          flex: 1,
                           child: CustomText(
                             textAlign: TextAlign.center,
                             title: item.vehicleLabel,
@@ -641,9 +651,10 @@ class BookingCardWidget extends StatelessWidget {
                 ],
               ),
             ),
-          );
-        },
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
+          ),
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
     );
   }
 }

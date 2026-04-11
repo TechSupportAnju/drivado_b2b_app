@@ -1,3 +1,4 @@
+import 'package:drivado_b2b_app/models/booking_detail_model.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/document_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
@@ -8,12 +9,14 @@ class BookingIdWidget extends StatelessWidget {
   final String bookingId;
   final String status;
   final String paymentStatus;
+  final BookingDetailData detail;
 
   const BookingIdWidget({
     super.key,
     required this.bookingId,
     required this.status,
     required this.paymentStatus,
+    required this.detail,
   });
 
   static Color _statusColor(String s) {
@@ -43,8 +46,12 @@ class BookingIdWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-        decoration: CustomDecorations()
-            .baseBackgroundDecoration(10.0, 1.0, Colors.white, const Color(0xFFE6E8E7)),
+        decoration: CustomDecorations().baseBackgroundDecoration(
+          10.0,
+          1.0,
+          Colors.white,
+          const Color(0xFFE6E8E7),
+        ),
         child: Column(
           children: [
             Row(
@@ -88,7 +95,13 @@ class BookingIdWidget extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DocumentWidget()),
+                      MaterialPageRoute(
+                        builder:
+                            (context) => DocumentWidget(
+                              bookingId: bookingId,
+                              detail: detail,
+                            ),
+                      ),
                     );
                   },
                   child: Container(
@@ -96,10 +109,16 @@ class BookingIdWidget extends StatelessWidget {
                     height: 40,
                     alignment: Alignment.center,
                     decoration: CustomDecorations().baseBackgroundDecoration(
-                        8.0, 1.0, Colors.white, const Color(0xFF606060)),
+                      8.0,
+                      1.0,
+                      Colors.white,
+                      const Color(0xFF606060),
+                    ),
                     child: Row(
                       children: [
-                        SvgPicture.asset('assets/booking_detail/document_icon.svg'),
+                        SvgPicture.asset(
+                          'assets/booking_detail/document_icon.svg',
+                        ),
                         const SizedBox(width: 3),
                         const CustomText(
                           title: 'Documents',

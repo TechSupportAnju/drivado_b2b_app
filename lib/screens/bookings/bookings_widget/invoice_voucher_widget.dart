@@ -135,12 +135,14 @@ class DriverDetailsWidget extends StatelessWidget {
   final SelectedOption value;
   final SelectedOption? groupValue;
   final ValueChanged<SelectedOption> onChanged;
+  final String footerLabel;
 
   const DriverDetailsWidget({
     super.key,
     required this.value,
     this.groupValue,
     required this.onChanged,
+    this.footerLabel = 'Driver details',
   });
 
   bool get isSelected => value == groupValue;
@@ -150,27 +152,53 @@ class DriverDetailsWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => onChanged(value),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Color(0x7F606060) : Color(0x7F606060),
+            color: isSelected ? const Color(0x7F606060) : const Color(0x7F606060),
           ),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Icon(Icons.person_outline),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Text(
-                "Driver Details",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                children: [
+                  const Icon(Icons.person_outline),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Text(
+                      'Driver Details',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  CustomCheckRadio(
+                    isSelected: isSelected,
+                    onTap: () => onChanged(value),
+                  ),
+                ],
               ),
             ),
-            CustomCheckRadio(
-              isSelected: isSelected,
-              onTap: () => onChanged(value),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF5F6FA),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(12)),
+              ),
+              child: Center(
+                child: CustomText(
+                  title: footerLabel,
+                  fontSize: 12,
+                  color: const Color(0xFF0D0D0D),
+                  fontWeight: FontWeight.w500,
+                  height: 1,
+                ),
+              ),
             ),
           ],
         ),

@@ -25,6 +25,7 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF190C0C),
+      elevation: 0.0,
       automaticallyImplyLeading: false,
       toolbarHeight: kToolbarHeight, 
       title: Row(

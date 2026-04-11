@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:drivado_b2b_app/models/booking_list_item.dart';
 import 'package:drivado_b2b_app/services/bookings/booking_list_query_params.dart';
@@ -44,6 +45,71 @@ class BookingListRepository {
     }
 
     return _parseLegacyFallback(decoded);
+  }
+
+  /// GET `v1/bookings/bookingWithsearch` — no auth; [queryParameters] must omit empty keys.
+  Future<BookingListPageResult> getBookingsWithSearch(
+    Map<String, String> queryParameters,
+  ) async {
+    final uri = Uri.parse(
+      '$baseUrl/v1/bookings/bookingWithsearch',
+    ).replace(queryParameters: queryParameters);
+
+    log('bookingWithsearch → GET $uri');
+    final response = await http.get(uri);
+
+    log(
+      'bookingWithsearch ← status=${response.statusCode} len=${response.body.length}',
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to search bookings (${response.statusCode})');
+    }
+
+    final dynamic decoded = json.decode(response.body);
+
+    if (decoded is Map) {
+      final root = Map<String, dynamic>.from(decoded);
+      final parsed = _parseAllBookingDetailsResponse(root);
+      if (parsed.items.isNotEmpty) {
+        return parsed;
+      }
+    }
+
+    return _parseLegacyFallback(decoded);
+  }
+
+  /// GET `v1/bookings/downloadCSVBooking` — same query shape as [getAllBookingsV2]
+  /// ([BookingListQueryParams] from `getUserInformation`). No auth headers.
+  Future<Uint8List> downloadBookingCsvReport(
+    BookingListQueryParams params,
+  ) async {
+    final uri = Uri.parse('$baseUrl/v1/bookings/downloadCSVBooking').replace(
+      queryParameters: <String, String>{
+        'userName': params.userName,
+        'viewBookingPermisision': params.viewBookingPermission,
+        'companyId': params.companyId,
+        'userRole': params.userRole,
+      },
+    );
+
+    log('downloadCSVBooking → GET $uri');
+    final response = await http.get(uri);
+
+    log(
+      'downloadCSVBooking ← status=${response.statusCode} '
+      'len=${response.bodyBytes.length}',
+    );
+
+    if (response.statusCode != 200) {
+      final snippet =
+          response.body.length > 240
+              ? '${response.body.substring(0, 240)}…'
+              : response.body;
+      throw Exception('CSV download failed (${response.statusCode}): $snippet');
+    }
+
+    return Uint8List.fromList(response.bodyBytes);
   }
 
   /// Resolves `allBookingDetails` from root or nested `data` / `result` (API wrappers).

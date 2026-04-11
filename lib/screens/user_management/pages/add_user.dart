@@ -3,12 +3,24 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_textfield.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/form_error_text.dart';
+import 'package:drivado_b2b_app/models/user_data_extensions.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/sucess_popup.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_state.dart';
+import 'package:drivado_b2b_app/services/user_management/add_child_user_repository.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/single_company_bloc.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/single_company_event.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/add_child_user_bloc.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/add_child_user_event.dart';
+import 'package:drivado_b2b_app/services/user_management/bloc/add_child_user_state.dart';
+import 'package:drivado_b2b_app/utils/constant.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 class AddUserPage extends StatefulWidget {
   final bool isEdit;
@@ -76,6 +88,23 @@ class _AddUserPageState extends State<AddUserPage> {
     fetchEditValue();
   }
 
+  /// Reloads manage-users / manage-company data on the parent screen ([UserMangementPage]).
+  Future<void> _refreshSingleCompanyList(BuildContext context) async {
+    final profile = context.read<UserInformationBloc>().state;
+    if (profile is! UserInformationLoaded) return;
+    final id = profile.userData.singleCompanyQueryId.trim();
+    if (id.isEmpty) return;
+    final token = await AuthService.getAccessToken();
+    if (token == null || token.trim().isEmpty) return;
+    if (!context.mounted) return;
+    context.read<SingleCompanyBloc>().add(
+          SingleCompanyFetchRequested(
+            id: id,
+            accessToken: token.trim(),
+          ),
+        );
+  }
+
   fetchEditValue() {
     if(widget.isEdit) {
       userEmailId = TextEditingController(text: 'test@drivado.com');
@@ -99,7 +128,21 @@ class _AddUserPageState extends State<AddUserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+      create: (_) => AddChildUserBloc(repository: AddChildUserRepository()),
+      child: BlocListener<AddChildUserBloc, AddChildUserState>(
+        listener: (context, state) {
+          if (state is AddChildUserSuccess) {
+            context.read<AddChildUserBloc>().add(const AddChildUserReset());
+            _refreshSingleCompanyList(context);
+            showSucessDialog(context, emailId.text.trim());
+          } else if (state is AddChildUserFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
+        child: Scaffold(
       backgroundColor: Color(0xFFF3F4F6),
       appBar: AppBar(
         elevation: 0,
@@ -333,8 +376,13 @@ class _AddUserPageState extends State<AddUserPage> {
                 const SizedBox(
                   height: 32,
                 ),
-                GestureDetector(
-                  onTap: () {
+                BlocBuilder<AddChildUserBloc, AddChildUserState>(
+                  builder: (context, blocState) {
+                    final submitting = blocState is AddChildUserSubmitting;
+                    return GestureDetector(
+                  onTap: submitting
+                      ? null
+                      : () {
                    final fName = firstName.text.trim();
                    final lName = lastName.text.trim();
                    final username = userEmailId.text.trim();
@@ -423,13 +471,48 @@ class _AddUserPageState extends State<AddUserPage> {
                        !isConfirmPasswordValidator;
 
                    if (allValid) {
-                     showSucessDialog(context, emailId.text);
+                     if (widget.isEdit) {
+                       showSucessDialog(context, emailId.text.trim());
+                       return;
+                     }
+                     final profile =
+                         context.read<UserInformationBloc>().state;
+                     final companyId = profile is UserInformationLoaded
+                         ? (profile.userData.company?.id?.trim() ?? '')
+                         : '';
+                     if (companyId.isEmpty) {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(
+                           content: Text(
+                             'Company not found on your profile. Open Manage booking or refresh profile.',
+                           ),
+                         ),
+                       );
+                       return;
+                     }
+                     final code = countryCode.trim().isEmpty
+                         ? '+91'
+                         : countryCode.trim();
+                     final mobile = '$code${phoneNumber.text.trim()}';
+                     context.read<AddChildUserBloc>().add(
+                           AddChildUserSubmitted(
+                             parentCompanyId: companyId,
+                             firstName: fName,
+                             lastName: lName,
+                             userName: username,
+                             email: mail,
+                             password: pass,
+                             mobile: mobile,
+                           ),
+                         );
                    }
                   },
                   child: Container(
                     height: 48,
                     decoration: ShapeDecoration(
-                      color: AppColors.secondary,
+                      color: submitting
+                          ? AppColors.secondary.withOpacity(0.55)
+                          : AppColors.secondary,
                       shape: SmoothRectangleBorder(
                         borderRadius: SmoothBorderRadius(
                           cornerRadius: 10,
@@ -439,15 +522,19 @@ class _AddUserPageState extends State<AddUserPage> {
                     ),
                     alignment: Alignment.center,
                     child: CustomText(
-                        title: 'Add user',
+                        title: submitting ? 'Adding user…' : 'Add user',
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 14),
                   ),
+                  );
+                  },
                 ),
               ],
             ),
           ),
+        ),
+      ),
         ),
       ),
     );

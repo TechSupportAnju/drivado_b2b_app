@@ -24,6 +24,18 @@ class BookingDetailData {
   final String referenceNumber;
   final String specialRequest;
 
+  /// From `passengerDetails.flightNumber` when present.
+  final String? flightNumber;
+
+  /// Invoice ref for mail APIs (`invoiceNumber`, nested `invoice`, …).
+  final String? invoiceNumber;
+
+  /// Company on booking payload when present.
+  final String? bookingCompanyName;
+
+  /// Formatted emergency contacts line for voucher mail.
+  final String emergencyContactMail;
+
   const BookingDetailData({
     required this.bookingId,
     required this.bookingStatus,
@@ -46,14 +58,30 @@ class BookingDetailData {
     required this.createdAt,
     required this.referenceNumber,
     required this.specialRequest,
+    this.flightNumber,
+    this.invoiceNumber,
+    this.bookingCompanyName,
+    this.emergencyContactMail = '',
   });
+
+  /// Shown when the booking has a flight number and a date to query (`travelDate` or `createdAt`).
+  bool get canShowFlightStatus {
+    final fn = flightNumber?.trim();
+    if (fn == null || fn.isEmpty) return false;
+    return effectiveFlightLookupDate != null;
+  }
+
+  DateTime? get effectiveFlightLookupDate => travelDateLocal ?? createdAt;
 
   static String _s(dynamic v) => v?.toString().trim() ?? '';
 
   static String _placeName(dynamic loc) {
     if (loc is Map) {
       var s = _s(loc['placename'] ?? loc['placeName']);
-      s = s.replaceAll(RegExp(r',?\s*undefined', caseSensitive: false), '').trim();
+      s =
+          s
+              .replaceAll(RegExp(r',?\s*undefined', caseSensitive: false), '')
+              .trim();
       if (s.endsWith(',')) s = s.substring(0, s.length - 1).trim();
       return s;
     }
@@ -83,9 +111,10 @@ class BookingDetailData {
   String get durationDistanceLine {
     if (travelDistanceKm != null) {
       final raw = travelDistanceKm!;
-      final km = (raw - raw.round()).abs() < 1e-9
-          ? '${raw.round()}'
-          : raw.toStringAsFixed(1);
+      final km =
+          (raw - raw.round()).abs() < 1e-9
+              ? '${raw.round()}'
+              : raw.toStringAsFixed(1);
       if (duration.isNotEmpty) return '$km km | $duration';
       return '$km km';
     }
@@ -106,8 +135,110 @@ class BookingDetailData {
     return DateFormat('dd-MM-yyyy').format(c.toLocal());
   }
 
-  String get passengerCountLabel =>
-      '$passengerCount Pax';
+  String get passengerCountLabel => '$passengerCount Pax';
+
+  static String _ordinalDay(int d) {
+    if (d >= 11 && d <= 13) return '${d}th';
+    switch (d % 10) {
+      case 1:
+        return '${d}st';
+      case 2:
+        return '${d}nd';
+      case 3:
+        return '${d}rd';
+      default:
+        return '${d}th';
+    }
+  }
+
+  static String _emergencyContactLine(Map<String, dynamic>? px) {
+    if (px == null) return '';
+    final direct = _s(
+      px['emergencyContact'] ??
+          px['emergencyNumber'] ??
+          px['emergencyPhone'] ??
+          px['emergency_contact'],
+    );
+    if (direct.isNotEmpty) return direct;
+    final list =
+        px['emergencyContacts'] ??
+        px['emergencyNumbers'] ??
+        px['emergencyContactsList'];
+    if (list is List) {
+      final out = <String>[];
+      for (final e in list) {
+        if (e is Map) {
+          final em = Map<String, dynamic>.from(e);
+          final label = _s(
+            em['label'] ?? em['country'] ?? em['region'] ?? em['name'],
+          );
+          final ph = _s(em['phone'] ?? em['number'] ?? em['mobile']);
+          if (ph.isNotEmpty) {
+            out.add(label.isEmpty ? ph : '$label: $ph');
+          }
+        } else if (e != null) {
+          final t = e.toString().trim();
+          if (t.isNotEmpty) out.add(t);
+        }
+      }
+      if (out.isNotEmpty) return out.join(' ');
+    }
+    return '';
+  }
+
+  /// e.g. `5th Mar 2027 | 15:38` for document mails.
+  String get documentTimeAndDateLine {
+    final dt = travelDateLocal;
+    final timePart =
+        travelTime.isNotEmpty
+            ? travelTime
+            : (dt != null ? DateFormat('HH:mm').format(dt) : '');
+    if (dt == null) {
+      return timePart.isNotEmpty ? timePart : '—';
+    }
+    final dayOrd = _ordinalDay(dt.day);
+    final monY = DateFormat('MMM y').format(dt);
+    if (timePart.isEmpty) return '$dayOrd $monY';
+    return '$dayOrd $monY | $timePart';
+  }
+
+  String get documentDistanceLabel {
+    if (travelDistanceKm != null) {
+      final raw = travelDistanceKm!;
+      final km =
+          (raw - raw.round()).abs() < 1e-9
+              ? '${raw.round()}'
+              : raw.toStringAsFixed(1);
+      return '$km KM';
+    }
+    if (duration.isNotEmpty) return duration;
+    return '';
+  }
+
+  String get documentFlightNo => flightNumber?.trim() ?? '';
+
+  String get documentSpecialRequestRaw =>
+      specialRequest == '—' ? '' : specialRequest;
+
+  String get documentVehicleType =>
+      vehicleCategory == '—' ? '' : vehicleCategory;
+
+  String get documentPaxName => paxName == '—' ? '' : paxName;
+
+  String get documentPaxEmail => paxEmail == '—' ? '' : paxEmail;
+
+  String get documentMobNumber => paxPhoneDisplay == '—' ? '' : paxPhoneDisplay;
+
+  String get documentInvoiceNumber {
+    final inv = invoiceNumber?.trim();
+    if (inv != null && inv.isNotEmpty) return inv;
+    return bookingId == '—' ? '' : bookingId;
+  }
+
+  String get documentBookingStatusApi {
+    if (bookingStatus == '—') return '';
+    return bookingStatus.toUpperCase();
+  }
 
   factory BookingDetailData.fromBookingDetailsMap(Map<String, dynamic> m) {
     final bookingId = _s(m['bookingId']);
@@ -155,14 +286,37 @@ class BookingDetailData {
       pax = pc.toInt();
     }
 
+    String invNo = _s(
+      m['invoiceNumber'] ??
+          m['invoiceNo'] ??
+          m['invoiceRef'] ??
+          m['invoice_id'] ??
+          m['invoiceNumberRef'],
+    );
+    final invObj = m['invoice'];
+    if (invNo.isEmpty && invObj is Map) {
+      final im = Map<String, dynamic>.from(invObj);
+      invNo = _s(im['invoiceNumber'] ?? im['number'] ?? im['id'] ?? im['ref']);
+    }
+
+    String bCompany = _s(m['companyName'] ?? m['company_name']);
+    final cObj = m['company'];
+    if (bCompany.isEmpty && cObj is Map) {
+      final cm = Map<String, dynamic>.from(cObj);
+      bCompany = _s(cm['companyName'] ?? cm['name']);
+    }
+
     String paxName = '—';
     String paxEmail = '—';
     String phoneDisplay = '—';
     String refNum = '—';
     String special = '—';
+    String? flightNo;
+    String emergencyLine = '';
     final pxd = m['passengerDetails'];
     if (pxd is Map) {
       final px = Map<String, dynamic>.from(pxd);
+      emergencyLine = _emergencyContactLine(px);
       final first = _s(px['firstName']);
       final last = _s(px['lastName']);
       final full = '$first $last'.trim();
@@ -176,6 +330,8 @@ class BookingDetailData {
       if (refNum.isEmpty) refNum = '—';
       special = _s(px['specialRequest']);
       if (special.isEmpty) special = '—';
+      final fn = _s(px['flightNumber']);
+      flightNo = fn.isNotEmpty ? fn : null;
     }
 
     String bookedBy = _s(m['userName']);
@@ -197,8 +353,10 @@ class BookingDetailData {
 
     return BookingDetailData(
       bookingId: ref.isNotEmpty ? ref : '—',
-      bookingStatus: _s(m['bookingStatus']).isNotEmpty ? _s(m['bookingStatus']) : '—',
-      paymentStatus: _s(m['paymentStatus']).isNotEmpty ? _s(m['paymentStatus']) : '—',
+      bookingStatus:
+          _s(m['bookingStatus']).isNotEmpty ? _s(m['bookingStatus']) : '—',
+      paymentStatus:
+          _s(m['paymentStatus']).isNotEmpty ? _s(m['paymentStatus']) : '—',
       sourcePlace: pickup.isNotEmpty ? pickup : '—',
       destinationPlace: drop.isNotEmpty ? drop : '—',
       travelTime: _s(m['travelTime']),
@@ -217,6 +375,10 @@ class BookingDetailData {
       createdAt: created,
       referenceNumber: refNum,
       specialRequest: special,
+      flightNumber: flightNo,
+      invoiceNumber: invNo.isNotEmpty ? invNo : null,
+      bookingCompanyName: bCompany.isNotEmpty ? bCompany : null,
+      emergencyContactMail: emergencyLine,
     );
   }
 }
