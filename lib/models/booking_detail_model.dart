@@ -137,6 +137,29 @@ class BookingDetailData {
 
   String get passengerCountLabel => '$passengerCount Pax';
 
+  /// Oneway / return / roundtrip show **Drop off**; hourly uses **Duration** (cancel dialog).
+  bool get cancelDialogUseDropOffRow {
+    final u = bookingTypeRaw.toUpperCase();
+    if (u == 'HOURLY') return false;
+    return u.isEmpty ||
+        u == 'ONEWAY' ||
+        u == 'RETURN' ||
+        u == 'ROUNDTRIP';
+  }
+
+  /// e.g. `Mar 5, 2027 at 15:38` for cancel popup.
+  String get cancelDialogPickupDateTimeLine {
+    final dt = travelDateLocal;
+    if (dt == null) {
+      return travelTime.isNotEmpty ? travelTime : '—';
+    }
+    final d = DateFormat('MMM d, y').format(dt);
+    final t = travelTime.isNotEmpty
+        ? travelTime
+        : DateFormat('HH:mm').format(dt);
+    return '$d at $t';
+  }
+
   static String _ordinalDay(int d) {
     if (d >= 11 && d <= 13) return '${d}th';
     switch (d % 10) {

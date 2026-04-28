@@ -1,7 +1,7 @@
 import 'package:drivado_b2b_app/models/booking_detail_model.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_id.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
-import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancel_bottom_sheet.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancel_booking_dialog.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/custom_booking_box.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/flight_detail_widget.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
@@ -56,24 +56,16 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Colors.white,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(38)),
-                ),
-                builder: (context) {
-                  return Container(
-                    padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewPadding.bottom,
-                    ),
-                    decoration: CustomDecorations()
-                        .baseBackgroundDecoration(20.0, 1.0, Colors.white, Colors.transparent),
-                    child: const CancelBottomSheet(),
-                  );
-                },
-              );
+              final st = context.read<BookingDetailBloc>().state;
+              if (st is! BookingDetailLoaded) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Booking details are still loading.'),
+                  ),
+                );
+                return;
+              }
+              showCancelBookingDialog(context, detail: st.data);
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20),
