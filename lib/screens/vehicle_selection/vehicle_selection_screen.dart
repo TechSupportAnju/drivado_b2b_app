@@ -20,6 +20,9 @@ class VehicleSelectionPage extends StatefulWidget {
   final bool isTapOneway;
   final bool? isLogin;
   final String? bookingSearchId;
+  final String? routeDistanceKm;
+  final String? routeDuration;
+  final String? bookingCurrency;
   // final SearchIdRequestModel? searchIdRequesteModel;
   // final HourlySearchIdRequestModel? hourlySearchIdRequestModel;
   const VehicleSelectionPage({
@@ -29,6 +32,9 @@ class VehicleSelectionPage extends StatefulWidget {
     required this.isTapOneway,
     this.isLogin,
     this.bookingSearchId,
+    this.routeDistanceKm,
+    this.routeDuration,
+    this.bookingCurrency,
     // this.searchIdRequesteModel,
     // this.hourlySearchIdRequestModel,
     super.key,
@@ -76,29 +82,10 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
   }
 
 
-  String formatDuration(String durationInSeconds) {
-    double? seconds = double.tryParse(durationInSeconds);
-
-    if (seconds == null || seconds < 0) {
-      return 'Invalid Duration';
-    }
-    Duration duration = Duration(seconds: seconds.floor());
-
-    int hours = duration.inHours;
-    int minutes = duration.inMinutes.remainder(60);
-
-    if (hours > 0 && minutes > 0) {
-      return '$hours hr $minutes min';
-    } else if (hours > 0 && minutes == 0){
-      return '$hours hr';
-    }
-    else if (hours > 0 && minutes == 0) {
-      return '$hours hr';
-    } else if (hours == 0 && minutes > 0) {
-      return '$minutes min';
-    } else {
-      return '0 min';
-    }
+  String formatDuration(String rawDuration) {
+    final text = rawDuration.trim();
+    if (text.isEmpty) return 'No data found';
+    return text;
   }
 
 
@@ -134,6 +121,25 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
   String oneDecimalFromString(String km) {
     final v = double.tryParse(km);
     return v?.toStringAsFixed(1) ?? km;
+  }
+
+  String vehicleValue(String key) {
+    final value = vehicleWithPrice[key];
+    final text = value?.toString().trim() ?? '';
+    return text.isEmpty ? 'No data found' : text;
+  }
+
+  String routeKmValue() {
+    final direct = widget.routeDistanceKm?.trim() ?? '';
+    if (direct.isNotEmpty && direct != '0') return direct;
+    final fromVehicle = vehicleWithPrice['distanceKm']?.toString().trim() ?? '';
+    return fromVehicle;
+  }
+
+  String routeDurationValue() {
+    final direct = widget.routeDuration?.trim() ?? '';
+    if (direct.isNotEmpty) return direct;
+    return vehicleWithPrice['duration']?.toString().trim() ?? '';
   }
 
   @override
@@ -328,8 +334,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                CustomText(title: "30 km",
-                                  //"${newOnewayVehicleKm ?? "No data found"} km",
+                                CustomText(title: "${oneDecimalFromString(routeKmValue())} km",
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,
@@ -343,7 +348,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                                   color: Colors.white,
                                 ),
                                 SizedBox(width: 7),
-                                CustomText(title: "2 hr 35 min",
+                                CustomText(title: formatDuration(routeDurationValue()),
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,
@@ -356,7 +361,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                       ),
                       SizedBox(height: 4),
                       CustomText(
-                        title: vehicleWithPrice['description'] ?? "No data found",
+                        title: vehicleValue('description'),
                         maxLine: 2,
                           color: Color(0xFFABABAB),
                           fontWeight: FontWeight.w500,
@@ -373,8 +378,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                             children: [
                               maxDataTab(
                                 "assets/vehicle/passenger_icon.svg",
-                                'Max. 5',
-                                //'Max. ${vehicleWithPrice['passengerCount']}',
+                                'Max. ${vehicleWithPrice['passengerCount'] ?? ''}',
                               ),
                               SizedBox(width: screenWidth * 0.03),
                               maxDataTab(
@@ -394,7 +398,7 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
                               ),
                               SizedBox(width: 10,),
                               CustomText(
-                                title: "${vehicleWithPrice['price']} ${vehicleWithPrice['unit']}",
+                                title: "${vehicleWithPrice['price'] ?? ''} ${vehicleWithPrice['unit'] ?? ''}",
                                 color: const Color(0xFFE6E8E7),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20,
@@ -487,6 +491,9 @@ class _VehicleSelectionPageState extends State<VehicleSelectionPage> with Ticker
           selectedVehicle: vehicleWithPrice,
           isTapOneway: widget.isTapOneway,
           bookingSearchId: widget.bookingSearchId,
+          routeDistanceKm: routeKmValue(),
+          routeDuration: routeDurationValue(),
+          bookingCurrency: widget.bookingCurrency,
         ),
       ),
     );

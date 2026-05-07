@@ -227,5 +227,67 @@ class PermissionData {
     if (value is Map) return Map<String, dynamic>.from(value);
     return null;
   }
+
+  /// Reflects API `manageBooking.cancelBooking` (object with `permission` or a scalar flag).
+  bool get isCancelBookingEnabled =>
+      _nestedPermissionTrue(manageBooking, keys: const ['cancelBooking', 'cancel_booking']);
+
+  static bool _nestedPermissionTrue(Map<String, dynamic>? map, {required List<String> keys}) {
+    if (map == null) return false;
+    dynamic raw;
+    for (final k in keys) {
+      raw = map[k];
+      if (raw != null) break;
+    }
+    if (raw == null) return false;
+    if (raw is Map) {
+      final m = Map<String, dynamic>.from(raw);
+      const keys = [
+        'permission',
+        'allowed',
+        'allow',
+        'enable',
+        'enabled',
+        'value',
+        'isEnabled',
+        'canCancel',
+        'access',
+      ];
+      for (final k in keys) {
+        if (_permissionTruthy(m[k])) return true;
+      }
+      return false;
+    }
+    return _permissionTruthy(raw);
+  }
+
+  static bool _permissionTruthy(dynamic v) {
+    if (v == null) return false;
+    if (v is bool) return v;
+    if (v is num) return v != 0;
+    final s = v.toString().trim().toLowerCase();
+    if (s.isEmpty) return false;
+    const deny = {'false', '0', 'no', 'none', 'denied', 'disabled', 'restrict', 'restricted'};
+    if (deny.contains(s)) return false;
+    const allow = {
+      'true',
+      '1',
+      'yes',
+      'all',
+      'enable', // API: "ENABLE"
+      'enabled',
+      'full',
+      'allow',
+      'active',
+      'manage',
+      'management',
+      'edit',
+      'write',
+      'cancel',
+    };
+    if (allow.contains(s)) return true;
+    // Unknown non-empty tokens (e.g. role codes): treat as not enabled unless clearly allow-like.
+    return false;
+  }
 }
 

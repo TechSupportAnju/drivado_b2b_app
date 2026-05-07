@@ -1,3 +1,4 @@
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_event.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_state.dart';
 import 'package:drivado_b2b_app/services/bookings/booking_detail_repository.dart';
@@ -16,7 +17,11 @@ class BookingDetailBloc extends Bloc<BookingDetailEvent, BookingDetailState> {
   ) async {
     emit(BookingDetailLoading());
     try {
-      final data = await repository.getBookingDetail(event.bookingId);
+      final token = await AuthService.getAccessToken();
+      final data = await repository.getBookingDetail(
+        event.bookingId,
+        accessToken: token,
+      );
       emit(BookingDetailLoaded(data));
     } catch (e) {
       emit(BookingDetailFailure(e.toString()));

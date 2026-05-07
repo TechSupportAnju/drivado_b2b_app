@@ -186,7 +186,17 @@ Future<PlaceDetailsDateTime?> fetchPlaceDetailsDateTime({
   );
 }
 
-Future<double?> fetchDistanceKm({
+class RouteDistanceDetails {
+  final double km;
+  final String duration;
+
+  const RouteDistanceDetails({
+    required this.km,
+    required this.duration,
+  });
+}
+
+Future<RouteDistanceDetails?> fetchDistanceDetails({
   required String origin,
   required String destination,
 }) async {
@@ -208,42 +218,20 @@ Future<double?> fetchDistanceKm({
     return null;
   }
 
-  final maps = <Map<String, dynamic>>[];
-  void collect(dynamic value) {
-    if (value is Map) {
-      final m = Map<String, dynamic>.from(value);
-      maps.add(m);
-      for (final v in m.values) {
-        collect(v);
-      }
-    } else if (value is List) {
-      for (final e in value) {
-        collect(e);
-      }
-    }
-  }
+  if (decoded is! Map) return null;
 
-  collect(decoded);
+  final map = Map<String, dynamic>.from(decoded);
+  final rawKm = map['km'];
+  final rawDuration = map['duration'];
 
-  dynamic pickValue(List<String> keys) {
-    for (final m in maps) {
-      for (final key in keys) {
-        if (m.containsKey(key)) {
-          return m[key];
-        }
-      }
-    }
-    return null;
-  }
+  final km =
+      rawKm is num
+          ? rawKm.toDouble()
+          : double.tryParse(rawKm?.toString().trim() ?? '');
+  if (km == null) return null;
 
-  final raw = pickValue([
-    'distanceKm',
-    'distance_km',
-    'distance',
-    'totalDistance',
-    'km',
-  ]);
-  if (raw == null) return null;
-  if (raw is num) return raw.toDouble();
-  return double.tryParse(raw.toString().trim());
+  return RouteDistanceDetails(
+    km: km,
+    duration: rawDuration?.toString().trim() ?? '',
+  );
 }

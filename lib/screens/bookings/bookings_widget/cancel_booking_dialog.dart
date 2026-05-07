@@ -1,6 +1,9 @@
 import 'package:drivado_b2b_app/models/booking_detail_model.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_bloc.dart';
+import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_event.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_list_bloc.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_list_event.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/cancel_booking_bloc.dart';
@@ -9,17 +12,35 @@ import 'package:drivado_b2b_app/services/bookings/bloc/cancel_booking_state.dart
 import 'package:drivado_b2b_app/services/bookings/cancel_booking_repository.dart';
 import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
 import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_state.dart';
+import 'package:drivado_b2b_app/utils/booking_cancel_visibility.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-/// Opens cancel confirmation; on success closes dialog and the [parentContext] route (detail page).
-void showCancelBookingDialog(
+import 'cancellation_policy_widget.dart';
+
+/// Opens cancel confirmation; on success closes dialog, refreshes list + booking detail, stays on detail.
+Future<void> showCancelBookingDialog(
   BuildContext parentContext, {
   required BookingDetailData detail,
-}) {
+}) async {
+  final sessionEmail = await AuthService.getEmail();
+  if (!parentContext.mounted) return;
+
+  final profileState = parentContext.read<UserInformationBloc>().state;
+  if (!canShowCancelBookingForDetail(
+        profileState,
+        detail,
+        prefsLoginEmail: sessionEmail,
+      )) {
+    ScaffoldMessenger.of(parentContext).showSnackBar(
+      const SnackBar(content: Text('You cannot cancel this booking.')),
+    );
+    return;
+  }
+
   showDialog<void>(
     context: parentContext,
     barrierDismissible: false,
@@ -43,10 +64,12 @@ void showCancelBookingDialog(
                       ),
                     );
               }
+              parentContext.read<BookingDetailBloc>().add(
+                    BookingDetailLoadRequested(bookingId: detail.bookingId),
+                  );
               ScaffoldMessenger.of(parentContext).showSnackBar(
                 const SnackBar(content: Text('Booking cancelled.')),
               );
-              Navigator.of(parentContext).pop();
             } else if (state is CancelBookingFailure) {
               ScaffoldMessenger.of(dialogContext).showSnackBar(
                 SnackBar(content: Text(state.message)),
@@ -326,30 +349,3 @@ class BookingCancelPopupWidget extends StatelessWidget {
   }
 }
 
-class CancellationPolicyWidget extends StatelessWidget {
-  const CancellationPolicyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(10),
-      decoration: CustomDecorations().baseBackgroundDecoration(
-        8.0,
-        1.0,
-        AppColors.adminUserMangBgColor,
-        AppColors.adminUserMangBgColor,
-      ),
-      child: const CustomText(
-        title:
-            'Cancellation may be subject to the provider’s policy and fees. '
-            'Refunds (if any) are processed per your agreement with Drivado.',
-        color: AppColors.manageBookingbokkedByTextColor,
-        fontWeight: FontWeight.w400,
-        fontSize: 11,
-        height: 1.4,
-        maxLine: 6,
-      ),
-    );
-  }
-}

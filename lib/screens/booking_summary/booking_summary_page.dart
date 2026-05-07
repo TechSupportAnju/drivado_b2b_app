@@ -1,4 +1,5 @@
 import 'package:drivado_b2b_app/screens/booking_summary/widgets/booking_summary_detail_widget.dart';
+import 'package:drivado_b2b_app/screens/booking_recipet/booking_recipet.dart';
 import 'package:drivado_b2b_app/screens/booking_summary/widgets/pax_booking_summary.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/common_button.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
@@ -8,7 +9,42 @@ import 'package:flutter/material.dart';
 
 class BookingSummaryPage extends StatefulWidget {
   final bool? isTapOneway;
-  const BookingSummaryPage({this.isTapOneway ,super.key});
+  final vehicleWithPrice;
+  final String? countryCode;
+  final String? name;
+  final String? phoneNumber;
+  final String? email;
+  final String? flightNo;
+  final String? splReq;
+  final String? travelDate;
+  final String? travelTime;
+  final String? source;
+  final String? destination;
+  final String? passengerLabel;
+  final String? distance;
+  final String? duration;
+  final String? amount;
+  final String? currency;
+  const BookingSummaryPage({
+    this.isTapOneway,
+    this.vehicleWithPrice,
+    this.countryCode,
+    this.name,
+    this.phoneNumber,
+    this.email,
+    this.flightNo,
+    this.splReq,
+    this.travelDate,
+    this.travelTime,
+    this.source,
+    this.destination,
+    this.passengerLabel,
+    this.distance,
+    this.duration,
+    this.amount,
+    this.currency,
+    super.key,
+  });
 
   @override
   State<BookingSummaryPage> createState() => _BookingSummaryPageState();
@@ -56,9 +92,31 @@ class _BookingSummaryPageState extends State<BookingSummaryPage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  BookingSummaryDetailWidget(isTapOneway: widget.isTapOneway ?? true),
+                  BookingSummaryDetailWidget(
+                    isTapOneway: widget.isTapOneway ?? true,
+                    travelDate: widget.travelDate ?? '—',
+                    travelTime: widget.travelTime ?? '—',
+                    source: widget.source ?? '',
+                    destination: widget.destination ?? '',
+                    vehicleType:
+                        widget.vehicleWithPrice?['vehicleType']?.toString() ??
+                        widget.vehicleWithPrice?['vehicleName']?.toString() ??
+                        '—',
+                    passengerLabel: widget.passengerLabel ?? '1 Pax',
+                    distance: widget.distance ?? '—',
+                    duration: widget.duration ?? '—',
+                    amount: widget.amount ?? '0',
+                    currency: widget.currency ?? 'USD',
+                  ),
                   SizedBox(height: 12),
-                  PaxBookingSummary()
+                  PaxBookingSummary(
+                    name: widget.name ?? '',
+                    countryCode: widget.countryCode ?? '+91',
+                    phone: widget.phoneNumber ?? '',
+                    email: widget.email ?? '',
+                    flightNo: widget.flightNo ?? '',
+                    specialRequest: widget.splReq ?? '',
+                  ),
                 ],
               ),
             ),
@@ -74,7 +132,24 @@ class _BookingSummaryPageState extends State<BookingSummaryPage> {
                     child: CommonButtonWidget(backgroundColor: Color(0XFFFFFFFF), borderColor: Color(0XFF606060), text: "Cancel", textColor: Color(0XFF606060))
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => BookingReceiptPage(
+                                isTapOneway: widget.isTapOneway ?? true,
+                                vehicleWithPrice: widget.vehicleWithPrice,
+                                countryCode: widget.countryCode,
+                                name: widget.name,
+                                phoneNumber: widget.phoneNumber,
+                                email: widget.email,
+                                flightNo: widget.flightNo,
+                                splReq: widget.splReq,
+                              ),
+                        ),
+                      );
+                    },
                     child: CommonButtonWidget(
                       backgroundColor: Color(0XFFFB4156), 
                       borderColor: Colors.transparent, text: "Pay now", textColor: Color(0XFFFFFFFF)
@@ -87,7 +162,24 @@ class _BookingSummaryPageState extends State<BookingSummaryPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: CommonTapButton(
-                onTap: (){}, 
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => BookingReceiptPage(
+                            isTapOneway: widget.isTapOneway ?? true,
+                            vehicleWithPrice: widget.vehicleWithPrice,
+                            countryCode: widget.countryCode,
+                            name: widget.name,
+                            phoneNumber: widget.phoneNumber,
+                            email: widget.email,
+                            flightNo: widget.flightNo,
+                            splReq: widget.splReq,
+                          ),
+                    ),
+                  );
+                }, 
                 title: "Pay by invoice", 
                 backgroundcolor: Colors.black,
                 color: Colors.white,

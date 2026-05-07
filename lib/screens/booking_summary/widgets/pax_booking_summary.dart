@@ -3,16 +3,30 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class PaxBookingSummary extends StatefulWidget {
-  const PaxBookingSummary({super.key});
+class PaxBookingSummary extends StatelessWidget {
+  final String name;
+  final String countryCode;
+  final String phone;
+  final String email;
+  final String flightNo;
+  final String specialRequest;
+  const PaxBookingSummary({
+    required this.name,
+    required this.countryCode,
+    required this.phone,
+    required this.email,
+    required this.flightNo,
+    required this.specialRequest,
+    super.key,
+  });
 
-  @override
-  State<PaxBookingSummary> createState() => _PaxBookingSummaryState();
-}
-
-class _PaxBookingSummaryState extends State<PaxBookingSummary> {
   @override
   Widget build(BuildContext context) {
+    final safeName = name.trim().isEmpty ? '—' : name.trim();
+    final safePhone = phone.trim().isEmpty ? '—' : '$countryCode ${phone.trim()}';
+    final safeEmail = email.trim().isEmpty ? '—' : email.trim();
+    final safeFlight = flightNo.trim().isEmpty ? '—' : flightNo.trim();
+    final safeRequest = specialRequest.trim().isEmpty ? '—' : specialRequest.trim();
     return Container(
       decoration: CustomDecorationsCards().baseBackgroundShadow(
         color: Colors.white,
@@ -42,7 +56,7 @@ class _PaxBookingSummaryState extends State<PaxBookingSummary> {
                 SvgPicture.asset("assets/booking_summary/pax_name_icon.svg"),
                 SizedBox(width: 12),
                 CustomText(
-                  title: "Sakshi Diwakar",
+                  title: safeName,
                   color: const Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w400
@@ -55,7 +69,7 @@ class _PaxBookingSummaryState extends State<PaxBookingSummary> {
                 SvgPicture.asset("assets/booking_summary/pax_contact_icon.svg"),
                 SizedBox(width: 12),
                 CustomText(
-                  title: "+91 98765 43210",
+                  title: safePhone,
                   color: const Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w400
@@ -68,7 +82,7 @@ class _PaxBookingSummaryState extends State<PaxBookingSummary> {
                 SvgPicture.asset("assets/booking_summary/pax_email.svg"),
                 SizedBox(width: 12),
                 CustomText(
-                  title: "example@drivado.com",
+                  title: safeEmail,
                   color: const Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w400
@@ -81,7 +95,7 @@ class _PaxBookingSummaryState extends State<PaxBookingSummary> {
                 SvgPicture.asset("assets/booking_summary/pax_flight_icon.svg"),
                 SizedBox(width: 12),
                 CustomText(
-                  title: "EK51",
+                  title: safeFlight,
                   color: const Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w400
@@ -94,7 +108,7 @@ class _PaxBookingSummaryState extends State<PaxBookingSummary> {
                 SvgPicture.asset("assets/booking_summary/pax_special_req_icon.svg"),
                 SizedBox(width: 12),
                 CustomText(
-                  title: "One water bottle",
+                  title: safeRequest,
                   color: const Color(0xFF555555),
                   fontSize: 14,
                   fontWeight: FontWeight.w400

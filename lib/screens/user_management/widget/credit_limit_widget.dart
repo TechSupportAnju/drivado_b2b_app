@@ -8,11 +8,36 @@ class CreditLimitWidget extends StatelessWidget {
   final String title2;
   final String value1;
   final String value2;
-  const CreditLimitWidget(
-      {super.key, required this.title1, required this.title2, required this.value1, required this.value2});
+  /// Shown as a row under the header when non-empty (e.g. `USD`).
+  final String? currency;
+
+  const CreditLimitWidget({
+    super.key,
+    required this.title1,
+    required this.title2,
+    required this.value1,
+    required this.value2,
+    this.currency,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    final currencyLabel = currency?.trim();
+    final showCurrency = currencyLabel != null && currencyLabel.isNotEmpty;
+
+    String displayAmount(String raw) {
+      if (!showCurrency) return raw;
+      final code = currencyLabel!;
+      final a = raw.trim();
+      if (a.isEmpty || a == '—') return raw;
+      if (a.startsWith(code)) return raw;
+      return '$code $a';
+    }
+
+    final display1 = displayAmount(value1);
+    final display2 = displayAmount(value2);
+
+    return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: 12.0, vertical: 12),
       decoration: CustomDecorations()
@@ -37,7 +62,7 @@ class CreditLimitWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 12),
               Spacer(),
-              CustomText(title: value1,
+              CustomText(title: display1,
                   color: AppColors.secondary,
                   fontWeight: FontWeight.w600,
                   fontSize: 14),
@@ -51,7 +76,7 @@ class CreditLimitWidget extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 12),
               Spacer(),
-              CustomText(title: value2,
+              CustomText(title: display2,
                   color: Color(0xFF0D0D0D),
                   fontWeight: FontWeight.w600,
                   fontSize: 14),

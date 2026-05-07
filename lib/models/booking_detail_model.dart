@@ -20,6 +20,8 @@ class BookingDetailData {
   final String paxEmail;
   final String paxPhoneDisplay;
   final String bookedBy;
+  /// Raw `userName` on `bookingDetails` (often the same value as login email when the booker is logged in).
+  final String bookingDetailsUserName;
   final DateTime? createdAt;
   final String referenceNumber;
   final String specialRequest;
@@ -35,6 +37,9 @@ class BookingDetailData {
 
   /// Formatted emergency contacts line for voucher mail.
   final String emergencyContactMail;
+
+  /// API `cancellationFees` (shown on cancelled booking card).
+  final num cancellationFees;
 
   const BookingDetailData({
     required this.bookingId,
@@ -55,6 +60,7 @@ class BookingDetailData {
     required this.paxEmail,
     required this.paxPhoneDisplay,
     required this.bookedBy,
+    required this.bookingDetailsUserName,
     required this.createdAt,
     required this.referenceNumber,
     required this.specialRequest,
@@ -62,6 +68,7 @@ class BookingDetailData {
     this.invoiceNumber,
     this.bookingCompanyName,
     this.emergencyContactMail = '',
+    this.cancellationFees = 0,
   });
 
   /// Shown when the booking has a flight number and a date to query (`travelDate` or `createdAt`).
@@ -72,6 +79,24 @@ class BookingDetailData {
   }
 
   DateTime? get effectiveFlightLookupDate => travelDateLocal ?? createdAt;
+
+  /// True when [bookingStatus] is already cancelled (hide cancel UX).
+  bool get isBookingStatusCancelled {
+    final s = bookingStatus.trim();
+    if (s.isEmpty || s == '—') return false;
+    final u = s.toUpperCase();
+    return u.contains('CANCELLED') || u.contains('CANCELED');
+  }
+
+  static num _cancellationFeesFromMap(Map<String, dynamic> m) {
+    final dynamic raw =
+        m['cancellationFees'] ?? m['cancellationFee'] ?? m['cancellation_fees'];
+    if (raw == null) return 0;
+    if (raw is num) return raw;
+    final s = raw.toString().trim();
+    if (s.isEmpty) return 0;
+    return num.tryParse(s) ?? 0;
+  }
 
   static String _s(dynamic v) => v?.toString().trim() ?? '';
 
@@ -86,6 +111,66 @@ class BookingDetailData {
       return s;
     }
     return '';
+  }
+
+  /// Email / username from nested user-shaped maps (several backend variants).
+  static String? _bookerFromUserLikeMap(Map<String, dynamic> um) {
+    final em = _s(um['email'] ?? um['userEmail'] ?? um['user_email']);
+    if (em.isNotEmpty) return em;
+    final un = _s(um['userName'] ?? um['user_name'] ?? um['name']);
+    return un.isNotEmpty ? un : null;
+  }
+
+  static String? _bookerFromDynamic(dynamic v) {
+    if (v == null) return null;
+    if (v is String) {
+      final t = v.trim();
+      return t.isNotEmpty ? t : null;
+    }
+    if (v is Map) {
+      return _bookerFromUserLikeMap(Map<String, dynamic>.from(v));
+    }
+    return null;
+  }
+
+  /// Booker line for Additional Details (`user`, `bookingUser`, `bookedBy`, …).
+  static String _resolveBookedBy(Map<String, dynamic> m) {
+    String bookedBy = '';
+    dynamic userRaw = m['user'];
+    if (userRaw is List && userRaw.isNotEmpty) {
+      userRaw = userRaw.first;
+    }
+    final fromUser = _bookerFromDynamic(userRaw);
+    if (fromUser != null) bookedBy = fromUser;
+
+    for (final key in [
+      'bookingUser',
+      'bookedByUser',
+      'createdBy',
+      'booker',
+      'adminUser',
+      'assignUser',
+      'assignee',
+    ]) {
+      if (bookedBy.isNotEmpty) break;
+      final b = _bookerFromDynamic(m[key]);
+      if (b != null) bookedBy = b;
+    }
+
+    if (bookedBy.isEmpty) {
+      final fromBooked = _bookerFromDynamic(m['bookedBy']);
+      if (fromBooked != null) bookedBy = fromBooked;
+    }
+
+    if (bookedBy.isEmpty) {
+      bookedBy =
+          _s(m['bookedByEmail'] ?? m['bookedbyEmail'] ?? m['booked_by_email']);
+    }
+    if (bookedBy.isEmpty) {
+      bookedBy = _s(m['userName']);
+    }
+    if (bookedBy.isEmpty) bookedBy = '—';
+    return bookedBy;
   }
 
   /// `Wed,` · `Mar 26, 2026` · time line from API.
@@ -357,14 +442,11 @@ class BookingDetailData {
       flightNo = fn.isNotEmpty ? fn : null;
     }
 
-    String bookedBy = _s(m['userName']);
-    final user = m['user'];
-    if (user is Map) {
-      final um = Map<String, dynamic>.from(user);
-      final em = _s(um['email']);
-      if (em.isNotEmpty) bookedBy = em;
-    }
-    if (bookedBy.isEmpty) bookedBy = '—';
+    final bookedBy = _resolveBookedBy(m);
+
+    final bookingDetailsUserName = _s(m['userName'] ?? m['user_name']);
+    final bookingDetailsUserNameOrDash =
+        bookingDetailsUserName.isNotEmpty ? bookingDetailsUserName : '—';
 
     DateTime? created;
     final ca = _s(m['createdAt']);
@@ -373,6 +455,8 @@ class BookingDetailData {
         created = DateTime.parse(ca).toLocal();
       } catch (_) {}
     }
+
+    final cancellationFees = _cancellationFeesFromMap(m);
 
     return BookingDetailData(
       bookingId: ref.isNotEmpty ? ref : '—',
@@ -395,6 +479,7 @@ class BookingDetailData {
       paxEmail: paxEmail.isNotEmpty ? paxEmail : '—',
       paxPhoneDisplay: phoneDisplay,
       bookedBy: bookedBy,
+      bookingDetailsUserName: bookingDetailsUserNameOrDash,
       createdAt: created,
       referenceNumber: refNum,
       specialRequest: special,
@@ -402,6 +487,7 @@ class BookingDetailData {
       invoiceNumber: invNo.isNotEmpty ? invNo : null,
       bookingCompanyName: bCompany.isNotEmpty ? bCompany : null,
       emergencyContactMail: emergencyLine,
+      cancellationFees: cancellationFees,
     );
   }
 }

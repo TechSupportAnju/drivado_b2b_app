@@ -36,7 +36,7 @@ class CancellationPolicyWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 6,
                     children: [
-                      SvgPicture.asset("assets/my_booking_icons/cancellation_policy_icon.svg"),
+                      SvgPicture.asset("assets/booking/cancellation_policy_icon.svg"),
                       CustomText(
                         title: 'Cancellation Policy',
                         color: const Color(0xFFFFA800),
@@ -46,16 +46,16 @@ class CancellationPolicyWidget extends StatelessWidget {
                     ],
                   ),
                 Row(
-                  spacing: 1,
+                  spacing: 2,
                   children: [
-                    CustomText(title: "• Before 24 hours", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
+                    CustomText(title: "•  Before 24 hours", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
                     CustomText(title: ": 100% refund of booking amount", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
                   ],
                 ),
                 Row(
-                  spacing: 1,
+                  spacing: 2,
                   children: [
-                    CustomText(title: "• Within 24 hours:", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
+                    CustomText(title: "•  Within 24 hours:", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
                     CustomText(title: ":  No refund available", color: const Color(0xFFAF7600), fontWeight: FontWeight.w500, fontSize: 10),
 
                   ],

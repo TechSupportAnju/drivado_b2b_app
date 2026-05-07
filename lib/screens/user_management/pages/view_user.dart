@@ -56,7 +56,6 @@ class _ViewUserPageState extends State<ViewUserPage> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final double screenWidth = screenSize.width;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6),
@@ -263,188 +262,126 @@ class _ViewUserPageState extends State<ViewUserPage> {
                                   ],
                                 ),
                                 const SizedBox(height: 15),
-                                SizedBox(
-                                  width: screenWidth,
-                                  child: Row(
-                                    children: [
-                                      Theme(
-                                        data: Theme.of(context).copyWith(
-                                          dividerTheme:
-                                              const DividerThemeData(
-                                            thickness: 0,
-                                            space: 0,
-                                          ),
-                                          dataTableTheme:
-                                              const DataTableThemeData(
-                                            dividerThickness: 0,
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomDataTableRow(
+                                          title: 'Email ID',
+                                          color: const Color(0xFF606060),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          image:
+                                              'assets/user_management/email.svg',
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8,
+                                              top: 2,
+                                            ),
+                                            child: CustomText(
+                                              title: d.dash(d.email),
+                                              color: const Color(0xFF0D0D0D),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
                                           ),
                                         ),
-                                        child: DataTable(
-                                          horizontalMargin: 0.0,
-                                          dividerThickness: 0.0,
-                                          headingRowHeight: 25,
-                                          dataRowMinHeight: 25,
-                                          dataRowMaxHeight: 25,
-                                          columnSpacing: 5,
-                                          border: TableBorder.all(
-                                            color: Colors.transparent,
-                                          ),
-                                          columns: [
-                                            DataColumn(
-                                              label: CustomDataTableRow(
-                                                title: 'Email ID',
-                                                color: const Color(0xFF606060),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
-                                                image:
-                                                    'assets/user_management/email.svg',
-                                              ),
-                                            ),
-                                            DataColumn(
-                                              label: SizedBox(
-                                                width: screenWidth * 0.42,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    const SizedBox(width: 20),
-                                                    CustomText(
-                                                      title: d.dash(d.email),
-                                                      color: const Color(
-                                                          0xFF0D0D0D),
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 12,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                          rows: [
-                                            DataRow(
-                                              cells: [
-                                                DataCell(
-                                                  CustomDataTableRow(
-                                                    title: 'Mob. number',
-                                                    color: const Color(
-                                                        0xFF606060),
-                                                    fontWeight:
-                                                        FontWeight.w500,
-                                                    fontSize: 12,
-                                                    image:
-                                                        'assets/user_management/phone.svg',
-                                                  ),
-                                                ),
-                                                DataCell(
-                                                  SizedBox(
-                                                    width: screenWidth * 0.42,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const SizedBox(
-                                                            width: 20),
-                                                        CustomText(
-                                                          title:
-                                                              d.dash(d.phone),
-                                                          color: const Color(
-                                                              0xFF0D0D0D),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            DataRow(
-                                              cells: [
-                                                DataCell(
-                                                  CustomDataTableRow(
-                                                    title: 'Language',
-                                                    color: const Color(
-                                                        0xFF606060),
-                                                    fontWeight:
-                                                        FontWeight.w500,
-                                                    fontSize: 12,
-                                                    image:
-                                                        'assets/user_management/langAccount.svg',
-                                                  ),
-                                                ),
-                                                DataCell(
-                                                  SizedBox(
-                                                    width: screenWidth * 0.42,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const SizedBox(
-                                                            width: 20),
-                                                        CustomText(
-                                                          title: d.dash(
-                                                              d.language),
-                                                          color: const Color(
-                                                              0xFF0D0D0D),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            DataRow(
-                                              cells: [
-                                                DataCell(
-                                                  CustomDataTableRow(
-                                                    title: 'Currency',
-                                                    color: const Color(
-                                                        0xFF606060),
-                                                    fontWeight:
-                                                        FontWeight.w500,
-                                                    fontSize: 12,
-                                                    image:
-                                                        'assets/user_management/currAccount.svg',
-                                                  ),
-                                                ),
-                                                DataCell(
-                                                  Container(
-                                                    width:
-                                                        screenWidth * 0.42,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const SizedBox(
-                                                            width: 20),
-                                                        CustomText(
-                                                          title: d.dash(
-                                                              d.currency),
-                                                          color: const Color(
-                                                              0xFF0D0D0D),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomDataTableRow(
+                                          title: 'Mob. number',
+                                          color: const Color(0xFF606060),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          image:
+                                              'assets/user_management/phone.svg',
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8,
+                                              top: 2,
+                                            ),
+                                            child: CustomText(
+                                              title: d.dash(d.phone),
+                                              color: const Color(0xFF0D0D0D),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomDataTableRow(
+                                          title: 'Language',
+                                          color: const Color(0xFF606060),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          image:
+                                              'assets/user_management/langAccount.svg',
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8,
+                                              top: 2,
+                                            ),
+                                            child: CustomText(
+                                              title: d.dash(d.language),
+                                              color: const Color(0xFF0D0D0D),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomDataTableRow(
+                                          title: 'Currency',
+                                          color: const Color(0xFF606060),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
+                                          image:
+                                              'assets/user_management/currAccount.svg',
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 8,
+                                              top: 2,
+                                            ),
+                                            child: CustomText(
+                                              title: d.dash(d.currency),
+                                              color: const Color(0xFF0D0D0D),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 15),
                               ],
@@ -456,10 +393,11 @@ class _ViewUserPageState extends State<ViewUserPage> {
                           padding:
                               const EdgeInsets.symmetric(horizontal: 12.0),
                           child: CreditLimitWidget(
+                            currency: d.currency,
                             title1: 'Total unpaid booking',
                             title2: 'Available credit limit',
-                            value1: d.dash(d.totalUnpaidLabel.toString()),
-                            value2: d.dash(d.availableCreditLabel.toString()),
+                            value1: d.dash(d.totalUnpaidLabel),
+                            value2: d.dash(d.availableCreditLabel),
                           ),
                         ),
                       ],

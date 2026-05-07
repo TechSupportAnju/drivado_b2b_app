@@ -31,6 +31,8 @@ class DocumentWidget extends StatefulWidget {
 }
 
 class _DocumentWidgetState extends State<DocumentWidget> {
+  static const Color _sendAccent = Color(0xFFFB4156);
+
   SelectedOption? selectedOption;
   bool _emailFieldError = false;
   String? _emailErrorText;
@@ -82,6 +84,13 @@ class _DocumentWidgetState extends State<DocumentWidget> {
       case SelectedOption.driverDetails:
         return 'Driver details have been emailed.';
     }
+  }
+
+  /// Send enabled only when a document type is selected and email is valid.
+  bool get _sendFormReady {
+    if (selectedOption == null) return false;
+    final email = _emailAddress.text.trim();
+    return email.isNotEmpty && EmailValidator.validate(email);
   }
 
   void _validateAndSend() {
@@ -300,7 +309,15 @@ class _DocumentWidgetState extends State<DocumentWidget> {
                     BlocBuilder<BookingDocumentBloc, BookingDocumentState>(
                       builder: (context, state) {
                         final sending = state is BookingDocumentSending;
-                        final canTap = !sending;
+                        final sendEnabled = _sendFormReady && !sending;
+                        Color sendBg;
+                        if (sending) {
+                          sendBg = _sendAccent.withOpacity(0.5);
+                        } else if (sendEnabled) {
+                          sendBg = _sendAccent;
+                        } else {
+                          sendBg = _sendAccent.withOpacity(0.5);
+                        }
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -315,14 +332,9 @@ class _DocumentWidgetState extends State<DocumentWidget> {
                               ),
                             ),
                             InkWell(
-                              onTap: canTap ? _validateAndSend : null,
+                              onTap: sendEnabled ? _validateAndSend : null,
                               child: CommonButtonWidget(
-                                backgroundColor:
-                                    sending
-                                        ? const Color(
-                                          0xFFFB4156,
-                                        ).withOpacity(0.5)
-                                        : const Color(0xFFFB4156),
+                                backgroundColor: sendBg,
                                 borderColor: Colors.transparent,
                                 text: sending ? 'Sending…' : 'Send',
                                 textColor: const Color(0xFFFFFFFF),

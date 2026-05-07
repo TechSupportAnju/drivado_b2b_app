@@ -14,4 +14,6 @@ class AppColors {
   static const manageBookingbokkedByTextColor = Color(0xFF606060);
   static const manageBookingAdminbookedbyTitleTextColor = Color(0xFF0D0D0D);
   static const bookingCardRedColor = Color(0xFFDC3545);
+  static const bookingCardBlueColor = Color(0xFF007BFF);
+
 }

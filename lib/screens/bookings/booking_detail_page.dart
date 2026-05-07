@@ -1,14 +1,21 @@
 import 'package:drivado_b2b_app/models/booking_detail_model.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_cancel_card.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_id.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/booking_type_widget.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancel_booking_dialog.dart';
+import 'package:drivado_b2b_app/screens/bookings/bookings_widget/cancellation_policy_widget.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_state.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/custom_booking_box.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/flight_detail_widget.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_bloc.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_event.dart';
 import 'package:drivado_b2b_app/services/bookings/bloc/booking_detail_state.dart';
+import 'package:drivado_b2b_app/utils/booking_cancel_visibility.dart';
+import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dash/flutter_dash.dart';
@@ -25,6 +32,96 @@ class BookingDetailPage extends StatefulWidget {
 }
 
 class _BookingDetailPageState extends State<BookingDetailPage> {
+  /// Same email used at login (prefs); booking “Booked by” often aligns with this, not necessarily [UserData.email]).
+  String? _sessionLoginEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    AuthService.getEmail().then((e) {
+      if (!mounted) return;
+      final t = e?.trim();
+      setState(() {
+        _sessionLoginEmail = (t != null && t.isNotEmpty) ? t : null;
+      });
+    });
+  }
+
+  void _showBookingSummaryMoreSheet(BuildContext pageContext, BookingDetailData detail) {
+    showModalBottomSheet<void>(
+      context: pageContext,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black54,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x1A000000),
+                blurRadius: 24,
+                offset: Offset(0, -4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE6E8E7),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    showCancelBookingDialog(pageContext, detail: detail);
+                  },
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(14)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 14, 12, 20),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/booking_detail/cancel_icon.svg',
+                          width: 22,
+                          height: 22,
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: CustomText(
+                            title: 'Cancel booking',
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                            height: 1.35,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 80),
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,84 +149,109 @@ class _BookingDetailPageState extends State<BookingDetailPage> {
         ),
         centerTitle: true,
         actions: [
-          InkWell(
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            onTap: () {
-              final st = context.read<BookingDetailBloc>().state;
-              if (st is! BookingDetailLoaded) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Booking details are still loading.'),
-                  ),
-                );
-                return;
-              }
-              showCancelBookingDialog(context, detail: st.data);
+          BlocBuilder<UserInformationBloc, UserInformationState>(
+            builder: (context, userState) {
+              return BlocBuilder<BookingDetailBloc, BookingDetailState>(
+                buildWhen: (prev, next) =>
+                    next is BookingDetailLoaded ||
+                    next is BookingDetailLoading ||
+                    next is BookingDetailFailure ||
+                    next is BookingDetailInitial,
+                builder: (context, bdState) {
+                  if (bdState is! BookingDetailLoaded) {
+                    return const SizedBox.shrink();
+                  }
+                  if (!canShowCancelBookingForDetail(
+                        userState,
+                        bdState.data,
+                        prefsLoginEmail: _sessionLoginEmail,
+                      )) {
+                    return const SizedBox.shrink();
+                  }
+                  return InkWell(
+                    highlightColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onTap: () {
+                      final st = context.read<BookingDetailBloc>().state;
+                      if (st is! BookingDetailLoaded) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Booking details are still loading.'),
+                          ),
+                        );
+                        return;
+                      }
+                      _showBookingSummaryMoreSheet(context, st.data);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Center(
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF352828),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          alignment: Alignment.center,
+                          child: SvgPicture.asset(
+                            'assets/booking_detail/dot_icon.svg',
+                            height: 28,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
             },
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Center(
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF352828),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    'assets/booking_detail/dot_icon.svg',
-                    height: 28,
-                  ),
-                ),
-              ),
-            ),
           ),
         ],
       ),
-      body: BlocBuilder<BookingDetailBloc, BookingDetailState>(
-        builder: (context, state) {
-          if (state is BookingDetailLoading || state is BookingDetailInitial) {
-            return const Center(
-              child: CircularProgressIndicator(color: Color(0xFFFB4156)),
-            );
-          }
-          if (state is BookingDetailFailure) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      title: state.message,
-                      color: const Color(0xFF606060),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    TextButton(
-                      onPressed: () {
-                        context.read<BookingDetailBloc>().add(
-                              BookingDetailLoadRequested(
-                                bookingId: widget.bookingId,
-                              ),
-                            );
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
+      body: SafeArea(
+        child: BlocBuilder<BookingDetailBloc, BookingDetailState>(
+          builder: (context, state) {
+            if (state is BookingDetailLoading || state is BookingDetailInitial) {
+              return const Center(
+                child: CircularProgressIndicator(color: Color(0xFFFB4156)),
+              );
+            }
+            if (state is BookingDetailFailure) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        title: state.message,
+                        color: const Color(0xFF606060),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      TextButton(
+                        onPressed: () {
+                          context.read<BookingDetailBloc>().add(
+                                BookingDetailLoadRequested(
+                                  bookingId: widget.bookingId,
+                                ),
+                              );
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
-          if (state is BookingDetailLoaded) {
-            return _DetailScrollView(detail: state.data);
-          }
-          return const SizedBox.shrink();
-        },
+              );
+            }
+            if (state is BookingDetailLoaded) {
+              return _DetailScrollView(detail: state.data);
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -167,13 +289,18 @@ class _DetailScrollView extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            BookingIdWidget(
-              bookingId: detail.bookingId,
-              status: detail.bookingStatus,
-              paymentStatus: detail.paymentStatus,
-              detail: detail,
-            ),
-            const SizedBox(height: 10),
+            if (!detail.isBookingStatusCancelled) ...[
+              BookingIdWidget(
+                bookingId: detail.bookingId,
+                status: detail.bookingStatus,
+                paymentStatus: detail.paymentStatus,
+                detail: detail,
+              ),
+            ] else ...[
+              BookingCancelledCard(
+                cancellationFee: detail.cancellationFees,
+              ) ],
+         const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
@@ -188,7 +315,7 @@ class _DetailScrollView extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 110,
+                      // height: 110,
                       width: MediaQuery.of(context).size.width,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -210,7 +337,7 @@ class _DetailScrollView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
                                   SizedBox(
@@ -224,7 +351,7 @@ class _DetailScrollView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 5),
                               Row(
                                 children: [
                                   SizedBox(
@@ -249,7 +376,7 @@ class _DetailScrollView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     const Row(
                       children: [
                         CustomText(
@@ -269,7 +396,7 @@ class _DetailScrollView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
                         Expanded(
@@ -292,7 +419,7 @@ class _DetailScrollView extends StatelessWidget {
                     ),
                     const SizedBox(height: 15),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           width: 30,
@@ -300,8 +427,12 @@ class _DetailScrollView extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 'assets/booking_detail/source_detail_icon.svg',
-                                color: Colors.red,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.red,
+                                  BlendMode.srcIn,
+                                ),
                               ),
+                              SizedBox(height: 1,),
                               Dash(
                                 direction: Axis.vertical,
                                 length: totalLength < 2
@@ -313,9 +444,13 @@ class _DetailScrollView extends StatelessWidget {
                                 dashThickness: 1.2,
                                 dashColor: Colors.grey,
                               ),
+                              SizedBox(height: 1,),
                               SvgPicture.asset(
                                 'assets/booking_detail/dest_detail_icon.svg',
-                                color: Colors.red,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.red,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                               const SizedBox(height: 8),
                             ],
@@ -497,7 +632,18 @@ class _DetailScrollView extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            if (detail.isBookingStatusCancelled) ...[
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                  child: CancellationPolicyWidget(),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+            const SizedBox(height: 10),
+
           ],
         ),
       ),

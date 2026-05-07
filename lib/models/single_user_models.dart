@@ -35,9 +35,44 @@ class SingleUserDetail extends Equatable {
       return null;
     }
 
-    final first = json['firstName']?.toString().trim() ?? '';
-    final last = json['lastName']?.toString().trim() ?? '';
-    final combinedName = [first, last].where((s) => s.isNotEmpty).join(' ').trim();
+    final company = _asMap(json['company']);
+
+    final currencyFromCompany = company != null
+        ? pickCredit(company, const ['currency', 'prefCurrency'])
+        : null;
+    final currencyRoot = json['currency']?.toString().trim();
+    final currencyResolved =
+        (currencyFromCompany != null && currencyFromCompany.trim().isNotEmpty)
+            ? currencyFromCompany.trim()
+            : (currencyRoot != null && currencyRoot.isNotEmpty
+                ? currencyRoot
+                : null);
+
+    final totalUnpaidLabel = pickCredit(json, const [
+          'unpaidBooking',
+          'totalUnpaidBooking',
+          'total_unpaid_booking',
+        ]) ??
+        (company != null
+            ? pickCredit(company, const [
+                'totalUnpaidBooking',
+                'unpaidBooking',
+                'total_unpaid_booking',
+              ])
+            : null);
+
+    final availableCreditLabel = company != null
+        ? pickCredit(company, const [
+            'availableLimit',
+            'available_limit',
+            'availableCreditLimit',
+            'available_credit_limit',
+          ])
+        : pickCredit(json, const [
+            'availableLimit',
+            'available_credit_limit',
+            'availableCreditLimit',
+          ]);
 
     return SingleUserDetail(
       id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
@@ -51,9 +86,9 @@ class SingleUserDetail extends Equatable {
       language: json['language']?.toString() ??
           json['prefLanguage']?.toString() ??
           json['preferredLanguage']?.toString(),
-      currency: json['company']['currency']?.toString() ?? '',
-      totalUnpaidLabel: '${json['unpaidBooking']}',
-      availableCreditLabel: '${json['company']['availableLimit']}',
+      currency: currencyResolved,
+      totalUnpaidLabel: totalUnpaidLabel,
+      availableCreditLabel: availableCreditLabel,
     );
   }
 

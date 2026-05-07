@@ -48,13 +48,12 @@ class CustomBottomNav extends StatelessWidget {
                   BlendMode.srcIn,
                 ),
               ),
-              
               CustomText(
                 title: _label(index),
                   fontSize: isActive? 12 : 12,
                   color: isActive ? activeColor : inactiveColor,
                   fontWeight: isActive? FontWeight.w700 : FontWeight.w500,
-                  height: 2.0,
+                  height: 1.5,
                   letterSpacing: 0.1,
               ),
             ],
@@ -77,12 +76,12 @@ class CustomBottomNav extends StatelessWidget {
       case 2:
         return isActive
             ? 'assets/home/manage_booking_active_icon.svg'
-            : 'assets/home/manage_booking_active_icon.svg';
+            : 'assets/home/manage_booking_inactive_icon.svg';
       case 3:
       default:
         return isActive
-            ? 'assets/home/profile_active_icon.svg'
-            : 'assets/home/profile_inactive_icon.svg';
+            ? 'assets/home/more_active_icon.svg'
+            : 'assets/home/more_inactive_icon.svg';
     }
   }
 

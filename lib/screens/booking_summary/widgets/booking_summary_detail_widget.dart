@@ -6,20 +6,39 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-class BookingSummaryDetailWidget extends StatefulWidget {
+class BookingSummaryDetailWidget extends StatelessWidget {
   final bool isTapOneway;
-  const BookingSummaryDetailWidget({required this.isTapOneway ,super.key});
+  final String travelDate;
+  final String travelTime;
+  final String source;
+  final String destination;
+  final String vehicleType;
+  final String passengerLabel;
+  final String distance;
+  final String duration;
+  final String amount;
+  final String currency;
+  const BookingSummaryDetailWidget({
+    required this.isTapOneway,
+    required this.travelDate,
+    required this.travelTime,
+    required this.source,
+    required this.destination,
+    required this.vehicleType,
+    required this.passengerLabel,
+    required this.distance,
+    required this.duration,
+    required this.amount,
+    required this.currency,
+    super.key,
+  });
 
-  @override
-  State<BookingSummaryDetailWidget> createState() => _BookingSummaryDetailWidgetState();
-}
-
-class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget> {
   @override
   Widget build(BuildContext context) {
     var screenWidth = MediaQuery.of(context).size.width;
-    var source =  widget.isTapOneway?  "Not found" :  "Not found";
-    var destination = widget.isTapOneway? "destination" : "";
+    final safeSource = source.trim().isEmpty ? 'Not found' : source.trim();
+    final safeDestination =
+        destination.trim().isEmpty ? 'Not found' : destination.trim();
     int totalSourLength = _calculateNumberOfLines(source,
     GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
     screenWidth / 1.28);
@@ -70,8 +89,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                       ),
                       const SizedBox(width: 2),
                       CustomText(
-                        title: widget.isTapOneway?
-                        "15/09/2025" : "15/09/2025",
+                        title: travelDate,
                         color: const Color(0xFF606060),
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -85,8 +103,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                       ),
                       const SizedBox(width: 2),
                       CustomText(
-                        title: widget.isTapOneway?
-                        "10:25AM " : "10:25AM ",
+                        title: travelTime,
                         color: const Color(0xFF606060),
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -105,7 +122,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                   child: Row(
                     children: [
                       CustomText(
-                        title: "234.00 ",
+                        title: amount,
                         color: Color(0xFF606060),
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -114,7 +131,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                       ),
                       
                       CustomText(
-                        title: "USD" ,
+                        title: currency ,
                         color: Color(0xFFFB4156),
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
@@ -144,12 +161,12 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                             ),
                           ),
                           afterLineStyle:  LineStyle(
-                            color: widget.isTapOneway?  Color(0xFF606060) : Colors.transparent,
+                            color: isTapOneway?  Color(0xFF606060) : Colors.transparent,
                             thickness: 1.5,
             
                           ),
                           beforeLineStyle:  LineStyle(
-                            color: widget.isTapOneway?  Color(0xFF606060) : Colors.transparent,
+                            color: isTapOneway?  Color(0xFF606060) : Colors.transparent,
                             thickness: 1.5,
             
                           ),
@@ -161,7 +178,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                                   children: [
                                     Expanded(
                                       child: CustomText(
-                                      title: "London Gatwick Airport (LGW) Horley London Heathrow Airport, London, UK",
+                                      title: safeSource,
                                       height: 1.33,
                                       color: Color(0xFF606060),
                                       fontWeight: FontWeight.w400,
@@ -175,7 +192,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                             ),
                           ),
                         ),
-                      widget.isTapOneway? 
+                      isTapOneway? 
                       TimelineTile(
                         alignment: TimelineAlign.start,
                         indicatorStyle:  IndicatorStyle(
@@ -187,21 +204,21 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                               lineLength: 23,
                               lineThickness: 1.5,
                               dashLength: 5.0,
-                              dashColor:   widget.isTapOneway?  Colors.transparent: Colors.transparent,
+                              dashColor:   isTapOneway?  Colors.transparent: Colors.transparent,
                               dashRadius: 0.0,
                               dashGapLength: 0.0,
-                              dashGapColor:    widget.isTapOneway?  Colors.transparent : Colors.transparent,
+                              dashGapColor:    isTapOneway?  Colors.transparent : Colors.transparent,
                               dashGapRadius: 0.0,
                             ),
                           ) , 
                         ),
                         beforeLineStyle:  LineStyle(
-                          color:   widget.isTapOneway? Color(0xFF606060) : Colors.transparent  ,
+                          color:   isTapOneway? Color(0xFF606060) : Colors.transparent  ,
                           thickness: 1.5,
                         ) ,
-                        afterLineStyle: widget.isTapOneway
+                        afterLineStyle: isTapOneway
                             ? LineStyle(
-                          color:   widget.isTapOneway? Color(0xFF606060) : Colors.transparent ,
+                          color:   isTapOneway? Color(0xFF606060) : Colors.transparent ,
                           thickness: 1.5,
                         ) : null,
                         // endChild: SizedBox(height: 20),
@@ -212,7 +229,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                           
                         )
                       ) : Container(),
-                      widget.isTapOneway? 
+                      isTapOneway? 
                       TimelineTile(
                         alignment: TimelineAlign.start,
                         isLast: true,
@@ -229,7 +246,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                           color: Color(0xFF606060),
                           thickness: 1.5,
                         ),
-                        endChild: widget.isTapOneway ?
+                        endChild: isTapOneway ?
                         ListTile(
                           title: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -239,7 +256,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                                   children: [
                                     Expanded(
                                       child: CustomText(
-                                        title: widget.isTapOneway? "London Gatwick Airport (LGW) Horley London Heathrow Airport, London, UK" : "",
+                                        title: isTapOneway? safeDestination : "",
                                         height: 1.33,
                                         color: Color(0xFF606060),
                                         fontWeight: FontWeight.w400,
@@ -266,7 +283,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                             padding: const EdgeInsets.symmetric(horizontal: 11,vertical: 0),
                             alignment: Alignment.center,
                             child: CustomText(
-                              title: "Standard sedan",
+                              title: vehicleType,
                               color: Color(0xFF606060),
                               fontWeight: FontWeight.w500,
                               fontSize: 12
@@ -284,8 +301,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                             child: Row(
                               children: [
                                 CustomText(
-                                  title: widget.isTapOneway? "1 Pax" :
-                                  "2 Pax",
+                                  title: passengerLabel,
                                   color: Color(0xFF606060),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12
@@ -304,7 +320,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                             child: Row(
                               children: [
                                 CustomText(
-                                  title: widget.isTapOneway? "37 km" : "10 km",
+                                  title: distance,
                                   color: Color(0xFF606060),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12
@@ -316,8 +332,7 @@ class _BookingSummaryDetailWidgetState extends State<BookingSummaryDetailWidget>
                                   fontSize: 12
                                 ),
                                 CustomText(
-                                  title: widget.isTapOneway?
-                                  "2 hr 53 min" : "10 hr",
+                                  title: duration,
                                   color: Color(0xFF606060),
                                   fontWeight: FontWeight.w500,
                                   fontSize: 12

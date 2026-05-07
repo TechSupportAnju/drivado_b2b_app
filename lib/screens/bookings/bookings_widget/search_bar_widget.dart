@@ -37,10 +37,10 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
             horizontal: 16,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(
               color: Colors.transparent,
               style: BorderStyle.none,

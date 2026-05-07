@@ -166,7 +166,7 @@ class DriverDetailsWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(
                 children: [
-                  const Icon(Icons.person_outline),
+                  SvgPicture.asset('assets/booking/driverImg.svg'),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Text(
@@ -180,24 +180,6 @@ class DriverDetailsWidget extends StatelessWidget {
                     onTap: () => onChanged(value),
                   ),
                 ],
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              decoration: const BoxDecoration(
-                color: Color(0xFFF5F6FA),
-                borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(12)),
-              ),
-              child: Center(
-                child: CustomText(
-                  title: footerLabel,
-                  fontSize: 12,
-                  color: const Color(0xFF0D0D0D),
-                  fontWeight: FontWeight.w500,
-                  height: 1,
-                ),
               ),
             ),
           ],

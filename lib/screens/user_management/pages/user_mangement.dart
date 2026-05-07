@@ -1,9 +1,11 @@
 import 'package:drivado_b2b_app/models/single_company_management_models.dart';
 import 'package:drivado_b2b_app/models/user_data_extensions.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
+import 'package:drivado_b2b_app/screens/common_widgets/custom_header_widget_test.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/animated_toggle.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/management_list_empty_placeholder.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_list_tile_widget.dart';
 import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../common_widgets/appbar_widget.dart';
 
 class UserMangementPage extends StatefulWidget {
   const UserMangementPage({super.key});
@@ -101,10 +102,6 @@ class _UserMangementPageState extends State<UserMangementPage> {
       },
       child: Scaffold(
         backgroundColor: const Color(0xffF5F6FA),
-        appBar: const CommonAppBar(
-          bottomHeight: 10,
-
-        ),
         body: Column(
           children: [
             Container(
@@ -112,14 +109,15 @@ class _UserMangementPageState extends State<UserMangementPage> {
               decoration: const BoxDecoration(
                 color: Color(0xff190C0C),
               ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                child: SafeArea(
-                  bottom: false,
-                  child: Column(
-                    children: [
-                      Container(
+              child: SafeArea(
+                bottom: false,
+                top: false,
+                child: Column(
+                  children: [
+                    CommonHeaderTest(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
                         height: 52,
                         width: screenWidth,
                         decoration: CustomDecorations().baseBackgroundDecoration(
@@ -185,9 +183,9 @@ class _UserMangementPageState extends State<UserMangementPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 24),
+                  ],
                 ),
               ),
             ),
@@ -306,13 +304,9 @@ class _UserMangementPageState extends State<UserMangementPage> {
     if (toggleValue == 1) {
       final users = _filterUsers(m);
       if (users.isEmpty) {
-        return const Center(
-          child: CustomText(
-            title: 'No users match your search.',
-            color: Color(0xFF606060),
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-          ),
+        return ManagementListEmptyPlaceholder(
+          isUsers: true,
+          isSearchMismatch: _searchQuery.trim().isNotEmpty,
         );
       }
       return ListView.separated(
@@ -333,13 +327,9 @@ class _UserMangementPageState extends State<UserMangementPage> {
 
     final companies = _filterCompanies(m);
     if (companies.isEmpty) {
-      return const Center(
-        child: CustomText(
-          title: 'No companies match your search.',
-          color: Color(0xFF606060),
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-        ),
+      return ManagementListEmptyPlaceholder(
+        isUsers: false,
+        isSearchMismatch: _searchQuery.trim().isNotEmpty,
       );
     }
     return ListView.separated(

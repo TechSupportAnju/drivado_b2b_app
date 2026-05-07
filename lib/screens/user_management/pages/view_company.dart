@@ -4,6 +4,7 @@ import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/credit_limit_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_booking_summary_row.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/custom_switch.dart';
+import 'package:drivado_b2b_app/screens/user_management/widget/management_list_empty_placeholder.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_add_button_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/user_company_list_tile_widget.dart';
 import 'package:drivado_b2b_app/screens/user_management/widget/view_company_side_widget.dart';
@@ -491,7 +492,24 @@ class _ViewCompanyPageState extends State<ViewCompanyPage> {
                                         Colors.white,
                                         const Color(0xFFEDF1F3),
                                       ),
-                                      child: ListView.separated(
+                                      child: (isSelect == 1 &&
+                                              _filteredUsers.isEmpty)
+                                          ? ManagementListEmptyPlaceholder(
+                                              isUsers: true,
+                                              isSearchMismatch: search.text
+                                                  .trim()
+                                                  .isNotEmpty,
+                                            )
+                                          : (isSelect == 2 &&
+                                                  _filteredCompanies.isEmpty)
+                                              ? ManagementListEmptyPlaceholder(
+                                                  isUsers: false,
+                                                  isSearchMismatch: search
+                                                      .text
+                                                      .trim()
+                                                      .isNotEmpty,
+                                                )
+                                              : ListView.separated(
                                         separatorBuilder: (context, pos) =>
                                             const Divider(
                                           color: Color(0xFFEFF0F6),

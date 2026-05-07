@@ -12,10 +12,16 @@ import 'package:drivado_b2b_app/screens/create_booking/widgets/hourly_widget.dar
 import 'package:drivado_b2b_app/screens/create_booking/widgets/oneway_widget.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/ride_type_options.dart';
 import 'package:drivado_b2b_app/screens/vehicle_selection/widget/show_draggable_sheet_widget.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
+import 'package:drivado_b2b_app/services/bookings/search_vehicle_repository.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_bloc.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_event.dart';
+import 'package:drivado_b2b_app/services/user_info_service/bloc/user_information_state.dart';
 import 'package:drivado_b2b_app/screens/create_booking/widgets/show_error_required_field_widget.dart';
 import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -54,6 +60,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
   void initState() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureUserProfileLoaded());
   }
 
   @override
@@ -120,6 +127,8 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                               height: 52.0,
                               width: MediaQuery.of(context).size.width * 0.42,
                               onTap: () async {
+                                final previousDate =
+                                    bookingDateController.text.trim();
                                 DateTime? newSelectedDate =
                                     await showDatePicker(
                                       context: context,
@@ -131,8 +140,14 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                   String formattedPickupDate = DateFormat(
                                     'dd-MMM-yyyy',
                                   ).format(newSelectedDate);
-                                  bookingDateController.text =
-                                      formattedPickupDate;
+                                  bookingDateController.text = formattedPickupDate;
+                                  if (!_isValidBookingSelectionOrIncomplete()) {
+                                    bookingDateController.text = previousDate;
+                                    if (context.mounted) {
+                                      showAdvanceBookingDialog(context);
+                                    }
+                                    return;
+                                  }
                                   setState(() {});
                                 }
                               },
@@ -155,6 +170,8 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                               height: 52.0,
                               width: MediaQuery.of(context).size.width * 0.42,
                               onTap: () async {
+                                final previousTime =
+                                    bookingTimeController.text.trim();
                                 final TimeOfDay initialTime = TimeOfDay.now();
                                 final picked = await showTimePicker(
                                   context: context,
@@ -164,9 +181,15 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                   final formattedTime =
                                       '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
 
-                                  setState(() {
-                                    bookingTimeController.text = formattedTime;
-                                  });
+                                  bookingTimeController.text = formattedTime;
+                                  if (!_isValidBookingSelectionOrIncomplete()) {
+                                    bookingTimeController.text = previousTime;
+                                    if (context.mounted) {
+                                      showAdvanceBookingDialog(context);
+                                    }
+                                    return;
+                                  }
+                                  setState(() {});
                                 }
                               },
                               onChanged: (val) {},
@@ -641,6 +664,10 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                             if (invalid) {
                               showRequiredFieldDialog(context);
                             } else {
+                              if (!_isBookingAtLeast24HoursAway()) {
+                                showAdvanceBookingDialog(this.context);
+                                return;
+                              }
                               if (fromCoordinate.isEmpty ||
                                   toCoordinate.isEmpty) {
                                 showRouteNotFoundDialog(this.context);
@@ -659,9 +686,9 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       child: CircularProgressIndicator(),
                                     ),
                               );
-                              double? km;
+                              RouteDistanceDetails? routeDetails;
                               try {
-                                km = await fetchDistanceKm(
+                                routeDetails = await fetchDistanceDetails(
                                   origin: fromCoordinate,
                                   destination: toCoordinate,
                                 );
@@ -672,10 +699,15 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                 }
                               }
                               if (!mounted) return;
-                              if (km == null) {
+                              if (routeDetails == null) {
                                 showRouteNotFoundDialog(this.context);
                                 return;
                               }
+                              final request = _buildSearchVehicleRequest(
+                                km: routeDetails.km,
+                                isOneway: true,
+                              );
+                              if (request == null) return;
                               await showModalBottomSheet(
                                 backgroundColor: Colors.transparent,
                                 context: this.context,
@@ -684,6 +716,10 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                     (_) => DraggableSheetWidget(
                                       isTapOneway: true,
                                       bookingSearchId: '',
+                                      searchRequest: request,
+                                      routeDistanceKm: routeDetails!.km.toString(),
+                                      routeDuration: routeDetails.duration,
+                                      bookingCurrency: currencyController.text.trim(),
                                     ),
                               );
                             }
@@ -697,14 +733,27 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                             if (invalid) {
                               showRequiredFieldDialog(context);
                             } else {
+                              if (!_isBookingAtLeast24HoursAway()) {
+                                showAdvanceBookingDialog(context);
+                                return;
+                              }
+                              final request = _buildSearchVehicleRequest(
+                                km: 0,
+                                isOneway: false,
+                              );
+                              if (request == null) return;
                               await showModalBottomSheet(
                                 backgroundColor: Colors.transparent,
                                 context: context,
                                 isScrollControlled: true,
                                 builder:
                                     (_) => DraggableSheetWidget(
-                                      isTapOneway: true,
+                                      isTapOneway: false,
                                       bookingSearchId: '',
+                                      searchRequest: request,
+                                      routeDistanceKm: '0',
+                                      routeDuration: '',
+                                      bookingCurrency: currencyController.text.trim(),
                                     ),
                               );
                             }
@@ -758,5 +807,122 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
         );
       },
     );
+  }
+
+  showAdvanceBookingDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Invalid booking time'),
+          content: const Text(
+            'Please select a pickup date and time at least 24 hours from now.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _ensureUserProfileLoaded() async {
+    if (!mounted) return;
+    final bloc = context.read<UserInformationBloc>();
+    final state = bloc.state;
+    if (state is UserInformationLoaded || state is UserInformationLoading) {
+      return;
+    }
+    final token = await AuthService.getAccessToken();
+    if (!mounted || token == null || token.isEmpty) return;
+    bloc.add(UserInformationLoadDetails(accessToken: token));
+  }
+
+  SearchVehicleRequest? _buildSearchVehicleRequest({
+    required double km,
+    required bool isOneway,
+  }) {
+    final state = context.read<UserInformationBloc>().state;
+    final userId =
+        state is UserInformationLoaded ? state.userData.id?.trim() ?? '' : '';
+
+    if (userId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User information is still loading. Please try again.')),
+      );
+      return null;
+    }
+
+    final formattedDate = _formatApiDate(bookingDateController.text);
+    final bookingTime = bookingTimeController.text.trim();
+    final bookingCurrency = currencyController.text.trim();
+    final source = isOneway ? fromCoordinate.trim() : hourlyFromCoordinate.trim();
+    final destination =
+        isOneway ? toCoordinate.trim() : hourlyFromCoordinate.trim();
+
+    if (formattedDate.isEmpty ||
+        bookingTime.isEmpty ||
+        bookingCurrency.isEmpty ||
+        source.isEmpty ||
+        destination.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please complete the booking details first.')),
+      );
+      return null;
+    }
+
+    return SearchVehicleRequest(
+      date: formattedDate,
+      km: km.toStringAsFixed(3),
+      userId: userId,
+      time: bookingTime,
+      sourceLatLng: source,
+      destinationLatLng: destination,
+      currency: bookingCurrency,
+    );
+  }
+
+  String _formatApiDate(String rawDate) {
+    final value = rawDate.trim();
+    if (value.isEmpty) return '';
+
+    try {
+      final parsed = DateFormat('dd-MMM-yyyy').parseStrict(value);
+      return DateFormat('yyyy-MM-dd').format(parsed);
+    } catch (_) {
+      return value;
+    }
+  }
+
+  bool _isBookingAtLeast24HoursAway() {
+    final dateText = bookingDateController.text.trim();
+    final timeText = bookingTimeController.text.trim();
+    if (dateText.isEmpty || timeText.isEmpty) return false;
+
+    try {
+      final date = DateFormat('dd-MMM-yyyy').parseStrict(dateText);
+      final time = DateFormat('HH:mm').parseStrict(timeText);
+      final selectedDateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
+      final minimumAllowed = DateTime.now().add(const Duration(hours: 24));
+      return !selectedDateTime.isBefore(minimumAllowed);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  bool _isValidBookingSelectionOrIncomplete() {
+    final dateText = bookingDateController.text.trim();
+    final timeText = bookingTimeController.text.trim();
+    if (dateText.isEmpty || timeText.isEmpty) return true;
+    return _isBookingAtLeast24HoursAway();
   }
 }

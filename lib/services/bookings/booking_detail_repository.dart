@@ -1,14 +1,18 @@
 import 'dart:convert';
 
 import 'package:drivado_b2b_app/models/booking_detail_model.dart';
+import 'package:drivado_b2b_app/services/auth_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class BookingDetailRepository {
   final String baseUrl = dotenv.env['BASE_URL'] ?? '';
 
-  /// GET `v1/bookings?id=` — no auth headers.
-  Future<BookingDetailData> getBookingDetail(String bookingId) async {
+  /// GET `v1/bookings?id=` — sends [Authorization] when [accessToken] is non-empty.
+  Future<BookingDetailData> getBookingDetail(
+    String bookingId, {
+    String? accessToken,
+  }) async {
     final trimmed = bookingId.trim();
     if (trimmed.isEmpty) {
       throw Exception('Booking id is empty');
@@ -18,7 +22,13 @@ class BookingDetailRepository {
       queryParameters: {'id': trimmed},
     );
 
-    final response = await http.get(uri);
+    final auth = AuthService.authorizationHeader(accessToken);
+    final response = await http.get(
+      uri,
+      headers: <String, String>{
+        if (auth.isNotEmpty) 'Authorization': auth,
+      },
+    );
 
     if (response.statusCode != 200) {
       throw Exception(

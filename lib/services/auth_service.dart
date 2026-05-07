@@ -50,6 +50,15 @@ class AuthService {
     return prefs.getString(_keyAccessToken);
   }
 
+  /// Value for the `Authorization` header; adds `Bearer ` when the token has no scheme.
+  static String authorizationHeader(String? rawToken) {
+    if (rawToken == null) return '';
+    final t = rawToken.trim();
+    if (t.isEmpty) return '';
+    if (t.toLowerCase().startsWith('bearer ')) return t;
+    return 'Bearer $t';
+  }
+
   /// Overwrites stored access token (e.g. after `/user/access_Token` on each app open).
   static Future<void> saveAccessToken(String token) async {
     if (token.isEmpty) return;
