@@ -245,11 +245,34 @@ Future<void> showCancelBookingDialog(
                                         onTap: loading
                                             ? null
                                             : () {
+                                                final profile = parentContext
+                                                    .read<
+                                                        UserInformationBloc>()
+                                                    .state;
+                                                String? profileUserId;
+                                                String? companyId;
+                                                int? companyAvailableLimit;
+                                                if (profile
+                                                    is UserInformationLoaded) {
+                                                  profileUserId =
+                                                      profile.userData.id;
+                                                  companyId = profile.userData
+                                                      .company?.id;
+                                                  companyAvailableLimit = profile
+                                                      .userData
+                                                      .company
+                                                      ?.availableLimit;
+                                                }
                                                 context
                                                     .read<CancelBookingBloc>()
                                                     .add(
                                                       CancelBookingRequested(
                                                         bookingId: bookingId,
+                                                        profileUserId:
+                                                            profileUserId,
+                                                        companyId: companyId,
+                                                        companyAvailableLimit:
+                                                            companyAvailableLimit,
                                                       ),
                                                     );
                                               },

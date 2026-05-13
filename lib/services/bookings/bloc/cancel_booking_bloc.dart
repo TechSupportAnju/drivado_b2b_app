@@ -30,6 +30,9 @@ class CancelBookingBloc extends Bloc<CancelBookingEvent, CancelBookingState> {
       await repository.cancelBooking(
         bookingId: event.bookingId,
         accessToken: token.trim(),
+        profileUserId: event.profileUserId,
+        companyId: event.companyId,
+        companyAvailableLimit: event.companyAvailableLimit,
       );
       emit(CancelBookingSuccess());
     } catch (e) {

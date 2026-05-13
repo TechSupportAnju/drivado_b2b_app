@@ -35,6 +35,64 @@ class BookingSearchFilterPayload extends Equatable {
     this.bookingStatuses = const [],
   });
 
+  BookingSearchFilterPayload copyWith({
+    BookingFilterDateRangeKind? dateRangeKind,
+    String? dateFrom,
+    bool clearDateFrom = false,
+    String? dateTo,
+    bool clearDateTo = false,
+    String? bookingId,
+    bool clearBookingId = false,
+    String? companyName,
+    bool clearCompanyName = false,
+    String? userNameQuery,
+    bool clearUserNameQuery = false,
+    String? customerName,
+    bool clearCustomerName = false,
+    String? passengerNumber,
+    bool clearPassengerNumber = false,
+    String? driverName,
+    bool clearDriverName = false,
+    String? driverNumber,
+    bool clearDriverNumber = false,
+    String? quoteBy,
+    bool clearQuoteBy = false,
+    List<String>? bookingStatuses,
+  }) {
+    return BookingSearchFilterPayload(
+      dateRangeKind: dateRangeKind ?? this.dateRangeKind,
+      dateFrom: clearDateFrom ? null : (dateFrom ?? this.dateFrom),
+      dateTo: clearDateTo ? null : (dateTo ?? this.dateTo),
+      bookingId: clearBookingId ? null : (bookingId ?? this.bookingId),
+      companyName: clearCompanyName ? null : (companyName ?? this.companyName),
+      userNameQuery:
+          clearUserNameQuery ? null : (userNameQuery ?? this.userNameQuery),
+      customerName:
+          clearCustomerName ? null : (customerName ?? this.customerName),
+      passengerNumber:
+          clearPassengerNumber ? null : (passengerNumber ?? this.passengerNumber),
+      driverName: clearDriverName ? null : (driverName ?? this.driverName),
+      driverNumber: clearDriverNumber ? null : (driverNumber ?? this.driverNumber),
+      quoteBy: clearQuoteBy ? null : (quoteBy ?? this.quoteBy),
+      bookingStatuses: bookingStatuses ?? this.bookingStatuses,
+    );
+  }
+
+  bool get hasAnyActiveFilters {
+    bool hasText(String? value) => value != null && value.trim().isNotEmpty;
+    return hasText(dateFrom) ||
+        hasText(dateTo) ||
+        hasText(bookingId) ||
+        hasText(companyName) ||
+        hasText(userNameQuery) ||
+        hasText(customerName) ||
+        hasText(passengerNumber) ||
+        hasText(driverName) ||
+        hasText(driverNumber) ||
+        hasText(quoteBy) ||
+        bookingStatuses.isNotEmpty;
+  }
+
   Map<String, String> toQueryMap({
     required BookingListQueryParams context,
     required int page,

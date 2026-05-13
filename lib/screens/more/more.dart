@@ -108,8 +108,8 @@ class _MorePageState extends State<MorePage> {
                             children: [
                               if (state is UserInformationLoading)
                                 const SizedBox(
-                                  width: 40,
-                                  height: 40,
+                                  width: 48,
+                                  height: 48,
                                   child: Center(
                                     child: SizedBox(
                                       width: 22,
@@ -119,9 +119,9 @@ class _MorePageState extends State<MorePage> {
                                   ),
                                 )
                               else if (state is UserInformationLoaded)
-                                ProfileUserAvatar(user: state.userData, size: 40)
+                                ProfileUserAvatar(user: state.userData, size: 48)
                               else
-                                ProfileUserAvatar(user: null, size: 40),
+                                ProfileUserAvatar(user: null, size: 48),
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Column(

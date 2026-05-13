@@ -14,8 +14,13 @@ import 'package:intl/intl.dart';
 
 class PropertyFilterWidget extends StatefulWidget {
   final BookingFilterDateRangeKind dateRangeKind;
+  final VoidCallback? onFilterChanged;
 
-  const PropertyFilterWidget({super.key, required this.dateRangeKind});
+  const PropertyFilterWidget({
+    super.key,
+    required this.dateRangeKind,
+    this.onFilterChanged,
+  });
 
   @override
   State<PropertyFilterWidget> createState() => _PropertyFilterWidgetState();
@@ -55,6 +60,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
     );
     if (picked != null) {
       controller.text = DateFormat('yyyy-MM-dd').format(picked);
+      widget.onFilterChanged?.call();
       setState(() {});
     }
   }
@@ -114,7 +120,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 height: 52.0,
                 width: MediaQuery.of(context).size.width * 0.42,
                 onTap: () => _pickDate(fromDateController),
-                onChanged: (val) {},
+                onChanged: (val) => widget.onFilterChanged?.call(),
                 suffix: false,
                 autofocus: false,
               ),
@@ -129,7 +135,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 height: 52.0,
                 width: MediaQuery.of(context).size.width * 0.42,
                 onTap: () => _pickDate(toDateController),
-                onChanged: (val) {},
+                onChanged: (val) => widget.onFilterChanged?.call(),
                 suffix: false,
                 autofocus: false,
               ),
@@ -152,7 +158,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -168,7 +174,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -184,7 +190,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -200,7 +206,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -224,7 +230,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -240,7 +246,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -256,7 +262,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
             icon: 'null',
             height: 52,
             width: MediaQuery.of(context).size.width,
-            onChanged: (val) {},
+            onChanged: (val) => widget.onFilterChanged?.call(),
             onTap: () {},
             suffix: false,
             readOnly: false,
@@ -299,6 +305,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'Confirmed',
                 onChanged: (val) {
                   setState(() => isConfirmedSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
               BookingStatusWidget(
@@ -306,6 +313,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'Completed',
                 onChanged: (val) {
                   setState(() => isCompletedSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
               BookingStatusWidget(
@@ -313,6 +321,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'Cancelled',
                 onChanged: (val) {
                   setState(() => isCancelledSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
               BookingStatusWidget(
@@ -320,6 +329,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'No show',
                 onChanged: (val) {
                   setState(() => isNoShowSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
               BookingStatusWidget(
@@ -327,6 +337,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'On request',
                 onChanged: (val) {
                   setState(() => isOnRequestSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
               BookingStatusWidget(
@@ -334,6 +345,7 @@ class _PropertyFilterWidgetState extends State<PropertyFilterWidget> {
                 text: 'POB',
                 onChanged: (val) {
                   setState(() => isPobSelected = val ?? false);
+                  widget.onFilterChanged?.call();
                 },
               ),
             ],

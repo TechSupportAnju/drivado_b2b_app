@@ -1,11 +1,10 @@
 import 'dart:developer';
 import 'package:drivado_b2b_app/models/booking_search_filter_payload.dart';
 import 'package:drivado_b2b_app/screens/bookings/bookings_widget/property_filter_widget.dart';
-import 'package:drivado_b2b_app/screens/common_widgets/custom_buttons.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_decoration.dart';
 import 'package:drivado_b2b_app/screens/common_widgets/custom_text.dart';
 import 'package:drivado_b2b_app/screens/constant/constant.dart';
-import 'package:drivado_b2b_app/screens/home/home_widget/bottom_nav_items.dart';
+import 'package:drivado_b2b_app/utils/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -18,6 +17,31 @@ class SearchFilterPage extends StatefulWidget {
 class _SearchFilterPageState extends State<SearchFilterPage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
+
+  bool _isAnyTextFilterSet() {
+    bool hasText(TextEditingController controller) =>
+        controller.text.trim().isNotEmpty;
+    return hasText(fromDateController) ||
+        hasText(toDateController) ||
+        hasText(bookingIdController) ||
+        hasText(companyNameController) ||
+        hasText(usernameController) ||
+        hasText(passengerNameController) ||
+        hasText(passengerNumberController) ||
+        hasText(driverNameController) ||
+        hasText(driverNumberController) ||
+        hasText(quoteByController);
+  }
+
+  bool _hasAnyFilterSelected() {
+    return _isAnyTextFilterSet() ||
+        isConfirmedSelected ||
+        isCompletedSelected ||
+        isCancelledSelected ||
+        isNoShowSelected ||
+        isOnRequestSelected ||
+        isPobSelected;
+  }
 
   @override
   void initState() {
@@ -67,6 +91,8 @@ class _SearchFilterPageState extends State<SearchFilterPage>
               bookingIdController.clear();
               companyNameController.clear();
               usernameController.clear();
+              passengerNameController.clear();
+              passengerNumberController.clear();
               driverNameController.clear();
               driverNumberController.clear();
               quoteByController.clear();
@@ -81,8 +107,18 @@ class _SearchFilterPageState extends State<SearchFilterPage>
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 20),
-              child: SvgPicture.asset("assets/booking_detail/reset_icon.svg"),
-              //CustomText(title: "Reset all", color: Color(0XFFFB4156), fontWeight: FontWeight.w500, fontSize: 14, height: 2.0),
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                alignment: Alignment.center,
+                child: _hasAnyFilterSelected()
+                    ? SvgPicture.asset("assets/booking_detail/reset_icon_active.svg")
+                    : SvgPicture.asset("assets/booking_detail/reset_icon.svg"),
+              ),
             ),
           ),
         ],
@@ -132,9 +168,11 @@ class _SearchFilterPageState extends State<SearchFilterPage>
                       PropertyFilterWidget(
                         dateRangeKind:
                             BookingFilterDateRangeKind.bookingCreated,
+                        onFilterChanged: () => setState(() {}),
                       ),
                       PropertyFilterWidget(
                         dateRangeKind: BookingFilterDateRangeKind.travel,
+                        onFilterChanged: () => setState(() {}),
                       ),
                     ],
                   ),
